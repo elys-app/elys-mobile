@@ -1,36 +1,17 @@
 import 'package:flutter/material.dart';
 import 'content.dart';
+import 'contacts.dart';
 import 'schedule.dart';
 
-class ContactPage extends StatefulWidget {
-  const ContactPage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+class ElysNavigationBar extends StatefulWidget {
+  const ElysNavigationBar({Key? key}) : super(key: key);
 
   @override
-  State<ContactPage> createState() => _ContactPageState();
+  State<ElysNavigationBar> createState() => _ElysNavigationState();
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
-class _ContactPageState extends State<ContactPage> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Content',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Contacts',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Schedule',
-      style: optionStyle,
-    ),
-  ];
-
+class _ElysNavigationState extends State<ElysNavigationBar> {
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
@@ -43,6 +24,16 @@ class _ContactPageState extends State<ContactPage> {
           );
           break;
         }
+      case 1:
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ContactPage(title: 'Your Contacts'),
+            ),
+          );
+          break;
+        }
       case 2:
         {
           Navigator.push(
@@ -51,23 +42,13 @@ class _ContactPageState extends State<ContactPage> {
               builder: (context) => SchedulePage(title: 'Your Schedule'),
             ),
           );
-          break;
         }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.title,
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
+    return (Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -83,10 +64,9 @@ class _ContactPageState extends State<ContactPage> {
             label: 'Schedule',
           ),
         ],
-        currentIndex: _selectedIndex,
         selectedItemColor: Colors.lightBlue,
         onTap: _onItemTapped,
       ),
-    );
+    ));
   }
 }

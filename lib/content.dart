@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'contacts.dart';
+import 'schedule.dart';
 
 class ContentPage extends StatefulWidget {
   const ContentPage({Key? key, required this.title}) : super(key: key);
@@ -37,9 +38,20 @@ class _ContentPageState extends State<ContentPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ContactPage(title: 'Your Contacts'),
+              builder: (context) => ContactPage(title: 'Your Content'),
             ),
           );
+          break;
+        }
+      case 2:
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SchedulePage(title: 'Your Schedule'),
+            ),
+          );
+          break;
         }
     }
   }

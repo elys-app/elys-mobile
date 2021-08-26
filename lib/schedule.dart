@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'content.dart';
-import 'schedule.dart';
+import 'contacts.dart';
 
-class ContactPage extends StatefulWidget {
-  const ContactPage({Key? key, required this.title}) : super(key: key);
+class SchedulePage extends StatefulWidget {
+  const SchedulePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<ContactPage> createState() => _ContactPageState();
+  State<SchedulePage> createState() => _SchedulePageState();
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
-class _ContactPageState extends State<ContactPage> {
+class _SchedulePageState extends State<SchedulePage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -43,15 +42,14 @@ class _ContactPageState extends State<ContactPage> {
           );
           break;
         }
-      case 2:
+      case 1:
         {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => SchedulePage(title: 'Your Schedule'),
+              builder: (context) => ContactPage(title: 'Your Contacts'),
             ),
           );
-          break;
         }
     }
   }
