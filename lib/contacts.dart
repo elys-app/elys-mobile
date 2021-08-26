@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'contacts.dart';
+import 'content.dart';
 
-class ContentPage extends StatefulWidget {
-  const ContentPage({Key? key, required this.title}) : super(key: key);
+class ContactPage extends StatefulWidget {
+  const ContactPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<ContentPage> createState() => _ContentPageState();
+  State<ContactPage> createState() => _ContactPageState();
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
-class _ContentPageState extends State<ContentPage> {
+class _ContactPageState extends State<ContactPage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -32,15 +32,22 @@ class _ContentPageState extends State<ContentPage> {
 
   void _onItemTapped(int index) {
     switch (index) {
-      case 1:
+      case 0:
         {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ContactPage(title: 'Your Contacts'),
+              builder: (context) => ContentPage(title: 'Your Content'),
             ),
           );
         }
+      // case 3: {
+      //           Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                   builder: (context) =>
+      //                       SchedulePage(title: 'Register for ELYS')));
+
     }
   }
 
