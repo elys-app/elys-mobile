@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'register.dart';
-import 'content.dart';
+import 'dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, required this.title}) : super(key: key);
@@ -76,10 +76,8 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               style: style,
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ContentPage(title: 'Content')));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MainPage()));
               },
               child: const Text('Login'),
             ),

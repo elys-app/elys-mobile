@@ -29,6 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
           widget.title,
           style: TextStyle(color: Colors.white),
         ),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(
