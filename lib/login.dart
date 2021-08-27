@@ -31,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
           widget.title,
           style: TextStyle(color: Colors.white),
         ),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(

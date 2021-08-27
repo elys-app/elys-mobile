@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../login.dart';
 import 'dashboard/content.dart';
 import 'dashboard/contacts.dart';
 import 'dashboard/schedule.dart';
@@ -26,34 +27,48 @@ class _MainPageState extends State<MainPage> {
           style: TextStyle(color: Colors.white),
         ),
         automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
-      drawer: Drawer(
+      endDrawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
-          children: const <Widget>[
+          children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
               child: Text(
                 'User Name',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
             ListTile(
-              leading: Icon(Icons.message),
-              title: Text('Settings'),
+              leading: Icon(Icons.settings),
+              title: Text(
+                'Settings',
+                style: TextStyle(fontSize: 18, color: Colors.lightBlue),
+              ),
             ),
             ListTile(
               leading: Icon(Icons.question_answer),
-              title: Text('About'),
+              title: Text(
+                'About',
+                style: TextStyle(fontSize: 18, color: Colors.lightBlue),
+              ),
             ),
             ListTile(
               leading: Icon(Icons.logout),
-              title: Text('Logout'),
+              title: Text(
+                'Logout',
+                style: TextStyle(fontSize: 18, color: Colors.lightBlue),
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            LoginPage(title: 'Welcome To ELYS')));
+              },
             ),
           ],
         ),
