@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'register.dart';
-import 'dashboard.dart';
+import 'password.dart';
+
+import '../dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, required this.title}) : super(key: key);
@@ -13,6 +15,13 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   // bool _connectedStatus = false;
+
+  String userName = '';
+  String password = '';
+
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   void dispose() {
     super.dispose();
@@ -20,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
     final ButtonStyle style =
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
     final ButtonStyle registerStyle = ElevatedButton.styleFrom(
@@ -53,7 +63,8 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: EdgeInsets.only(
                   left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-              child: const TextField(
+              child: TextField(
+                controller: userNameController,
                 obscureText: false,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.person),
@@ -65,7 +76,8 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: EdgeInsets.only(
                   left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-              child: const TextField(
+              child: TextField(
+                controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.visibility),
@@ -77,6 +89,10 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               style: style,
               onPressed: () {
+                setState(() {
+                  userName = userNameController.text;
+                  password = passwordController.text;
+                });
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MainPage()));
               },
@@ -87,11 +103,13 @@ class _LoginPageState extends State<LoginPage> {
                 textStyle: const TextStyle(fontSize: 20),
               ),
               onPressed: () {
-                final snackBar = SnackBar(
-                  content: const Text('To Do: Add Forgot Password Page'),
-                  action: SnackBarAction(label: 'OK', onPressed: () {}),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                PasswordPage(title: 'Lost Password'),
+                        ),
+                    );
               },
               child: const Text('Forgot Password?'),
             ),

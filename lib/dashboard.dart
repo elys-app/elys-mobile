@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../login.dart';
+import 'login/login.dart';
 import 'dashboard/content.dart';
 import 'dashboard/contacts.dart';
 import 'dashboard/schedule.dart';
