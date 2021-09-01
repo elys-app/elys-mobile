@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'register.dart';
 import 'password.dart';
 
-import '../dashboard.dart';
+import '../dashboard/dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, required this.title}) : super(key: key);
@@ -29,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     final ButtonStyle style =
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
     final ButtonStyle registerStyle = ElevatedButton.styleFrom(
@@ -103,13 +102,12 @@ class _LoginPageState extends State<LoginPage> {
                 textStyle: const TextStyle(fontSize: 20),
               ),
               onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                PasswordPage(title: 'Lost Password'),
-                        ),
-                    );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PasswordPage(title: 'Lost Password'),
+                  ),
+                );
               },
               child: const Text('Forgot Password?'),
             ),

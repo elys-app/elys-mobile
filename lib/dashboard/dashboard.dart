@@ -1,8 +1,11 @@
+import 'package:elys_mobile/dashboard/newcontent.dart';
 import 'package:flutter/material.dart';
-import 'login/login.dart';
-import 'dashboard/content.dart';
-import 'dashboard/contacts.dart';
-import 'dashboard/schedule.dart';
+import '../login/login.dart';
+
+import 'content.dart';
+import 'newcontent.dart';
+import 'contacts.dart';
+import 'schedule.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -33,15 +36,17 @@ class _MainPageState extends State<MainPage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'User Name',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
+            Container(
+                height: 120,
+                child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                  child: Text(
+                    'User Name',
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                )),
             ListTile(
               leading: Icon(Icons.settings),
               title: Text(
@@ -55,6 +60,20 @@ class _MainPageState extends State<MainPage> {
                 'About',
                 style: TextStyle(fontSize: 18, color: Colors.lightBlue),
               ),
+            ),
+            ListTile(
+              leading: Icon(Icons.warning_sharp),
+              title: Text(
+                'Panic',
+                style: TextStyle(fontSize: 18, color: Colors.lightBlue),
+              ),
+              onTap: () {
+                final snackBar = SnackBar(
+                  content: const Text('To Do: Add Panic Page'),
+                  action: SnackBarAction(label: 'OK', onPressed: () {}),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              },
             ),
             ListTile(
               leading: Icon(Icons.logout),
@@ -90,7 +109,7 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
             label: 'Schedule',
-          ),
+          )
         ],
         onTap: (index) {
           setState(() {
@@ -100,14 +119,28 @@ class _MainPageState extends State<MainPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          final snackBar = SnackBar(
-            content: const Text('To Do: Add Pages'),
-            action: SnackBarAction(label: 'OK', onPressed: () {}),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          switch (_selectedIndex) {
+            case 0:
+              {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            NewContentPage(title: 'New Content')));
+                break;
+              }
+            default:
+              {
+                final snackBar = SnackBar(
+                  content: const Text('To Do: Add Pages'),
+                  action: SnackBarAction(label: 'OK', onPressed: () {}),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+          }
         },
         child: const Icon(Icons.add),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Colors.lightBlue,
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
     );
