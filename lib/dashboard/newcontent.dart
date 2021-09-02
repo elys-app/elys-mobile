@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 
 class NewContentPage extends StatefulWidget {
   NewContentPage({Key? key, required this.title}) : super(key: key);

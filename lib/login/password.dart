@@ -15,7 +15,6 @@ class _PasswordPageState extends State<PasswordPage> {
 // bool _connectedStatus = false;
 
   bool _codeSent = false;
-  bool _finished = false;
 
   @override
   void dispose() {
@@ -26,8 +25,6 @@ class _PasswordPageState extends State<PasswordPage> {
   Widget build(BuildContext context) {
     final ButtonStyle style =
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
-    final ButtonStyle registerStyle = ElevatedButton.styleFrom(
-        textStyle: const TextStyle(fontSize: 20), primary: Colors.lightBlue);
 
     return Scaffold(
       appBar: AppBar(
