@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'package:image_picker/image_picker.dart';
-
-class NewContentPage extends StatefulWidget {
-  NewContentPage({Key? key, required this.title}) : super(key: key);
+class NewContactPage extends StatefulWidget {
+  NewContactPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _NewContentPageState createState() => _NewContentPageState();
+  _NewContactPageState createState() => _NewContactPageState();
 }
 
-class _NewContentPageState extends State<NewContentPage> {
-  String _pictureText = 'Tap the Button to Add a Picture';
-
+class _NewContactPageState extends State<NewContactPage> {
   @override
   void dispose() {
     super.dispose();
@@ -42,34 +38,21 @@ class _NewContentPageState extends State<NewContentPage> {
               child: const TextField(
                 obscureText: false,
                 decoration: InputDecoration(
-                  labelText: 'Description',
+                  prefixIcon: Icon(Icons.person),
+                  border: OutlineInputBorder(),
+                  labelText: 'Name',
                 ),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(
                   left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-              child: Center(
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      color: Colors.lightBlue,
-                      icon: new Icon(Icons.camera_alt, size: 36.0),
-                      onPressed: () {
-                        final snackBar = SnackBar(
-                          content: Text('To Do: Take a Picture'),
-                          action: SnackBarAction(
-                            label: 'OK',
-                            onPressed: () {
-                              // Some code to undo the change.
-                            },
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      },
-                    ),
-                    Text(_pictureText, style: const TextStyle(fontSize: 18)),
-                  ],
+              child: const TextField(
+                obscureText: false,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.email),
+                  border: OutlineInputBorder(),
+                  labelText: 'Email Address',
                 ),
               ),
             ),
@@ -79,7 +62,7 @@ class _NewContentPageState extends State<NewContentPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Add New Content'),
+              child: const Text('Add New Contact'),
             ),
             TextButton(
               style: TextButton.styleFrom(

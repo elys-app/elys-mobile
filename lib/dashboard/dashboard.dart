@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import '../login/login.dart';
 
 import 'content.dart';
-import 'newcontent.dart';
 import 'contacts.dart';
 import 'schedule.dart';
+import 'newcontent.dart';
+import 'newcontact.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -127,6 +128,15 @@ class _MainPageState extends State<MainPage> {
                     MaterialPageRoute(
                         builder: (context) =>
                             NewContentPage(title: 'New Content')));
+                break;
+              }
+            case 1:
+              {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            NewContactPage(title: 'New Contact')));
                 break;
               }
             default:

@@ -39,13 +39,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<key>NSCameraUsageDescription</key>
-	<string>Need to upload or select images to upload</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Need to upload or select images to upload</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>For use with video uploads</string>
+ 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>
 </plist>
