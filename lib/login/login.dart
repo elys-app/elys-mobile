@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_core/amplify_core.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 
@@ -20,9 +19,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // bool _connectedStatus = false;
-
-  bool _amplifyConfigured = false;
+  bool _showPassword = false;
 
   String userName = '';
   String password = '';
@@ -33,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    _showPassword = false;
     _configureAmplify();
   }
 
@@ -41,17 +39,14 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
- void _configureAmplify() async {
+  void _configureAmplify() async {
     final auth = AmplifyAuthCognito();
     final analytics = AmplifyAnalyticsPinpoint();
 
     try {
       Amplify.addPlugins([auth, analytics]);
-      if (! _amplifyConfigured) {
+      if (!Amplify.isConfigured) {
         await Amplify.configure(amplifyconfig);
-        setState(() {
-          _amplifyConfigured = true;
-        });
       }
     } catch (e) {
       print(e);
@@ -65,10 +60,19 @@ class _LoginPageState extends State<LoginPage> {
     });
     try {
       await Amplify.Auth.signIn(username: userName, password: password);
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => MainPage()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MainPage()));
       return 'success';
-    } on AuthException catch (e) {
+    } on InvalidStateException catch (e) {
+      Amplify.Auth.signOut();
+      SnackBar snackBar = SnackBar(
+        content: Text('${e.message}'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return 'failed';
+    } on NotAuthorizedException catch (e) {
       SnackBar snackBar = SnackBar(
         content: Text('${e.message}'),
         duration: Duration(seconds: 3),
@@ -130,11 +134,20 @@ class _LoginPageState extends State<LoginPage> {
                   left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
               child: TextField(
                 controller: passwordController,
-                obscureText: true,
+                obscureText: _showPassword,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.visibility),
                   border: OutlineInputBorder(),
                   labelText: 'Password',
+                  prefixIcon: IconButton(
+                    icon: Icon(
+                      _showPassword ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _showPassword = !_showPassword;
+                      });
+                    },
+                  ),
                 ),
               ),
             ),

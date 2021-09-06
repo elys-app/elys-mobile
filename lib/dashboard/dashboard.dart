@@ -1,5 +1,8 @@
-import 'package:elys_mobile/dashboard/newcontent.dart';
 import 'package:flutter/material.dart';
+
+import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+
 import '../login/login.dart';
 
 import 'content.dart';
@@ -7,6 +10,7 @@ import 'contacts.dart';
 import 'schedule.dart';
 import 'newcontent.dart';
 import 'newcontact.dart';
+import 'panic.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -20,7 +24,28 @@ class _MainPageState extends State<MainPage> {
     ContentPage(),
     ContactsPage(),
     SchedulePage(),
+    PanicPage()
   ];
+
+  Future<String> _onLogout() async {
+    try {
+      Amplify.Auth.signOut().then((_) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => LoginPage(title: 'Welcome to ELYS')));
+      });
+      return 'success';
+    } on AuthException catch (e) {
+      SnackBar snackBar = SnackBar(
+        content: Text('${e.message}'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return 'failed';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,54 +88,37 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.warning_sharp),
-              title: Text(
-                'Panic',
-                style: TextStyle(fontSize: 18, color: Colors.lightBlue),
-              ),
-              onTap: () {
-                final snackBar = SnackBar(
-                  content: const Text('To Do: Add Panic Page'),
-                  action: SnackBarAction(label: 'OK', onPressed: () {}),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-            ),
-            ListTile(
               leading: Icon(Icons.logout),
               title: Text(
                 'Logout',
                 style: TextStyle(fontSize: 18, color: Colors.lightBlue),
               ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            LoginPage(title: 'Welcome To ELYS')));
-              },
+              onTap: _onLogout,
             ),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        iconSize: 40,
         currentIndex: _selectedIndex,
         showSelectedLabels: true,
-        showUnselectedLabels: true,
+        showUnselectedLabels: false,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.video_camera_back),
-            label: 'Content',
-          ),
+              icon: Icon(Icons.video_camera_front_rounded),
+              label: 'Content',
+              backgroundColor: Colors.lightBlue),
           BottomNavigationBarItem(
-            icon: Icon(Icons.email_sharp),
-            label: 'Contacts',
-          ),
+              icon: Icon(Icons.email_sharp),
+              label: 'Contacts',
+              backgroundColor: Colors.lightBlue),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Schedule',
-          )
+              icon: Icon(Icons.calendar_today_sharp),
+              label: 'Schedule',
+              backgroundColor: Colors.lightBlue),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.warning),
+              label: 'Panic',
+              backgroundColor: Colors.lightBlue)
         ],
         onTap: (index) {
           setState(() {

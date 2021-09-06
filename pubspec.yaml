@@ -23,9 +23,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  path: 
+  flutter_slidable:
+  path:
   path_provider:
-  image_picker: 
+  image_picker:
 
   amplify_core: "<1.0.0"
   amplify_auth_cognito: "<1.0.0"
@@ -35,7 +36,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  
+
 
 dev_dependencies:
   flutter_test:
