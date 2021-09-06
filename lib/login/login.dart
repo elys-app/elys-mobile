@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(_amplifyConfigured ? 'Configured' : 'Problem'),
+            Text(Amplify.isConfigured ? 'Configured' : 'Problem'),
             Text('New to Elys?',
                 style: TextStyle(color: Colors.lightBlue, fontSize: 30)),
             ElevatedButton(
