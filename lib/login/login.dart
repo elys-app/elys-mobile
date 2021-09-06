@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import 'package:amplify_api/amplify_api.dart';
 
 import 'register.dart';
 import 'password.dart';
@@ -43,14 +44,15 @@ class _LoginPageState extends State<LoginPage> {
   void _configureAmplify() async {
     final auth = AmplifyAuthCognito();
     final analytics = AmplifyAnalyticsPinpoint();
+    final api = AmplifyAPI();
 
     try {
-      Amplify.addPlugins([auth, analytics]);
       if (!Amplify.isConfigured) {
+        Amplify.addPlugins([auth, analytics, api]);
         await Amplify.configure(amplifyconfig);
       }
     } catch (e) {
-      print(e);
+      print (e);
     }
   }
 
@@ -103,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text( Amplify.isConfigured ? 'Configured' : 'Not Configured'),
             Text('New to Elys?',
                 style: TextStyle(color: Colors.lightBlue, fontSize: 30)),
             ElevatedButton(

@@ -1,5 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_api/amplify_api.dart';
+
+import '../models/contentitem.dart';
 
 class ContentPage extends StatefulWidget {
   ContentPage({Key? key}) : super(key: key);
@@ -9,7 +16,9 @@ class ContentPage extends StatefulWidget {
 }
 
 class _ContentPageState extends State<ContentPage> {
-  List<String> entries = List<String>.filled(0, '', growable: true);
+  List<ContentItem> entries = List<ContentItem>.filled(0,
+      new ContentItem(id: '0'),
+      growable: true);
 
   @override
   void initState() {
@@ -17,13 +26,36 @@ class _ContentPageState extends State<ContentPage> {
     _initContent();
   }
 
-  void _initContent() {
-    setState(() {
-      entries.add('Alfa');
-      entries.add('Bravo');
-      entries.add('Charlie');
-      entries.add('Delta');
-    });
+  void _initContent() async {
+    try {
+      String graphQLDocument = '''query ListTodos {
+        listContents {
+          items {
+            id
+            name
+            owner
+            type
+            updatedAt
+            description
+            dateSubmitted
+            createdAt
+          }
+        }
+      }''';
+      var operation = Amplify.API.query(
+          request: GraphQLRequest<String>(
+          document: graphQLDocument,
+      ));
+
+      var response = await operation.response;
+      var data = response.data;
+
+      setState(() {
+        entries.add(ContentItem(id: 'A', name: 'An Item', description: 'A Description'));
+      });
+    } on ApiException catch (e) {
+      print('Query failed: $e');
+    }
   }
 
   @override
@@ -34,15 +66,14 @@ class _ContentPageState extends State<ContentPage> {
           children: entries
               .map(
                 (item) => new Slidable(
-                    key: Key(item),
                     actionPane: SlidableDrawerActionPane(),
                     child: ListTile(
                       title: Text(
-                        item.toString(),
+                        item.name,
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text('Additional Text'),
+                      subtitle: Text(item.description),
                     ),
                     secondaryActions: <Widget>[
                       IconSlideAction(
