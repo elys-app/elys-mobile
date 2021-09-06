@@ -19,10 +19,10 @@ class _ContentPageState extends State<ContentPage> {
 
   void _initContent() {
     setState(() {
-      entries.add('A');
-      entries.add('B');
-      entries.add('C');
-      entries.add('D');
+      entries.add('Alfa');
+      entries.add('Bravo');
+      entries.add('Charlie');
+      entries.add('Delta');
     });
   }
 

@@ -8,11 +8,17 @@ import '../login/login.dart';
 import 'content.dart';
 import 'contacts.dart';
 import 'schedule.dart';
-import 'newcontent.dart';
-import 'newcontact.dart';
 import 'panic.dart';
 
+import 'newcontent.dart';
+import 'newcontact.dart';
+import 'newschedule.dart';
+
 class MainPage extends StatefulWidget {
+  MainPage({Key? key, required this.username}) : super(key: key);
+
+  final String username;
+
   @override
   _MainPageState createState() => _MainPageState();
 }
@@ -26,6 +32,10 @@ class _MainPageState extends State<MainPage> {
     SchedulePage(),
     PanicPage()
   ];
+
+  void initState() {
+    super.initState();
+  }
 
   Future<String> _onLogout() async {
     try {
@@ -60,7 +70,7 @@ class _MainPageState extends State<MainPage> {
       ),
       endDrawer: Drawer(
         child: ListView(
-          padding: EdgeInsets.zero,
+          padding: EdgeInsets.all(5),
           children: <Widget>[
             Container(
                 height: 120,
@@ -69,29 +79,34 @@ class _MainPageState extends State<MainPage> {
                     color: Colors.blue,
                   ),
                   child: Text(
-                    'User Name',
+                    'Hello, ${widget.username}',
                     style: TextStyle(color: Colors.white, fontSize: 24),
                   ),
                 )),
             ListTile(
-              leading: Icon(Icons.settings),
+              leading: Icon(Icons.settings, color: Colors.blueAccent),
               title: Text(
                 'Settings',
-                style: TextStyle(fontSize: 18, color: Colors.lightBlue),
+                style: TextStyle(fontSize: 18, color: Colors.blue[900]),
               ),
             ),
             ListTile(
-              leading: Icon(Icons.question_answer),
-              title: Text(
-                'About',
-                style: TextStyle(fontSize: 18, color: Colors.lightBlue),
-              ),
-            ),
+                leading: Icon(Icons.info_outline, color: Colors.blueAccent),
+                title: Text(
+                  'About',
+                  style: TextStyle(fontSize: 18, color: Colors.blue[900]),
+                ),
+                onTap: () {
+                  showAboutDialog(
+                      context: context,
+                      applicationName: 'ELYS Legacy Management',
+                      applicationVersion: '0.1.0');
+                }),
             ListTile(
-              leading: Icon(Icons.logout),
+              leading: Icon(Icons.logout_sharp, color: Colors.blueAccent),
               title: Text(
                 'Logout',
-                style: TextStyle(fontSize: 18, color: Colors.lightBlue),
+                style: TextStyle(fontSize: 18, color: Colors.blue[900]),
               ),
               onTap: _onLogout,
             ),
@@ -103,7 +118,7 @@ class _MainPageState extends State<MainPage> {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[100],
+        selectedItemColor: Colors.blue[900],
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.video_camera_front_rounded),
@@ -147,6 +162,15 @@ class _MainPageState extends State<MainPage> {
                     MaterialPageRoute(
                         builder: (context) =>
                             NewContactPage(title: 'New Contact')));
+                break;
+              }
+            case 2:
+              {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            NewSchedulePage(title: 'New Schedule Item')));
                 break;
               }
             default:

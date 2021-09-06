@@ -6,6 +6,7 @@ import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 
 import 'register.dart';
 import 'password.dart';
+
 import '../dashboard/dashboard.dart';
 import '../amplifyconfiguration.dart';
 
@@ -61,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await Amplify.Auth.signIn(username: userName, password: password);
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MainPage()));
+          context, MaterialPageRoute(builder: (context) => MainPage(key: Key('1'), username: userName)));
       return 'success';
     } on InvalidStateException catch (e) {
       Amplify.Auth.signOut();
@@ -102,7 +103,6 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(Amplify.isConfigured ? 'Configured' : 'Problem'),
             Text('New to Elys?',
                 style: TextStyle(color: Colors.lightBlue, fontSize: 30)),
             ElevatedButton(
