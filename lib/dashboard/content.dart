@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ContentPage extends StatefulWidget {
   ContentPage({Key? key}) : super(key: key);
@@ -28,25 +29,36 @@ class _ContentPageState extends State<ContentPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
-        child: ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: entries.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 50,
-                child: Center(
+      padding: EdgeInsets.all(10),
+      child: Column(
+          children: entries
+              .map(
+                (item) => new Slidable(
+                    key: Key(item),
+                    actionPane: SlidableDrawerActionPane(),
                     child: ListTile(
-                  title: Center(
-                    child: Text(
-                      'Entry ${entries[index]}',
-                      style: TextStyle(fontSize: 20),
+                      title: Text(
+                        item.toString(),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text('Additional Text'),
                     ),
-                  ),
-                )),
-              );
-            }),
-      ),
+                    secondaryActions: <Widget>[
+                      IconSlideAction(
+                          caption: 'Delete',
+                          color: Colors.red,
+                          icon: Icons.cancel,
+                          onTap: () => {
+                                setState(
+                                  () {
+                                    entries.remove(item);
+                                  },
+                                )
+                              }),
+                    ]),
+              )
+              .toList()),
     );
   }
 }
