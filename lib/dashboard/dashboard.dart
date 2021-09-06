@@ -99,9 +99,11 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
+        iconSize: 32,
         showSelectedLabels: true,
-        showUnselectedLabels: false,
+        showUnselectedLabels: true,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue[100],
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.video_camera_front_rounded),

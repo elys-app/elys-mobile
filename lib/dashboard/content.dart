@@ -28,17 +28,25 @@ class _ContentPageState extends State<ContentPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Center(
-            child: ListView.builder(
-                padding: const EdgeInsets.all(8),
-                itemCount: entries.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: 50,
-                    child: Center(child: Text('Entry ${entries[index]}')),
-                  );
-                }),
-        ),
+      child: Center(
+        child: ListView.builder(
+            padding: const EdgeInsets.all(8),
+            itemCount: entries.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                height: 50,
+                child: Center(
+                    child: ListTile(
+                  title: Center(
+                    child: Text(
+                      'Entry ${entries[index]}',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                )),
+              );
+            }),
+      ),
     );
   }
 }
