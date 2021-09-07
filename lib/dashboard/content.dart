@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -16,9 +17,10 @@ class ContentPage extends StatefulWidget {
 }
 
 class _ContentPageState extends State<ContentPage> {
-  List<ContentItem> entries = List<ContentItem>.filled(0,
-      new ContentItem(id: '0'),
-      growable: true);
+  bool _errorOccured = false;
+
+  List<ContentItem> entries =
+      List<ContentItem>.filled(0, new ContentItem(id: '0'), growable: true);
 
   @override
   void initState() {
@@ -27,6 +29,7 @@ class _ContentPageState extends State<ContentPage> {
   }
 
   void _initContent() async {
+    entries.clear();
     try {
       String graphQLDocument = '''query ListTodos {
         listContents {
@@ -44,52 +47,59 @@ class _ContentPageState extends State<ContentPage> {
       }''';
       var operation = Amplify.API.query(
           request: GraphQLRequest<String>(
-          document: graphQLDocument,
+        document: graphQLDocument,
       ));
-
       var response = await operation.response;
-      var data = response.data;
 
       setState(() {
-        entries.add(ContentItem(id: 'A', name: 'An Item', description: 'A Description'));
+        Map<String, dynamic> data = jsonDecode(response.data)['listContents'];
+        for (var item in data['items']) {
+          entries.add(ContentItem.fromJSON(item));
+        }
+        _errorOccured = false;
       });
     } on ApiException catch (e) {
-      print('Query failed: $e');
+      setState(() {
+        _errorOccured = true;
+      });
     }
+  }
+
+  List<Slidable> _getContentList() {
+    return (entries
+        .map(
+          (item) => new Slidable(
+              actionPane: SlidableDrawerActionPane(),
+              child: ListTile(
+                title: Text(
+                  item.description,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(item.name),
+              ),
+              secondaryActions: <Widget>[
+                IconSlideAction(
+                    caption: 'Delete',
+                    color: Colors.red,
+                    icon: Icons.cancel,
+                    onTap: () => {
+                          setState(
+                            () {
+                              entries.remove(item);
+                            },
+                          )
+                        }),
+              ]),
+        )
+        .toList());
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
-          children: entries
-              .map(
-                (item) => new Slidable(
-                    actionPane: SlidableDrawerActionPane(),
-                    child: ListTile(
-                      title: Text(
-                        item.name,
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(item.description),
-                    ),
-                    secondaryActions: <Widget>[
-                      IconSlideAction(
-                          caption: 'Delete',
-                          color: Colors.red,
-                          icon: Icons.cancel,
-                          onTap: () => {
-                                setState(
-                                  () {
-                                    entries.remove(item);
-                                  },
-                                )
-                              }),
-                    ]),
-              )
-              .toList()),
-    );
+        padding: EdgeInsets.all(10),
+        child: Column(children: _errorOccured ? <Widget>[
+          Text('An Error Occurred')
+        ] : _getContentList()));
   }
 }

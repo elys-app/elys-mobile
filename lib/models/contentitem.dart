@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'dart:convert';
 
 class ContentItem {
   String id;
@@ -7,11 +8,19 @@ class ContentItem {
   String name;
   String type;
 
-  ContentItem({this.id = '0',
-    this.owner = '',
-    this.description = '',
-    this.name = '',
-    this.type = ''}) {
-    assert(id != null);
+  ContentItem(
+      {this.id = '0',
+      this.owner = '',
+      this.description = '',
+      this.name = '',
+      this.type = ''});
+
+  factory ContentItem.fromJSON(Map<String, dynamic> json) {
+    return ContentItem(
+        id: json['id'],
+        owner: json['owner'],
+        description: json['description'],
+        name: json['name'],
+        type: json['type']);
   }
 }
