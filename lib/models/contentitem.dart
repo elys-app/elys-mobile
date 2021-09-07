@@ -1,6 +1,3 @@
-import 'package:meta/meta.dart';
-import 'dart:convert';
-
 class ContentItem {
   String id;
   String owner;

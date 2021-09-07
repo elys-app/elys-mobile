@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class ContentPage extends StatefulWidget {
 }
 
 class _ContentPageState extends State<ContentPage> {
-  bool _errorOccured = false;
+  bool _errorOccurred = false;
 
   List<ContentItem> entries =
       List<ContentItem>.filled(0, new ContentItem(id: '0'), growable: true);
@@ -31,7 +30,7 @@ class _ContentPageState extends State<ContentPage> {
   void _initContent() async {
     entries.clear();
     try {
-      String graphQLDocument = '''query ListTodos {
+      String graphQLDocument = '''query ListContents {
         listContents {
           items {
             id
@@ -56,11 +55,11 @@ class _ContentPageState extends State<ContentPage> {
         for (var item in data['items']) {
           entries.add(ContentItem.fromJSON(item));
         }
-        _errorOccured = false;
+        _errorOccurred = false;
       });
-    } on ApiException catch (e) {
+    } on ApiException {
       setState(() {
-        _errorOccured = true;
+        _errorOccurred = true;
       });
     }
   }
@@ -98,7 +97,7 @@ class _ContentPageState extends State<ContentPage> {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(10),
-        child: Column(children: _errorOccured ? <Widget>[
+        child: Column(children: _errorOccurred ? <Widget>[
           Text('An Error Occurred')
         ] : _getContentList()));
   }
