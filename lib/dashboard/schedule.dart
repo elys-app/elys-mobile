@@ -77,7 +77,8 @@ class _SchedulePageState extends State<SchedulePage> {
               item.name,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            subtitle: Text('Group to Share With: ${item.groupId}'),
+            subtitle: Text('Group to Share With: ${item.groupId}\nDate: ${item.eventDate} ${item.eventMonth}'),
+            isThreeLine: true,
           ),
           secondaryActions: <Widget>[
             IconSlideAction(
@@ -92,8 +93,7 @@ class _SchedulePageState extends State<SchedulePage> {
                   )
                 }),
           ]),
-    )
-        .toList());
+    ).toList());
   }
 
   @override
@@ -101,7 +101,6 @@ class _SchedulePageState extends State<SchedulePage> {
     return Container(
         padding: EdgeInsets.all(10),
         child: Column(children: _errorOccurred ? <Widget>[
-          Text('An Error Occurred')
-        ] : _getEventList()));
+          Text('An Error Occurred')] : _getEventList()));
   }
 }

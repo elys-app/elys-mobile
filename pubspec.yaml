@@ -24,15 +24,13 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_slidable:
-  path:
-  path_provider:
   image_picker:
 
-  amplify_core: "<1.0.0"
-  amplify_flutter: "<1.0.0"
-  amplify_auth_cognito: "<1.0.0"
-  amplify_api: "<1.0.0"
-  amplify_analytics_pinpoint: "<1.0.0"
+  amplify_core: "0.2.4"
+  amplify_flutter: "0.2.4"
+  amplify_auth_cognito: "0.2.4"
+  amplify_api: "0.2.4"
+  amplify_analytics_pinpoint: "0.2.4"
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -53,6 +51,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - images/elys.jpeg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

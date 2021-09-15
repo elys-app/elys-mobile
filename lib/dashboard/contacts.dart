@@ -89,8 +89,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   )
                 }),
           ]),
-    )
-        .toList());
+    ).toList());
   }
 
   @override
@@ -98,7 +97,6 @@ class _ContactsPageState extends State<ContactsPage> {
     return Container(
         padding: EdgeInsets.all(10),
         child: Column(children: _errorOccurred ? <Widget>[
-          Text('An Error Occurred')
-        ] : _getContactList()));
+          Text('An Error Occurred')] : _getContactList()));
   }
 }

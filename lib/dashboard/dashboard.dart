@@ -8,7 +8,6 @@ import '../login/login.dart';
 import 'content.dart';
 import 'contacts.dart';
 import 'schedule.dart';
-import 'panic.dart';
 
 import 'newcontent.dart';
 import 'newcontact.dart';
@@ -29,8 +28,7 @@ class _MainPageState extends State<MainPage> {
   List<Widget> _widgetOptions = <Widget>[
     ContentPage(),
     ContactsPage(),
-    SchedulePage(),
-    PanicPage()
+    SchedulePage()
   ];
 
   void initState() {
@@ -82,31 +80,32 @@ class _MainPageState extends State<MainPage> {
                     'Hello, ${widget.username}',
                     style: TextStyle(color: Colors.white, fontSize: 24),
                   ),
-                )),
+                ),
+            ),
             ListTile(
               leading: Icon(Icons.settings, color: Colors.blueAccent),
               title: Text(
                 'Settings',
-                style: TextStyle(fontSize: 18, color: Colors.blue[900]),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: Colors.blue[900]),
               ),
             ),
             ListTile(
                 leading: Icon(Icons.info_outline, color: Colors.blueAccent),
                 title: Text(
                   'About',
-                  style: TextStyle(fontSize: 18, color: Colors.blue[900]),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: Colors.blue[900]),
                 ),
                 onTap: () {
                   showAboutDialog(
                       context: context,
                       applicationName: 'ELYS Legacy Management',
-                      applicationVersion: '0.1.0');
+                      applicationVersion: '0.2.0');
                 }),
             ListTile(
               leading: Icon(Icons.logout_sharp, color: Colors.blueAccent),
               title: Text(
                 'Logout',
-                style: TextStyle(fontSize: 18, color: Colors.blue[900]),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: Colors.blue[900]),
               ),
               onTap: _onLogout,
             ),
@@ -132,10 +131,6 @@ class _MainPageState extends State<MainPage> {
               icon: Icon(Icons.calendar_today_sharp),
               label: 'Schedule',
               backgroundColor: Colors.lightBlue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.warning),
-              label: 'Panic',
-              backgroundColor: Colors.lightBlue)
         ],
         onTap: (index) {
           setState(() {

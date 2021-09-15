@@ -89,8 +89,7 @@ class _ContentPageState extends State<ContentPage> {
                           )
                         }),
               ]),
-        )
-        .toList());
+        ).toList());
   }
 
   @override
@@ -98,7 +97,6 @@ class _ContentPageState extends State<ContentPage> {
     return Container(
         padding: EdgeInsets.all(10),
         child: Column(children: _errorOccurred ? <Widget>[
-          Text('An Error Occurred')
-        ] : _getContentList()));
+          Text('An Error Occurred')] : _getContentList()));
   }
 }
