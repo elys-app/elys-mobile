@@ -117,7 +117,7 @@ class _MainPageState extends State<MainPage> {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[900],
+        selectedItemColor: Colors.lightBlue,
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.video_camera_front_rounded),

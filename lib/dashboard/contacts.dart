@@ -10,6 +10,8 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+  int currentPageIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -17,25 +19,37 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final PageController controller = PageController(initialPage: 0);
+    final PageController controller = PageController(initialPage: currentPageIndex);
     return PageView(
-      /// [PageView.scrollDirection] defaults to [Axis.horizontal].
-      /// Use [Axis.vertical] to scroll vertically.
       scrollDirection: Axis.horizontal,
       controller: controller,
+      onPageChanged: (int value) {
+        setState(() {
+          currentPageIndex = value;
+          print('Index: ' + currentPageIndex.toString());
+        });
+      },
       children: <Widget>[
         Column(children: <Widget>[
-          Center(
+          Padding(
+            padding: EdgeInsets.only(
+                left: 10.0, top: 10.0, right: 10.0, bottom: 5.0),
+            child: Center(
               child: Text('Your Contacts',
                   style:
-                      TextStyle(fontWeight: FontWeight.normal, fontSize: 14))),
+                      TextStyle(fontWeight: FontWeight.normal, fontSize: 14)),
+            ),
+          ),
           DetailsPage()
         ]),
         Column(children: <Widget>[
-          Center(
-            child: Text(
-              'Your Groups',
-              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
+          Padding(
+            padding: EdgeInsets.only(
+                left: 10.0, top: 10.0, right: 10.0, bottom: 5.0),
+            child: Center(
+              child: Text('Your Groups',
+                  style:
+                      TextStyle(fontWeight: FontWeight.normal, fontSize: 14)),
             ),
           ),
           GroupsPage()

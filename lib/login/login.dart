@@ -152,19 +152,6 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(Amplify.isConfigured ? 'Configured' : 'Not Configured'),
-              // Text('New to Elys?',
-              //     style: TextStyle(color: Colors.lightBlue, fontSize: 30)),
-              // ElevatedButton(
-              //   style: registerStyle,
-              //   onPressed: () {
-              //     Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //             builder: (context) =>
-              //                 RegisterPage(title: 'Register for ELYS')));
-              //   },
-              //   child: const Text('Sign Up Here'),
-              // ),
               Padding(
                 padding: EdgeInsets.only(
                     left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
