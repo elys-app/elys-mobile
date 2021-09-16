@@ -62,9 +62,6 @@ class _NewContentPageState extends State<NewContentPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle style = ElevatedButton.styleFrom(
-        textStyle: const TextStyle(fontSize: 20), primary: Colors.lightBlue);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(

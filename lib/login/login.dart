@@ -5,7 +5,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:amplify_api/amplify_api.dart';
 
-import 'register.dart';
+// import 'register.dart';
 import 'password.dart';
 import '../dashboard/panic.dart';
 
@@ -135,8 +135,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final ButtonStyle style =
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
-    final ButtonStyle registerStyle = ElevatedButton.styleFrom(
-        textStyle: const TextStyle(fontSize: 20), primary: Colors.lightBlue);
+    // final ButtonStyle registerStyle = ElevatedButton.styleFrom(
+    //     textStyle: const TextStyle(fontSize: 20), primary: Colors.lightBlue);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -152,19 +152,19 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(Amplify.isConfigured ? 'Configured' : 'Not Configured'),
-              Text('New to Elys?',
-                  style: TextStyle(color: Colors.lightBlue, fontSize: 30)),
-              ElevatedButton(
-                style: registerStyle,
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              RegisterPage(title: 'Register for ELYS')));
-                },
-                child: const Text('Sign Up Here'),
-              ),
+              // Text('New to Elys?',
+              //     style: TextStyle(color: Colors.lightBlue, fontSize: 30)),
+              // ElevatedButton(
+              //   style: registerStyle,
+              //   onPressed: () {
+              //     Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //             builder: (context) =>
+              //                 RegisterPage(title: 'Register for ELYS')));
+              //   },
+              //   child: const Text('Sign Up Here'),
+              // ),
               Padding(
                 padding: EdgeInsets.only(
                     left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
