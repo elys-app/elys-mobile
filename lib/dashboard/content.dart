@@ -49,12 +49,15 @@ class _ContentPageState extends State<ContentPage> {
         document: graphQLDocument,
       ));
       var response = await operation.response;
+      var data = response.data;
 
       setState(() {
-        Map<String, dynamic> data = jsonDecode(response.data)['listContents'];
-        for (var item in data['items']) {
+        Map<String, dynamic> dataMap = jsonDecode(data)['listContents'];
+        print(data);
+        for (var item in dataMap['items']) {
           entries.add(ContentItem.fromJSON(item));
         }
+        entries.sort((a, b) => a.name.compareTo(b.name));
         _errorOccurred = false;
       });
     } on ApiException {
@@ -89,14 +92,17 @@ class _ContentPageState extends State<ContentPage> {
                           )
                         }),
               ]),
-        ).toList());
+        )
+        .toList());
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(10),
-        child: Column(children: _errorOccurred ? <Widget>[
-          Text('An Error Occurred')] : _getContentList()));
+        child: Column(
+            children: _errorOccurred
+                ? <Widget>[Text('An Error Occurred')]
+                : _getContentList()));
   }
 }

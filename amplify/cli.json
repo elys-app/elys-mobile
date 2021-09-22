@@ -13,7 +13,8 @@
       "enablecaseinsensitivity": true
     },
     "codegen": {
-      "useappsyncmodelgenplugin": true
+      "useappsyncmodelgenplugin": true,
+      "enableDartNullSafety": true
     }
   }
 }

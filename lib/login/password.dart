@@ -13,7 +13,6 @@ class PasswordPage extends StatefulWidget {
 
 class _PasswordPageState extends State<PasswordPage> {
 // bool _connectedStatus = false;
-
   bool _codeSent = false;
 
   @override

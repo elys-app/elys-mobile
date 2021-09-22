@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "elysonline",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authelysonline01747ffd",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

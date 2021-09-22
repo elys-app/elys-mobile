@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_api/amplify_api.dart';
+
+import '../models/contactitem.dart';
+
 class NewContactPage extends StatefulWidget {
   NewContactPage({Key? key, required this.title}) : super(key: key);
 
@@ -16,6 +21,9 @@ class _NewContactPageState extends State<NewContactPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
 
+  String name = '';
+  String email = '';
+
   @override
   void initState() {
     super.initState();
@@ -26,12 +34,33 @@ class _NewContactPageState extends State<NewContactPage> {
     super.dispose();
   }
 
-  void onAddNewContactPressed() {
-    print(nameController.text);
-    print(emailController.text);
-    Navigator.pop(context);
-  }
+  void onAddNewContactPressed() async {
+    try {
+      String graphQLDocument =
+      '''mutation CreateContact(\$name: String!, \$email: String) {
+              createContact(input: {name: \$name, email: \$email}) {
+                id
+                name
+                email
+              }
+        }''';
 
+      var operation = Amplify.API.mutate(
+          request: GraphQLRequest<String>(
+              document: graphQLDocument, variables: {
+            'name': 'Test User #51',
+            'email': 'test-3@elys-app.net',
+          }));
+
+      var response = await operation.response;
+      var data = response.data;
+
+      print('Mutation result: ' + data);
+      Navigator.pop(context);
+    } on ApiException catch (e) {
+      print('Mutation failed: $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,6 +123,8 @@ class _NewContactPageState extends State<NewContactPage> {
                   onPressed: () {
                     print(formKey.currentState.toString());
                     if (formKey.currentState!.validate()) {
+                      name = nameController.text;
+                      email = emailController.text;
                       onAddNewContactPressed();
                     }
                   },

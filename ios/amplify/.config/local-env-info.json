@@ -1,6 +1,5 @@
 {
-  "projectPath": "/Users/ianmccal/Development/elys_mobile",
-  "envName": "test",
+  "projectPath": "/Users/ianmccal/Development/elys_mobile/ios",
   "defaultEditor": "vscode",
-  "noUpdateBackend": true
+  "envName": "test"
 }

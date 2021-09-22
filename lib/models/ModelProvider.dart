@@ -32,58 +32,42 @@ export 'Group.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "5af963014d1500f4b70974db910d1fa8";
+  String version = "7a86fa472063d46f6219bf978b56a8d5";
   @override
-  List<ModelSchema> modelSchemas = [
-    Account.schema,
-    Contact.schema,
-    ContactGroup.schema,
-    Content.schema,
-    Event.schema,
-    Group.schema
-  ];
+  List<ModelSchema> modelSchemas = [Account.schema, Contact.schema, ContactGroup.schema, Content.schema, Event.schema, Group.schema];
   static final ModelProvider _instance = ModelProvider();
 
   static ModelProvider get instance => _instance;
-
+  
   ModelType getModelTypeByModelName(String modelName) {
-    switch (modelName) {
-      case "Account":
-        {
-          return Account.classType;
-        }
-        break;
-      case "Contact":
-        {
-          return Contact.classType;
-        }
-        break;
-      case "ContactGroup":
-        {
-          return ContactGroup.classType;
-        }
-        break;
-      case "Content":
-        {
-          return Content.classType;
-        }
-        break;
-      case "Event":
-        {
-          return Event.classType;
-        }
-        break;
-      case "Group":
-        {
-          return Group.classType;
-        }
-        break;
-      default:
-        {
-          throw Exception(
-              "Failed to find model in model provider for model name: " +
-                  modelName);
-        }
+    switch(modelName) {
+    case "Account": {
+    return Account.classType;
+    }
+    break;
+    case "Contact": {
+    return Contact.classType;
+    }
+    break;
+    case "ContactGroup": {
+    return ContactGroup.classType;
+    }
+    break;
+    case "Content": {
+    return Content.classType;
+    }
+    break;
+    case "Event": {
+    return Event.classType;
+    }
+    break;
+    case "Group": {
+    return Group.classType;
+    }
+    break;
+    default: {
+    throw Exception("Failed to find model in model provider for model name: " + modelName);
+    }
     }
   }
 }

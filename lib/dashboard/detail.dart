@@ -31,15 +31,12 @@ class _DetailsPageState extends State<DetailsPage> {
     entries.clear();
     try {
       String graphQLDocument = '''query ListContacts {
-        listContacts {
+        listContacts(limit:10) {
           items {
             id
             name
             owner
             email
-            relationship
-            updatedAt
-            createdAt
           }
         }
       }''';
@@ -51,9 +48,11 @@ class _DetailsPageState extends State<DetailsPage> {
 
       setState(() {
         Map<String, dynamic> data = jsonDecode(response.data)['listContacts'];
+        print(response.data);
         for (var item in data['items']) {
           entries.add(ContactItem.fromJSON(item));
         }
+        entries.sort((a,b) => a.name.compareTo(b.name));
         _errorOccurred = false;
       });
     } on ApiException {

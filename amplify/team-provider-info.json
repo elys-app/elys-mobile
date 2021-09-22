@@ -1,17 +1,4 @@
 {
-  "analytics": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-elysonline-analytics-165344-authRole",
-      "UnauthRoleArn": "arn:aws:iam::715853571315:role/amplify-elysonline-analytics-165344-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::715853571315:role/amplify-elysonline-analytics-165344-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-elysonline-analytics-165344-deployment",
-      "UnauthRoleName": "amplify-elysonline-analytics-165344-unauthRole",
-      "StackName": "amplify-elysonline-analytics-165344",
-      "StackId": "arn:aws:cloudformation:us-east-1:715853571315:stack/amplify-elysonline-analytics-165344/5b5842a0-046d-11ec-8bb4-124e2698d6a5",
-      "AmplifyAppId": "d1afp0rnrtf7z0"
-    }
-  },
   "test": {
     "awscloudformation": {
       "AuthRoleName": "amplify-elysonline-test-103619-authRole",
@@ -23,6 +10,33 @@
       "StackName": "amplify-elysonline-test-103619",
       "StackId": "arn:aws:cloudformation:us-east-1:715853571315:stack/amplify-elysonline-test-103619/f961d060-fc5c-11eb-afd2-0a63bc702c35",
       "AmplifyAppId": "d1afp0rnrtf7z0"
+    },
+    "categories": {
+      "auth": {
+        "elysonline01747ffd": {}
+      },
+      "function": {
+        "createCustomer": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/createCustomer-64537557493549583137-build.zip"
+        },
+        "createSubscription": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/createSubscription-664b465a64356233306b-build.zip"
+        },
+        "emailGroup": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/emailGroup-47514b514d466c6a5233-build.zip"
+        },
+        "getInvoices": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/getInvoices-3061327751715a516c39-build.zip"
+        },
+        "newCard": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/newCard-726865567856334f7a65-build.zip"
+        }
+      }
     }
   }
 }
