@@ -1,0 +1,28 @@
+{
+  "analytics": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-elysonline-analytics-165344-authRole",
+      "UnauthRoleArn": "arn:aws:iam::715853571315:role/amplify-elysonline-analytics-165344-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::715853571315:role/amplify-elysonline-analytics-165344-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-elysonline-analytics-165344-deployment",
+      "UnauthRoleName": "amplify-elysonline-analytics-165344-unauthRole",
+      "StackName": "amplify-elysonline-analytics-165344",
+      "StackId": "arn:aws:cloudformation:us-east-1:715853571315:stack/amplify-elysonline-analytics-165344/5b5842a0-046d-11ec-8bb4-124e2698d6a5",
+      "AmplifyAppId": "d1afp0rnrtf7z0"
+    }
+  },
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-elysonline-test-103619-authRole",
+      "UnauthRoleArn": "arn:aws:iam::715853571315:role/amplify-elysonline-test-103619-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::715853571315:role/amplify-elysonline-test-103619-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-elysonline-test-103619-deployment",
+      "UnauthRoleName": "amplify-elysonline-test-103619-unauthRole",
+      "StackName": "amplify-elysonline-test-103619",
+      "StackId": "arn:aws:cloudformation:us-east-1:715853571315:stack/amplify-elysonline-test-103619/f961d060-fc5c-11eb-afd2-0a63bc702c35",
+      "AmplifyAppId": "d1afp0rnrtf7z0"
+    }
+  }
+}
