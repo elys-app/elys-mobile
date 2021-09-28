@@ -15,7 +15,6 @@
 
 // ignore_for_file: public_member_api_docs
 
-import 'ModelProvider.dart';
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:flutter/foundation.dart';
 
@@ -25,14 +24,13 @@ import 'package:flutter/foundation.dart';
 class Event extends Model {
   static const classType = const _EventModelType();
   final String id;
+  final String? _groupId;
   final String? _contentId;
   final String? _name;
   final String? _eventDate;
   final String? _eventMonth;
   final String? _eventYear;
   final String? _description;
-  final Content? _content;
-  final Group? _group;
 
   @override
   getInstanceType() => classType;
@@ -40,6 +38,14 @@ class Event extends Model {
   @override
   String getId() {
     return id;
+  }
+  
+  String get groupId {
+    try {
+      return _groupId!;
+    } catch(e) {
+      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+    }
   }
   
   String get contentId {
@@ -86,27 +92,18 @@ class Event extends Model {
     return _description;
   }
   
-  Content? get content {
-    return _content;
-  }
+  const Event._internal({required this.id, required groupId, required contentId, required name, required eventDate, required eventMonth, required eventYear, description}): _groupId = groupId, _contentId = contentId, _name = name, _eventDate = eventDate, _eventMonth = eventMonth, _eventYear = eventYear, _description = description;
   
-  Group? get group {
-    return _group;
-  }
-  
-  const Event._internal({required this.id, required contentId, required name, required eventDate, required eventMonth, required eventYear, description, content, group}): _contentId = contentId, _name = name, _eventDate = eventDate, _eventMonth = eventMonth, _eventYear = eventYear, _description = description, _content = content, _group = group;
-  
-  factory Event({String? id, required String contentId, required String name, required String eventDate, required String eventMonth, required String eventYear, String? description, Content? content, Group? group}) {
+  factory Event({String? id, required String groupId, required String contentId, required String name, required String eventDate, required String eventMonth, required String eventYear, String? description}) {
     return Event._internal(
       id: id == null ? UUID.getUUID() : id,
+      groupId: groupId,
       contentId: contentId,
       name: name,
       eventDate: eventDate,
       eventMonth: eventMonth,
       eventYear: eventYear,
-      description: description,
-      content: content,
-      group: group);
+      description: description);
   }
   
   bool equals(Object other) {
@@ -118,14 +115,13 @@ class Event extends Model {
     if (identical(other, this)) return true;
     return other is Event &&
       id == other.id &&
+      _groupId == other._groupId &&
       _contentId == other._contentId &&
       _name == other._name &&
       _eventDate == other._eventDate &&
       _eventMonth == other._eventMonth &&
       _eventYear == other._eventYear &&
-      _description == other._description &&
-      _content == other._content &&
-      _group == other._group;
+      _description == other._description;
   }
   
   @override
@@ -137,63 +133,52 @@ class Event extends Model {
     
     buffer.write("Event {");
     buffer.write("id=" + "$id" + ", ");
+    buffer.write("groupId=" + "$_groupId" + ", ");
     buffer.write("contentId=" + "$_contentId" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("eventDate=" + "$_eventDate" + ", ");
     buffer.write("eventMonth=" + "$_eventMonth" + ", ");
     buffer.write("eventYear=" + "$_eventYear" + ", ");
-    buffer.write("description=" + "$_description" + ", ");
-    buffer.write("group=" + (_group != null ? _group!.toString() : "null"));
+    buffer.write("description=" + "$_description");
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Event copyWith({String? id, String? contentId, String? name, String? eventDate, String? eventMonth, String? eventYear, String? description, Content? content, Group? group}) {
+  Event copyWith({String? id, String? groupId, String? contentId, String? name, String? eventDate, String? eventMonth, String? eventYear, String? description}) {
     return Event(
       id: id ?? this.id,
+      groupId: groupId ?? this.groupId,
       contentId: contentId ?? this.contentId,
       name: name ?? this.name,
       eventDate: eventDate ?? this.eventDate,
       eventMonth: eventMonth ?? this.eventMonth,
       eventYear: eventYear ?? this.eventYear,
-      description: description ?? this.description,
-      content: content ?? this.content,
-      group: group ?? this.group);
+      description: description ?? this.description);
   }
   
   Event.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
+      _groupId = json['groupId'],
       _contentId = json['contentId'],
       _name = json['name'],
       _eventDate = json['eventDate'],
       _eventMonth = json['eventMonth'],
       _eventYear = json['eventYear'],
-      _description = json['description'],
-      _content = json['content']?['serializedData'] != null
-        ? Content.fromJson(new Map<String, dynamic>.from(json['content']['serializedData']))
-        : null,
-      _group = json['group']?['serializedData'] != null
-        ? Group.fromJson(new Map<String, dynamic>.from(json['group']['serializedData']))
-        : null;
+      _description = json['description'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'contentId': _contentId, 'name': _name, 'eventDate': _eventDate, 'eventMonth': _eventMonth, 'eventYear': _eventYear, 'description': _description, 'content': _content?.toJson(), 'group': _group?.toJson()
+    'id': id, 'groupId': _groupId, 'contentId': _contentId, 'name': _name, 'eventDate': _eventDate, 'eventMonth': _eventMonth, 'eventYear': _eventYear, 'description': _description
   };
 
   static final QueryField ID = QueryField(fieldName: "event.id");
+  static final QueryField GROUPID = QueryField(fieldName: "groupId");
   static final QueryField CONTENTID = QueryField(fieldName: "contentId");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField EVENTDATE = QueryField(fieldName: "eventDate");
   static final QueryField EVENTMONTH = QueryField(fieldName: "eventMonth");
   static final QueryField EVENTYEAR = QueryField(fieldName: "eventYear");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
-  static final QueryField CONTENT = QueryField(
-    fieldName: "content",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Content).toString()));
-  static final QueryField GROUP = QueryField(
-    fieldName: "group",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Group).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Event";
     modelSchemaDefinition.pluralName = "Events";
@@ -212,6 +197,12 @@ class Event extends Model {
     ];
     
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Event.GROUPID,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Event.CONTENTID,
@@ -247,20 +238,6 @@ class Event extends Model {
       key: Event.DESCRIPTION,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
-      key: Event.CONTENT,
-      isRequired: false,
-      ofModelName: (Content).toString(),
-      associatedKey: Content.ID
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-      key: Event.GROUP,
-      isRequired: false,
-      targetName: "groupId",
-      ofModelName: (Group).toString()
     ));
   });
 }

@@ -36,17 +36,25 @@ class ContactGroup extends Model {
     return id;
   }
   
-  Contact? get contact {
-    return _contact;
+  Contact get contact {
+    try {
+      return _contact!;
+    } catch(e) {
+      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+    }
   }
   
-  Group? get group {
-    return _group;
+  Group get group {
+    try {
+      return _group!;
+    } catch(e) {
+      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+    }
   }
   
-  const ContactGroup._internal({required this.id, contact, group}): _contact = contact, _group = group;
+  const ContactGroup._internal({required this.id, required contact, required group}): _contact = contact, _group = group;
   
-  factory ContactGroup({String? id, Contact? contact, Group? group}) {
+  factory ContactGroup({String? id, required Contact contact, required Group group}) {
     return ContactGroup._internal(
       id: id == null ? UUID.getUUID() : id,
       contact: contact,
@@ -113,18 +121,31 @@ class ContactGroup extends Model {
     modelSchemaDefinition.name = "ContactGroup";
     modelSchemaDefinition.pluralName = "ContactGroups";
     
+    modelSchemaDefinition.authRules = [
+      AuthRule(
+        authStrategy: AuthStrategy.OWNER,
+        ownerField: "owner",
+        identityClaim: "cognito:username",
+        operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
+          ModelOperation.READ
+        ])
+    ];
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: ContactGroup.CONTACT,
-      isRequired: false,
+      isRequired: true,
       targetName: "contactId",
       ofModelName: (Contact).toString()
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: ContactGroup.GROUP,
-      isRequired: false,
+      isRequired: true,
       targetName: "groupId",
       ofModelName: (Group).toString()
     ));

@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_api/amplify_api.dart';
 
-import '../models/contentitem.dart';
+import 'package:elys_mobile/models/Content.dart';
 
 class ContentPage extends StatefulWidget {
   ContentPage({Key? key}) : super(key: key);
@@ -18,8 +15,18 @@ class ContentPage extends StatefulWidget {
 class _ContentPageState extends State<ContentPage> {
   bool _errorOccurred = false;
 
-  List<ContentItem> entries =
-      List<ContentItem>.filled(0, new ContentItem(id: '0'), growable: true);
+  List<Content> entries = List<Content>.filled(
+      0,
+      new Content(
+          id: '0',
+          name: '',
+          description: '',
+          bucket: '',
+          key: '',
+          region: '',
+          type: '',
+          dateSubmitted: ''),
+      growable: true);
 
   @override
   void initState() {
@@ -30,37 +37,14 @@ class _ContentPageState extends State<ContentPage> {
   void _initContent() async {
     entries.clear();
     try {
-      String graphQLDocument = '''query ListContents {
-        listContents {
-          items {
-            id
-            name
-            owner
-            type
-            updatedAt
-            description
-            dateSubmitted
-            createdAt
-          }
-        }
-      }''';
-      var operation = Amplify.API.query(
-          request: GraphQLRequest<String>(
-        document: graphQLDocument,
-      ));
-      var response = await operation.response;
-      var data = response.data;
-
+      final result = await Amplify.DataStore.query(Content.classType);
+      result.sort((a, b) => a.name.compareTo(b.name));
       setState(() {
-        Map<String, dynamic> dataMap = jsonDecode(data)['listContents'];
-        print(data);
-        for (var item in dataMap['items']) {
-          entries.add(ContentItem.fromJSON(item));
-        }
-        entries.sort((a, b) => a.name.compareTo(b.name));
+        entries = result;
         _errorOccurred = false;
       });
-    } on ApiException {
+    } catch (e) {
+      print(e);
       setState(() {
         _errorOccurred = true;
       });

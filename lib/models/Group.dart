@@ -27,16 +27,16 @@ class Group extends Model {
   static const classType = const _GroupModelType();
   final String id;
   final String? _name;
-  final List<ContactGroup>? _contact;
+  final List<ContactGroup>? _contacts;
 
   @override
   getInstanceType() => classType;
-  
+
   @override
   String getId() {
     return id;
   }
-  
+
   String get name {
     try {
       return _name!;
@@ -44,82 +44,82 @@ class Group extends Model {
       throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
     }
   }
-  
-  List<ContactGroup> get contact {
+
+  List<ContactGroup> get contacts {
     try {
-      return _contact!;
+      return _contacts!;
     } catch(e) {
       throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
     }
   }
-  
-  const Group._internal({required this.id, required name, required contact}): _name = name, _contact = contact;
-  
-  factory Group({String? id, required String name, required List<ContactGroup> contact}) {
+
+  const Group._internal({required this.id, required name, required contacts}): _name = name, _contacts = contacts;
+
+  factory Group({String? id, required String name, required List<ContactGroup> contacts}) {
     return Group._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
-      contact: contact != null ? List<ContactGroup>.unmodifiable(contact) : contact);
+      contacts: contacts != null ? List<ContactGroup>.unmodifiable(contacts) : contacts);
   }
-  
+
   bool equals(Object other) {
     return this == other;
   }
-  
+
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is Group &&
       id == other.id &&
       _name == other._name &&
-      DeepCollectionEquality().equals(_contact, other._contact);
+      DeepCollectionEquality().equals(_contacts, other._contacts);
   }
-  
+
   @override
   int get hashCode => toString().hashCode;
-  
+
   @override
   String toString() {
     var buffer = new StringBuffer();
-    
+
     buffer.write("Group {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name");
     buffer.write("}");
-    
+
     return buffer.toString();
   }
-  
-  Group copyWith({String? id, String? name, List<ContactGroup>? contact}) {
+
+  Group copyWith({String? id, String? name, List<ContactGroup>? contacts}) {
     return Group(
       id: id ?? this.id,
       name: name ?? this.name,
-      contact: contact ?? this.contact);
+      contacts: contacts ?? this.contacts);
   }
-  
-  Group.fromJson(Map<String, dynamic> json)  
+
+  Group.fromJson(Map<String, dynamic> json)
     : id = json['id'],
       _name = json['name'],
-      _contact = json['contact'] is List
-        ? (json['contact'] as List)
+      _contacts = json['contacts'] is List
+        ? (json['contacts'] as List)
           .where((e) => e?['serializedData'] != null)
           .map((e) => ContactGroup.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null;
-  
+
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'contact': _contact?.map((e) => e?.toJson())?.toList()
+    'id': id, 'name': _name, 'contacts': _contacts?.map((e) => e.toJson()).toList()
   };
 
   static final QueryField ID = QueryField(fieldName: "group.id");
   static final QueryField NAME = QueryField(fieldName: "name");
-  static final QueryField CONTACT = QueryField(
-    fieldName: "contact",
+  static final QueryField CONTACTS = QueryField(
+    fieldName: "contacts",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (ContactGroup).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Group";
     modelSchemaDefinition.pluralName = "Groups";
-    
+
     modelSchemaDefinition.authRules = [
       AuthRule(
         authStrategy: AuthStrategy.OWNER,
@@ -132,17 +132,17 @@ class Group extends Model {
           ModelOperation.READ
         ])
     ];
-    
+
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
-    
+
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Group.NAME,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
-    
+
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-      key: Group.CONTACT,
+      key: Group.CONTACTS,
       isRequired: false,
       ofModelName: (ContactGroup).toString(),
       associatedKey: ContactGroup.ID
@@ -152,7 +152,7 @@ class Group extends Model {
 
 class _GroupModelType extends ModelType<Group> {
   const _GroupModelType();
-  
+
   @override
   Group fromJson(Map<String, dynamic> jsonData) {
     return Group.fromJson(jsonData);

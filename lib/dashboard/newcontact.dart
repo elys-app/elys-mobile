@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_api/amplify_api.dart';
+import 'package:amplify_datastore/amplify_datastore.dart';
 
-import '../models/contactitem.dart';
+import '../models/Contact.dart';
 
 class NewContactPage extends StatefulWidget {
   NewContactPage({Key? key, required this.title}) : super(key: key);
@@ -35,30 +36,14 @@ class _NewContactPageState extends State<NewContactPage> {
   }
 
   void onAddNewContactPressed() async {
+    var newContact = Contact(name: 'Test User #35', email: 'test-3@eyls-app.net');
+
     try {
-      String graphQLDocument =
-      '''mutation CreateContact(\$name: String!, \$email: String) {
-              createContact(input: {name: \$name, email: \$email}) {
-                id
-                name
-                email
-              }
-        }''';
-
-      var operation = Amplify.API.mutate(
-          request: GraphQLRequest<String>(
-              document: graphQLDocument, variables: {
-            'name': 'Test User #51',
-            'email': 'test-3@elys-app.net',
-          }));
-
-      var response = await operation.response;
-      var data = response.data;
-
-      print('Mutation result: ' + data);
+      await Amplify.DataStore.save(newContact);
+      print ('Saved ${newContact.toString()}');
       Navigator.pop(context);
-    } on ApiException catch (e) {
-      print('Mutation failed: $e');
+    } catch (e) {
+      print(e);
     }
   }
   @override

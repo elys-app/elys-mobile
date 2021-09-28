@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_api/amplify_api.dart';
 
-import '../models/contactitem.dart';
+import '../models/Contact.dart';
 
 class DetailsPage extends StatefulWidget {
   DetailsPage({Key? key}) : super(key: key);
@@ -18,8 +15,8 @@ class DetailsPage extends StatefulWidget {
 class _DetailsPageState extends State<DetailsPage> {
   bool _errorOccurred = false;
 
-  List<ContactItem> entries =
-      List<ContactItem>.filled(0, new ContactItem(id: '0'), growable: true);
+  List<Contact> entries =
+      List<Contact>.filled(0, new Contact(name: '', email: ''), growable: true);
 
   @override
   void initState() {
@@ -30,32 +27,13 @@ class _DetailsPageState extends State<DetailsPage> {
   void _initContacts() async {
     entries.clear();
     try {
-      String graphQLDocument = '''query ListContacts {
-        listContacts(limit:10) {
-          items {
-            id
-            name
-            owner
-            email
-          }
-        }
-      }''';
-      var operation = Amplify.API.query(
-          request: GraphQLRequest<String>(
-        document: graphQLDocument,
-      ));
-      var response = await operation.response;
-
+      final result = await Amplify.DataStore.query(Contact.classType);
+      result.sort((a, b) => a.name.compareTo(b.name));
       setState(() {
-        Map<String, dynamic> data = jsonDecode(response.data)['listContacts'];
-        print(response.data);
-        for (var item in data['items']) {
-          entries.add(ContactItem.fromJSON(item));
-        }
-        entries.sort((a,b) => a.name.compareTo(b.name));
+        entries = result;
         _errorOccurred = false;
       });
-    } on ApiException {
+    } catch(e) {
       setState(() {
         _errorOccurred = true;
       });

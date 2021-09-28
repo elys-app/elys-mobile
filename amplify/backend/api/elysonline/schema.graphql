@@ -25,7 +25,6 @@ type Content @model
 
 type Event @model 
 @auth(rules: [{allow: owner}])
-@key(name: "byGroup", fields:["groupId"], queryField: "eventsByGroup")
 {
   id: ID!
   groupId: ID!
@@ -35,8 +34,6 @@ type Event @model
   eventMonth: String!
   eventYear: String!
   description: String
-  content: Content @connection (fields: ["contentId"])
-  group: Group @connection(fields: ["groupId"])
 }
 
 type Contact @model 
@@ -44,10 +41,10 @@ type Contact @model
 @key (fields: ["email"], name: "contactByEmail",  queryField: "contactByEmail")
 {
   id: ID!
-  name: String
+  name: String!
   email: String!
   relationship: String
-  group: [ContactGroup] @connection(name: "byContact" fields: ["id"])
+  groups: [ContactGroup] @connection(name: "byContact" fields: ["id"])
 }
 
 type Group @model 
@@ -56,17 +53,18 @@ type Group @model
 {
   id: ID!
   name: String!
-  contact: [ContactGroup]! @connection(name: "byGroup" fields: ["id"])
+  contacts: [ContactGroup]! @connection(name: "byGroup" fields: ["id"])
 }
 
 type ContactGroup @model 
+@auth(rules: [{allow: owner}])
 @key(name: "byContact", fields: ["contactId", "groupId"], queryField: "groupsByContact")
 @key(name: "byGroup", fields: ["groupId", "contactId"], queryField: "contactsByGroup") {
   id: ID!
   contactId: ID!
   groupId: ID!
-  contact: Contact @connection(fields: ["contactId"])
-  group: Group @connection(fields: ["groupId"])
+  contact: Contact! @connection(fields: ["contactId"])
+  group: Group! @connection(fields: ["groupId"])
 }
 
 type StripeSubscription

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
-import 'package:amplify_api/amplify_api.dart';
+
 
 import 'password.dart';
 import '../dashboard/panic.dart';
 import '../dashboard/dashboard.dart';
 import '../amplifyconfiguration.dart';
+import 'package:elys_mobile/models/ModelProvider.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, required this.title}) : super(key: key);
@@ -20,7 +23,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _showPassword = false;
+  bool _showPassword = true;
 
   String userName = '';
   String password = '';
@@ -47,10 +50,14 @@ class _LoginPageState extends State<LoginPage> {
     final analytics = AmplifyAnalyticsPinpoint();
     final api = AmplifyAPI();
 
+    final provider = new ModelProvider();
+    final dataStore = AmplifyDataStore(modelProvider: provider);
+
     try {
       if (!Amplify.isConfigured) {
-        Amplify.addPlugins([auth, analytics, api]);
+        Amplify.addPlugins([auth, analytics, api, dataStore]);
         await Amplify.configure(amplifyconfig);
+        print('Amplify Configured');
       }
     } catch (e) {
       print(e);
@@ -149,7 +156,6 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(Amplify.isConfigured ? 'Configured' : 'Not Configured'),
               Padding(
                 padding: EdgeInsets.only(
                     left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),

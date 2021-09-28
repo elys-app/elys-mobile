@@ -32,7 +32,7 @@ export 'Group.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "7a86fa472063d46f6219bf978b56a8d5";
+  String version = "90dabb06eae386de2e1a84f4f9fcf6e1";
   @override
   List<ModelSchema> modelSchemas = [Account.schema, Contact.schema, ContactGroup.schema, Content.schema, Event.schema, Group.schema];
   static final ModelProvider _instance = ModelProvider();
