@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-
 import 'package:amplify_flutter/amplify.dart';
 
 import '../models/Contact.dart';
@@ -40,31 +38,22 @@ class _DetailsPageState extends State<DetailsPage> {
     }
   }
 
-  List<Slidable> _getContactList() {
+  List<Column> _getContactList() {
     return (entries
         .map(
-          (item) => new Slidable(
-              actionPane: SlidableDrawerActionPane(),
-              child: ListTile(
-                title: Text(
-                  item.name,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(item.email),
+          (item) => new Column(
+            children: <Widget>[
+              new ListTile(
+                  title: Text(item.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  subtitle: Text(item.email, style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal)),
+                  isThreeLine: false,
+                  onLongPress: () {
+                    print('remove');
+                  },
               ),
-              secondaryActions: <Widget>[
-                IconSlideAction(
-                    caption: 'Delete',
-                    color: Colors.red,
-                    icon: Icons.cancel,
-                    onTap: () => {
-                          setState(
-                            () {
-                              entries.remove(item);
-                            },
-                          )
-                        }),
-              ]),
+              Divider(thickness: 1,)
+            ]
+          )
         )
         .toList());
   }

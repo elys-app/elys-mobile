@@ -40,13 +40,30 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
-  String _getGroupNameFromId(String id) {
-    print("id: " + id);
-    Amplify.DataStore.query(Group.classType, where: Group.ID.eq(id));
-    //     .then((groups) {
-    //   return groups[0].name;
-    // });
-    return 'An Error Occurred';
+  Future<String> _getGroupNameFromId(String id) async {
+    List<Group> result = await Amplify.DataStore.query(Group.classType);
+    List<Group> group = result.where((item) => item.id == id).toList();
+    if (group != null) {
+      return group[0].name;
+    }
+    else {
+      return 'Error';
+    }
+  }
+
+ Widget _getGroupName(String id, String date, String month) {
+    return new FutureBuilder(
+      builder: (context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.hasData) {
+          String subtitle = 'Group to Send: ${snapshot.data.toString()} \nOn: ${date} ${month}';
+          return Text(subtitle);
+        }
+        else {
+          return Text('Loading');
+        }
+      },
+      future: _getGroupNameFromId(id),
+    );
   }
 
   List<Slidable> _getEventList() {
@@ -59,9 +76,7 @@ class _SchedulePageState extends State<SchedulePage> {
                   item.name,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text('Group to Share With: ' +
-                    _getGroupNameFromId(item.groupId) +
-                    '\nDate: ${item.eventDate} ${item.eventMonth}'),
+                subtitle: _getGroupName(item.groupId, item.eventDate, item.eventMonth),
                 isThreeLine: true,
               ),
               secondaryActions: <Widget>[

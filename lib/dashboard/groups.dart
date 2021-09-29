@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_api/amplify_api.dart';
 
 import '../models/Group.dart';
 import '../models/Contact.dart';

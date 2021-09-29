@@ -37,9 +37,10 @@ class _ContactsPageState extends State<ContactsPage> {
             child: Center(
               child: Text('Your Contacts',
                   style:
-                      TextStyle(fontWeight: FontWeight.normal, fontSize: 14)),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             ),
           ),
+          Divider(thickness: 5),
           DetailsPage()
         ]),
         Column(children: <Widget>[
@@ -49,10 +50,11 @@ class _ContactsPageState extends State<ContactsPage> {
             child: Center(
               child: Text('Your Groups',
                   style:
-                      TextStyle(fontWeight: FontWeight.normal, fontSize: 14)),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             ),
           ),
-          GroupsPage()
+          Divider(thickness: 5),
+          // GroupsPage()
         ])
       ],
     );
