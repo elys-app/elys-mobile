@@ -27,6 +27,7 @@ class _GroupsPageState extends State<GroupsPage> {
   void initState() {
     super.initState();
     _initGroups();
+    _initContacts();
   }
 
   void _initGroups() async {
@@ -46,45 +47,80 @@ class _GroupsPageState extends State<GroupsPage> {
     }
   }
 
+  void _initContacts() async {
+    contacts.clear();
+    try {
+      final result = await Amplify.DataStore.query(Contact.classType);
+      result.sort((a, b) => a.name.compareTo(b.name));
+      setState(() {
+        contacts = result;
+        _errorOccurred = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorOccurred = true;
+      });
+    }
+  }
+
   Future<List<DropdownMenuItem<Group>>> _getGroupDropdownItems() async {
     List<Group> result = await Amplify.DataStore.query(Group.classType);
     return (result
-        .map((item) => new DropdownMenuItem<Group>(
-            value: item, child: Text(item.name)))
+        .map((item) =>
+            new DropdownMenuItem<Group>(value: item, child: Text(item.name)))
         .toList());
   }
 
   Widget _getGroups() {
     return new FutureBuilder(
-      future: _getGroupDropdownItems(),
-      builder: (context, AsyncSnapshot<List<DropdownMenuItem<Group>>>snapshot) {
-        if (snapshot.hasData) {
-          return DropdownButton<Group>(
-              style: TextStyle(color: Colors.black, fontSize: 18),
-              value: selectedGroup,
-              icon: const Icon(Icons.arrow_downward),
-              iconSize: 18,
-              elevation: 36,
-              isExpanded: true,
-              underline: Container(
-                height: 2,
-                color: Colors.grey,
-              ),
-              onChanged: (Group? newValue) {
-                if (newValue != null) {
-                  selectedGroup = newValue;
-                }
-                print('Selected Group is now: ' + selectedGroup.toString());
-              },
-              items: snapshot.data);
-        }
-        else return Text('Loading');
-      }
-    );
+        future: _getGroupDropdownItems(),
+        builder:
+            (context, AsyncSnapshot<List<DropdownMenuItem<Group>>> snapshot) {
+          if (snapshot.hasData) {
+            return DropdownButton<Group>(
+                style: TextStyle(color: Colors.black, fontSize: 18),
+                value: selectedGroup,
+                icon: const Icon(Icons.arrow_downward),
+                iconSize: 18,
+                elevation: 36,
+                isExpanded: true,
+                underline: Container(
+                  height: 2,
+                  color: Colors.grey,
+                ),
+                onChanged: (Group? newValue) {
+                  if (newValue != null) {
+                    selectedGroup = newValue;
+                  }
+                  print('Selected Group is now: ' + selectedGroup.toString());
+                },
+                items: snapshot.data);
+          } else
+            return Text('Loading');
+        });
+  }
+
+  List<ListTile> _getContactList() {
+    return (contacts.map(
+      (item) => new ListTile(
+        title: Text(item.name,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
+        trailing: Icon(Icons.check_box_outline_blank_sharp),
+        onTap: () {
+          print('Move in or Out of Group');
+        },
+      ),
+    )).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.all(10), child: _getGroups());
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Column(children: <Widget>[
+        Padding(padding: EdgeInsets.only(left: 15, right: 15), child: _getGroups()),
+        Column(children: _getContactList())
+      ]),
+    );
   }
 }

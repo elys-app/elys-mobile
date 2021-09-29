@@ -44,7 +44,7 @@ class _DetailsPageState extends State<DetailsPage> {
           (item) => new Column(
             children: <Widget>[
               new ListTile(
-                  title: Text(item.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  title: Text(item.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
                   subtitle: Text(item.email, style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal)),
                   isThreeLine: false,
                   onLongPress: () {

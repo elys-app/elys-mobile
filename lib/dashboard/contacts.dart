@@ -33,11 +33,11 @@ class _ContactsPageState extends State<ContactsPage> {
         Column(children: <Widget>[
           Padding(
             padding: EdgeInsets.only(
-                left: 10.0, top: 10.0, right: 10.0, bottom: 5.0),
+                left: 10.0, top: 15.0, right: 10.0, bottom: 15.0),
             child: Center(
               child: Text('Your Contacts',
                   style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
             ),
           ),
           Divider(thickness: 5),
@@ -46,11 +46,11 @@ class _ContactsPageState extends State<ContactsPage> {
         Column(children: <Widget>[
           Padding(
             padding: EdgeInsets.only(
-                left: 10.0, top: 10.0, right: 10.0, bottom: 5.0),
+                left: 10.0, top: 15.0, right: 10.0, bottom: 15.0),
             child: Center(
               child: Text('Your Groups',
                   style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
             ),
           ),
           Divider(thickness: 5),
