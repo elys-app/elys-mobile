@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:amplify_flutter/amplify.dart';
 
@@ -20,33 +19,24 @@ class _GroupsPageState extends State<GroupsPage> {
 
   Group selectedGroup =
       new Group(name: '', contacts: List<ContactGroup>.empty(growable: true));
-  List<Group> entries = List<Group>.filled(0,
-      new Group(name: '', contacts: List<ContactGroup>.empty(growable: true)),
-      growable: true);
-  List<ContactGroup> contactGroup = List<ContactGroup>.filled(
-      0,
-      new ContactGroup(
-          group: new Group(
-              name: '', contacts: List<ContactGroup>.empty(growable: true)),
-          contact: new Contact(name: '', email: '')),
-      growable: true);
-  List<Contact> contacts =
-      List<Contact>.filled(0, new Contact(name: '', email: ''), growable: true);
+  List<Group> entries = List<Group>.empty(growable: true);
+  List<ContactGroup> contactGroup = List<ContactGroup>.empty(growable: true);
+  List<Contact> contacts = List<Contact>.empty(growable: true);
 
   @override
   void initState() {
     super.initState();
     _initGroups();
-    // _getContacts(selectedGroup.id);
   }
 
   void _initGroups() async {
     entries.clear();
     try {
       final result = await Amplify.DataStore.query(Group.classType);
-      result.sort((a, b) => a.name.compareTo(b.name));
       setState(() {
         entries = result;
+        List<Group> s = result.where((group) => group.name == 'ALL').toList();
+        selectedGroup = s[0];
         _errorOccurred = false;
       });
     } catch (e) {
@@ -56,79 +46,45 @@ class _GroupsPageState extends State<GroupsPage> {
     }
   }
 
-  void _getContacts(String id) async {
-    entries.clear();
-  }
-
-  List<DropdownMenuItem<Group>> _getGroupDropdownItems() {
-    return (entries
-        .map((item) =>
-            new DropdownMenuItem<Group>(value: item, child: Text(item.name)))
+  Future<List<DropdownMenuItem<Group>>> _getGroupDropdownItems() async {
+    List<Group> result = await Amplify.DataStore.query(Group.classType);
+    return (result
+        .map((item) => new DropdownMenuItem<Group>(
+            value: item, child: Text(item.name)))
         .toList());
   }
 
-  List<Slidable> _getContactList() {
-    return (contacts
-        .map(
-          (item) => new Slidable(
-              actionPane: SlidableDrawerActionPane(),
-              child: ListTile(
-                title: Text(
-                  item.name,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(item.email),
+  Widget _getGroups() {
+    return new FutureBuilder(
+      future: _getGroupDropdownItems(),
+      builder: (context, AsyncSnapshot<List<DropdownMenuItem<Group>>>snapshot) {
+        if (snapshot.hasData) {
+          return DropdownButton<Group>(
+              style: TextStyle(color: Colors.black, fontSize: 18),
+              value: selectedGroup,
+              icon: const Icon(Icons.arrow_downward),
+              iconSize: 18,
+              elevation: 36,
+              isExpanded: true,
+              underline: Container(
+                height: 2,
+                color: Colors.grey,
               ),
-              secondaryActions: <Widget>[
-                IconSlideAction(
-                    caption: 'Delete',
-                    color: Colors.red,
-                    icon: Icons.cancel,
-                    onTap: () => {
-                          setState(
-                            () {
-                              entries.remove(item);
-                            },
-                          )
-                        }),
-              ]),
-        )
-        .toList());
+              onChanged: (Group? newValue) {
+                if (newValue != null) {
+                  selectedGroup = newValue;
+                }
+                print('Selected Group is now: ' + selectedGroup.toString());
+              },
+              items: snapshot.data);
+        }
+        else return Text('Loading');
+      }
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        children: _errorOccurred
-            ? <Widget>[Text('An Error Occurred')]
-            : <Widget>[
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 18, top: 1, right: 18, bottom: 1),
-                  child: DropdownButton<Group>(
-                    value: selectedGroup,
-                    icon: const Icon(Icons.arrow_downward),
-                    iconSize: 18,
-                    elevation: 24,
-                    isExpanded: true,
-                    underline: Container(
-                      height: 1,
-                      color: Colors.white,
-                    ),
-                    onChanged: (Group? newValue) {
-                      setState(() {
-                        selectedGroup = newValue!;
-                        _getContactList();
-                      });
-                    },
-                    items: _getGroupDropdownItems(),
-                  ),
-                ),
-                Divider(color: Colors.black, height: 2, thickness: 1),
-              ],
-      ),
-    );
+    return Padding(padding: EdgeInsets.all(10), child: _getGroups());
   }
 }

@@ -54,7 +54,7 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
           ),
           Divider(thickness: 5),
-          // GroupsPage()
+          GroupsPage()
         ])
       ],
     );
