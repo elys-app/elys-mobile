@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 
 import '../models/Contact.dart';

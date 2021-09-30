@@ -38,6 +38,7 @@ class _MainPageState extends State<MainPage> {
   Future<String> _onLogout() async {
     try {
       Amplify.Auth.signOut().then((_) {
+        Amplify.DataStore.clear();
         Navigator.push(
             context,
             MaterialPageRoute(

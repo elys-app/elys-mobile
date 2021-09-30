@@ -33,12 +33,12 @@ class Contact extends Model {
 
   @override
   getInstanceType() => classType;
-
+  
   @override
   String getId() {
     return id;
   }
-
+  
   String get name {
     try {
       return _name!;
@@ -46,7 +46,7 @@ class Contact extends Model {
       throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
     }
   }
-
+  
   String get email {
     try {
       return _email!;
@@ -54,17 +54,17 @@ class Contact extends Model {
       throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
     }
   }
-
+  
   String? get relationship {
     return _relationship;
   }
-
+  
   List<ContactGroup>? get groups {
     return _groups;
   }
-
+  
   const Contact._internal({required this.id, required name, required email, relationship, groups}): _name = name, _email = email, _relationship = relationship, _groups = groups;
-
+  
   factory Contact({String? id, required String name, required String email, String? relationship, List<ContactGroup>? groups}) {
     return Contact._internal(
       id: id == null ? UUID.getUUID() : id,
@@ -73,11 +73,11 @@ class Contact extends Model {
       relationship: relationship,
       groups: groups != null ? List<ContactGroup>.unmodifiable(groups) : groups);
   }
-
+  
   bool equals(Object other) {
     return this == other;
   }
-
+  
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
@@ -88,24 +88,24 @@ class Contact extends Model {
       _relationship == other._relationship &&
       DeepCollectionEquality().equals(_groups, other._groups);
   }
-
+  
   @override
   int get hashCode => toString().hashCode;
-
+  
   @override
   String toString() {
     var buffer = new StringBuffer();
-
+    
     buffer.write("Contact {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("email=" + "$_email" + ", ");
     buffer.write("relationship=" + "$_relationship");
     buffer.write("}");
-
+    
     return buffer.toString();
   }
-
+  
   Contact copyWith({String? id, String? name, String? email, String? relationship, List<ContactGroup>? groups}) {
     return Contact(
       id: id ?? this.id,
@@ -114,8 +114,8 @@ class Contact extends Model {
       relationship: relationship ?? this.relationship,
       groups: groups ?? this.groups);
   }
-
-  Contact.fromJson(Map<String, dynamic> json)
+  
+  Contact.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
       _email = json['email'],
@@ -126,9 +126,9 @@ class Contact extends Model {
           .map((e) => ContactGroup.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null;
-
+  
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'email': _email, 'relationship': _relationship, 'groups': _groups?.map((e) => e.toJson()).toList()
+    'id': id, 'name': _name, 'email': _email, 'relationship': _relationship, 'groups': _groups?.map((e) => e?.toJson())?.toList()
   };
 
   static final QueryField ID = QueryField(fieldName: "contact.id");
@@ -141,7 +141,7 @@ class Contact extends Model {
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Contact";
     modelSchemaDefinition.pluralName = "Contacts";
-
+    
     modelSchemaDefinition.authRules = [
       AuthRule(
         authStrategy: AuthStrategy.OWNER,
@@ -154,27 +154,27 @@ class Contact extends Model {
           ModelOperation.READ
         ])
     ];
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Contact.NAME,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Contact.EMAIL,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Contact.RELATIONSHIP,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Contact.GROUPS,
       isRequired: false,
@@ -186,7 +186,7 @@ class Contact extends Model {
 
 class _ContactModelType extends ModelType<Contact> {
   const _ContactModelType();
-
+  
   @override
   Contact fromJson(Map<String, dynamic> jsonData) {
     return Contact.fromJson(jsonData);

@@ -21,16 +21,31 @@ class _GroupsPageState extends State<GroupsPage> {
       new Group(name: '', contacts: List<ContactGroup>.empty(growable: true));
   List<Group> entries = List<Group>.empty(growable: true);
   List<ContactGroup> contactGroup = List<ContactGroup>.empty(growable: true);
-  List<Contact> contacts = List<Contact>.empty(growable: true);
+  List<Contact> everyContact = List<Contact>.empty(growable: true);
+  List<ContactGroup> selectedContacts = List<ContactGroup>.empty(growable: true);
 
   @override
   void initState() {
     super.initState();
-    _initGroups();
-    _initContacts();
+    _setup();
+
+    Amplify.DataStore.observe(Contact.classType);
+    Amplify.DataStore.observe(Group.classType);
+    Amplify.DataStore.observe(ContactGroup.classType);
   }
 
-  void _initGroups() async {
+  void _setup() async {
+    try {
+      await _initGroups();
+      await _initContacts();
+      await _getSelectedContacts(selectedGroup.id);
+    }
+    catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> _initGroups() async {
     entries.clear();
     try {
       final result = await Amplify.DataStore.query(Group.classType);
@@ -38,6 +53,7 @@ class _GroupsPageState extends State<GroupsPage> {
         entries = result;
         List<Group> s = result.where((group) => group.name == 'ALL').toList();
         selectedGroup = s[0];
+        print("Selected Group: " + selectedGroup.toString());
         _errorOccurred = false;
       });
     } catch (e) {
@@ -47,13 +63,13 @@ class _GroupsPageState extends State<GroupsPage> {
     }
   }
 
-  void _initContacts() async {
-    contacts.clear();
+  Future<void> _initContacts() async {
+    everyContact.clear();
     try {
       final result = await Amplify.DataStore.query(Contact.classType);
       result.sort((a, b) => a.name.compareTo(b.name));
       setState(() {
-        contacts = result;
+        everyContact = result;
         _errorOccurred = false;
       });
     } catch (e) {
@@ -63,7 +79,27 @@ class _GroupsPageState extends State<GroupsPage> {
     }
   }
 
-  Future<List<DropdownMenuItem<Group>>> _getGroupDropdownItems() async {
+  Future<void> _getSelectedContacts(String groupId) async {
+    selectedContacts.clear();
+    print("Selected Group: " + selectedGroup.toString());
+    try {
+      final result = await Amplify.DataStore.query(ContactGroup.classType); //,
+        // where: ContactGroup.GROUP.eq(selectedGroup.id));
+      setState(() {
+        selectedContacts = result;
+        print("Number of Contacts: " + selectedContacts.length.toString());
+        print("Selected Contacts: " + selectedContacts.toString());
+        _errorOccurred = false;
+      });
+    } catch (e) {
+      setState(() {
+        print(e.toString());
+        _errorOccurred = true;
+      });
+    }
+  }
+
+  Future<List<DropdownMenuItem<Group>>> _getGroups() async {
     List<Group> result = await Amplify.DataStore.query(Group.classType);
     return (result
         .map((item) =>
@@ -71,9 +107,9 @@ class _GroupsPageState extends State<GroupsPage> {
         .toList());
   }
 
-  Widget _getGroups() {
+  Widget _getGroupDropdownItems() {
     return new FutureBuilder(
-        future: _getGroupDropdownItems(),
+        future: _getGroups(),
         builder:
             (context, AsyncSnapshot<List<DropdownMenuItem<Group>>> snapshot) {
           if (snapshot.hasData) {
@@ -91,6 +127,7 @@ class _GroupsPageState extends State<GroupsPage> {
                 onChanged: (Group? newValue) {
                   if (newValue != null) {
                     selectedGroup = newValue;
+                    print("Selected Group: " + selectedGroup.toString());
                   }
                   print('Selected Group is now: ' + selectedGroup.toString());
                 },
@@ -101,7 +138,7 @@ class _GroupsPageState extends State<GroupsPage> {
   }
 
   List<ListTile> _getContactList() {
-    return (contacts.map(
+    return (everyContact.map(
       (item) => new ListTile(
         title: Text(item.name,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
@@ -118,7 +155,7 @@ class _GroupsPageState extends State<GroupsPage> {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Column(children: <Widget>[
-        Padding(padding: EdgeInsets.only(left: 15, right: 15), child: _getGroups()),
+        Padding(padding: EdgeInsets.only(left: 15, right: 15), child: _getGroupDropdownItems()),
         Column(children: _getContactList())
       ]),
     );

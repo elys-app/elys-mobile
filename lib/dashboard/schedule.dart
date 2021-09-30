@@ -22,6 +22,8 @@ class _SchedulePageState extends State<SchedulePage> {
   void initState() {
     super.initState();
     _initEvents();
+
+    Amplify.DataStore.observe(Event.classType);
   }
 
   void _initEvents() async {

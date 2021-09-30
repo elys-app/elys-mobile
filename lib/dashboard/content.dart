@@ -15,30 +15,26 @@ class ContentPage extends StatefulWidget {
 class _ContentPageState extends State<ContentPage> {
   bool _errorOccurred = false;
 
-  List<Content> entries = List<Content>.filled(
-      0,
-      new Content(
-          id: '0',
-          name: '',
-          description: '',
-          bucket: '',
-          key: '',
-          region: '',
-          type: '',
-          dateSubmitted: ''),
-      growable: true);
+  List<Content> entries = List<Content>.empty(growable: true);
 
   @override
   void initState() {
     super.initState();
-    _initContent();
+    _getContent();
+    _observeContent();
   }
 
-  void _initContent() async {
-    entries.clear();
+  @override
+  void setState(fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
+
+  void _getContent() async {
     try {
       final result = await Amplify.DataStore.query(Content.classType);
-      result.sort((a, b) => a.name.compareTo(b.name));
+
       setState(() {
         entries = result;
         _errorOccurred = false;
@@ -49,6 +45,11 @@ class _ContentPageState extends State<ContentPage> {
         _errorOccurred = true;
       });
     }
+  }
+
+  void _observeContent() async {
+    final contentStream = await Amplify.DataStore.observe(Content.classType);
+    contentStream.listen((_) => _getContent());
   }
 
   List<Slidable> _getContentList() {

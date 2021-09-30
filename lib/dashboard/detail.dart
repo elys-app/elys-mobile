@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 
+import '../models/Group.dart';
 import '../models/Contact.dart';
+import '../models/ContactGroup.dart';
 
 class DetailsPage extends StatefulWidget {
   DetailsPage({Key? key}) : super(key: key);
@@ -19,11 +21,11 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
     super.initState();
-    _initContacts();
+    _getContacts();
+    _observeContacts();
   }
 
-  void _initContacts() async {
-    entries.clear();
+  void _getContacts() async {
     try {
       final result = await Amplify.DataStore.query(Contact.classType);
       result.sort((a, b) => a.name.compareTo(b.name));
@@ -36,6 +38,12 @@ class _DetailsPageState extends State<DetailsPage> {
         _errorOccurred = true;
       });
     }
+  }
+
+
+  void _observeContacts() async {
+    final contactStream = await Amplify.DataStore.observe(Contact.classType);
+    contactStream.listen((_) => _getContacts());
   }
 
   List<Column> _getContactList() {
