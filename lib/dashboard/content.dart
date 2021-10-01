@@ -33,8 +33,8 @@ class _ContentPageState extends State<ContentPage> {
 
   void _getContent() async {
     try {
-      final result = await Amplify.DataStore.query(Content.classType);
-
+      final result = await Amplify.DataStore.query(Content.classType,
+          sortBy: [Content.DESCRIPTION.ascending()]);
       setState(() {
         entries = result;
         _errorOccurred = false;
@@ -52,31 +52,25 @@ class _ContentPageState extends State<ContentPage> {
     contentStream.listen((_) => _getContent());
   }
 
-  List<Slidable> _getContentList() {
+  List<Column> _getContentList() {
     return (entries
         .map(
-          (item) => new Slidable(
-              actionPane: SlidableDrawerActionPane(),
-              child: ListTile(
+          (item) => Column(
+            children: <Widget>[
+              ListTile(
                 title: Text(
                   item.description,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(item.name),
+                isThreeLine: false,
+                onLongPress: () {
+                  print('Remove item');
+                },
               ),
-              secondaryActions: <Widget>[
-                IconSlideAction(
-                    caption: 'Delete',
-                    color: Colors.red,
-                    icon: Icons.cancel,
-                    onTap: () => {
-                          setState(
-                            () {
-                              entries.remove(item);
-                            },
-                          )
-                        }),
-              ]),
+              Divider(thickness: 1)
+            ],
+          ),
         )
         .toList());
   }

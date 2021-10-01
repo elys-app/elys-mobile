@@ -21,16 +21,22 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   void initState() {
     super.initState();
-    _initEvents();
-
-    Amplify.DataStore.observe(Event.classType);
+    _getEvents();
+    _observeEvents();
   }
 
-  void _initEvents() async {
+  @override
+  void setState(fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
+
+  void _getEvents() async {
     entries.clear();
     try {
-      final result = await Amplify.DataStore.query(Event.classType);
-      result.sort((a, b) => a.eventMonth.compareTo(b.eventMonth));
+      final result = await Amplify.DataStore.query(Event.classType,
+          sortBy: [Event.EVENTMONTH.ascending()]);
       setState(() {
         entries = result;
         _errorOccurred = false;
@@ -42,25 +48,29 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
+  void _observeEvents() async {
+    final eventStream = await Amplify.DataStore.observe(Event.classType);
+    eventStream.listen((_) => _getEvents());
+  }
+
   Future<String> _getGroupNameFromId(String id) async {
     List<Group> result = await Amplify.DataStore.query(Group.classType);
     List<Group> group = result.where((item) => item.id == id).toList();
     if (group != null) {
       return group[0].name;
-    }
-    else {
+    } else {
       return 'Error';
     }
   }
 
- Widget _getGroupName(String id, String date, String month) {
+  Widget _getGroupName(String id, String date, String month) {
     return new FutureBuilder(
       builder: (context, AsyncSnapshot<String> snapshot) {
         if (snapshot.hasData) {
-          String subtitle = 'Group to Send: ${snapshot.data.toString()} \nOn: ${date} ${month}';
+          String subtitle =
+              'Group to Send: ${snapshot.data.toString()} \nOn: ${date} ${month}';
           return Text(subtitle);
-        }
-        else {
+        } else {
           return Text('Loading');
         }
       },
@@ -68,32 +78,26 @@ class _SchedulePageState extends State<SchedulePage> {
     );
   }
 
-  List<Slidable> _getEventList() {
+  List<Column> _getEventList() {
     return (entries
         .map(
-          (item) => new Slidable(
-              actionPane: SlidableDrawerActionPane(),
-              child: ListTile(
+          (item) => Column(
+            children: <Widget>[
+              new ListTile(
                 title: Text(
                   item.name,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                subtitle: _getGroupName(item.groupId, item.eventDate, item.eventMonth),
+                subtitle: _getGroupName(
+                    item.groupId, item.eventDate, item.eventMonth),
                 isThreeLine: true,
+                onLongPress: () {
+                  print('Remove item');
+                },
               ),
-              secondaryActions: <Widget>[
-                IconSlideAction(
-                    caption: 'Delete',
-                    color: Colors.red,
-                    icon: Icons.cancel,
-                    onTap: () => {
-                          setState(
-                            () {
-                              entries.remove(item);
-                            },
-                          )
-                        }),
-              ]),
+              Divider(thickness: 1)
+            ],
+          ),
         )
         .toList());
   }

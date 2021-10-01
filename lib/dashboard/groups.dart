@@ -81,14 +81,11 @@ class _GroupsPageState extends State<GroupsPage> {
 
   Future<void> _getSelectedContacts(String groupId) async {
     selectedContacts.clear();
-    print("Selected Group: " + selectedGroup.toString());
     try {
       final result = await Amplify.DataStore.query(ContactGroup.classType); //,
-        // where: ContactGroup.GROUP.eq(selectedGroup.id));
+
       setState(() {
         selectedContacts = result;
-        print("Number of Contacts: " + selectedContacts.length.toString());
-        print("Selected Contacts: " + selectedContacts.toString());
         _errorOccurred = false;
       });
     } catch (e) {
@@ -114,7 +111,7 @@ class _GroupsPageState extends State<GroupsPage> {
             (context, AsyncSnapshot<List<DropdownMenuItem<Group>>> snapshot) {
           if (snapshot.hasData) {
             return DropdownButton<Group>(
-                style: TextStyle(color: Colors.black, fontSize: 18),
+                style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
                 value: selectedGroup,
                 icon: const Icon(Icons.arrow_downward),
                 iconSize: 18,
@@ -141,7 +138,7 @@ class _GroupsPageState extends State<GroupsPage> {
     return (everyContact.map(
       (item) => new ListTile(
         title: Text(item.name,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal)),
         trailing: Icon(Icons.check_box_outline_blank_sharp),
         onTap: () {
           print('Move in or Out of Group');

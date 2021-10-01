@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 
-import '../models/Group.dart';
 import '../models/Contact.dart';
-import '../models/ContactGroup.dart';
 
 class DetailsPage extends StatefulWidget {
   DetailsPage({Key? key}) : super(key: key);
@@ -15,8 +13,7 @@ class DetailsPage extends StatefulWidget {
 class _DetailsPageState extends State<DetailsPage> {
   bool _errorOccurred = false;
 
-  List<Contact> entries =
-      List<Contact>.filled(0, new Contact(name: '', email: ''), growable: true);
+  List<Contact> entries = List<Contact>.empty(growable: true);
 
   @override
   void initState() {
@@ -25,21 +22,27 @@ class _DetailsPageState extends State<DetailsPage> {
     _observeContacts();
   }
 
+  @override
+  void setState(fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
+
   void _getContacts() async {
     try {
-      final result = await Amplify.DataStore.query(Contact.classType);
-      result.sort((a, b) => a.name.compareTo(b.name));
+      final result = await Amplify.DataStore.query(Contact.classType,
+          sortBy: [Contact.NAME.ascending()]);
       setState(() {
         entries = result;
         _errorOccurred = false;
       });
-    } catch(e) {
+    } catch (e) {
       setState(() {
         _errorOccurred = true;
       });
     }
   }
-
 
   void _observeContacts() async {
     final contactStream = await Amplify.DataStore.observe(Contact.classType);
@@ -48,21 +51,23 @@ class _DetailsPageState extends State<DetailsPage> {
 
   List<Column> _getContactList() {
     return (entries
-        .map(
-          (item) => new Column(
-            children: <Widget>[
+        .map((item) => new Column(children: <Widget>[
               new ListTile(
-                  title: Text(item.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
-                  subtitle: Text(item.email, style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal)),
-                  isThreeLine: false,
-                  onLongPress: () {
-                    print('remove');
-                  },
+                title: Text(item.name,
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                subtitle: Text(item.email),
+                //     style:
+                //         TextStyle(fontSize: 14, fontWeight: FontWeight.normal)),
+                // isThreeLine: false,
+                onLongPress: () {
+                  print('Remove Item');
+                },
               ),
-              Divider(thickness: 1,)
-            ]
-          )
-        )
+              Divider(
+                thickness: 1,
+              )
+            ]))
         .toList());
   }
 

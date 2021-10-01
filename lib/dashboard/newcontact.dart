@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 
+import '../models/Group.dart';
 import '../models/Contact.dart';
+import '../models/ContactGroup.dart';
 
 class NewContactPage extends StatefulWidget {
   NewContactPage({Key? key, required this.title}) : super(key: key);
@@ -35,16 +37,29 @@ class _NewContactPageState extends State<NewContactPage> {
   }
 
   void onAddNewContactPressed() async {
-    var newContact = Contact(name: 'Test User #35', email: 'test-3@eyls-app.net');
+    final groupWithEveryContact = await Amplify.DataStore.query(Group.classType,
+        where: Group.NAME.eq('ALL'));
 
     try {
+      Contact newContact = new Contact(
+        name: nameController.text,
+        email: emailController.text
+      );
       await Amplify.DataStore.save(newContact);
-      print ('Saved ${newContact.toString()}');
+      print('Saved: ${newContact.toString()}');
+      final newContactGroupItem = new ContactGroup(
+        contact: newContact,
+        group: groupWithEveryContact[0]
+      );
+      await Amplify.DataStore.save(newContactGroupItem);
+      print('Saved: ${newContactGroupItem.toString()}');
+
       Navigator.pop(context);
     } catch (e) {
       print(e);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
