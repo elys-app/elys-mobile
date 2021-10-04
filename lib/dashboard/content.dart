@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
-import 'package:elys_mobile/models/Content.dart';
+import '../models/Content.dart';
 
 class ContentPage extends StatefulWidget {
   ContentPage({Key? key}) : super(key: key);
@@ -20,8 +22,7 @@ class _ContentPageState extends State<ContentPage> {
   @override
   void initState() {
     super.initState();
-    _getContent();
-    _observeContent();
+    // _getContent();
   }
 
   @override
@@ -31,7 +32,7 @@ class _ContentPageState extends State<ContentPage> {
     }
   }
 
-  void _getContent() async {
+  Future<void> _getContent() async {
     try {
       final result = await Amplify.DataStore.query(Content.classType,
           sortBy: [Content.DESCRIPTION.ascending()]);
@@ -52,36 +53,62 @@ class _ContentPageState extends State<ContentPage> {
     contentStream.listen((_) => _getContent());
   }
 
-  List<Column> _getContentList() {
-    return (entries
+  Future<List<ListTile>> _getContentList() async {
+    _observeContent();
+    final result = await Amplify.DataStore.query(Content.classType,
+        sortBy: [Content.DESCRIPTION.ascending()]);
+    return (result
         .map(
-          (item) => Column(
-            children: <Widget>[
-              ListTile(
-                title: Text(
-                  item.description,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(item.name),
-                isThreeLine: false,
-                onLongPress: () {
-                  print('Remove item');
-                },
-              ),
-              Divider(thickness: 1)
-            ],
+          (item) => ListTile(
+            title: Text(
+              item.description,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(item.name),
+            isThreeLine: false,
+            onLongPress: () {
+              _removeContentItem(item);
+            },
           ),
         )
         .toList());
   }
 
+  Widget _getContentItems() {
+    return FutureBuilder(
+      future: _getContentList(),
+      builder: (BuildContext context, AsyncSnapshot<List<ListTile>> snapshot) {
+        if (snapshot.hasData) {
+          return new ListView.builder(
+              shrinkWrap: true,
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, item) {
+                return snapshot.data![item];
+              });
+        } else {
+          return Container(
+            child: SpinKitThreeBounce(
+              color: Colors.lightBlue,
+              size: 50.0,
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  void _removeContentItem(Content item) async {
+    try {
+      final RemoveResult result = await Amplify.Storage.remove(key: item.key);
+      print('Deleted file: ${result}');
+    } on StorageException catch (e) {
+      print('Error deleting file: $e');
+    }
+    await Amplify.DataStore.delete(item);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-            children: _errorOccurred
-                ? <Widget>[Text('An Error Occurred')]
-                : _getContentList()));
+    return Container(padding: EdgeInsets.all(10), child: _getContentItems());
   }
 }

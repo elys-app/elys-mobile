@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 
 import 'password.dart';
-import '../dashboard/panic.dart';
-import '../dashboard/dashboard.dart';
-import '../amplifyconfiguration.dart';
-import 'package:elys_mobile/models/ModelProvider.dart';
+import 'loading.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, required this.title}) : super(key: key);
@@ -35,8 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _showPassword = false;
-    _configureAmplify();
+    _showPassword = true;
   }
 
   @override
@@ -44,56 +37,18 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _configureAmplify() async {
-    final auth = AmplifyAuthCognito();
-    final analytics = AmplifyAnalyticsPinpoint();
-    final api = AmplifyAPI();
-
-    final provider = new ModelProvider();
-    final dataStore = AmplifyDataStore(modelProvider: provider, syncInterval: 3);
-
-    try {
-      if (!Amplify.isConfigured) {
-        Amplify.addPlugins([auth, analytics, api, dataStore]);
-        await Amplify.configure(amplifyconfig);
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
   Future<void> _onLoginPressed() async {
+    print('Here');
     if (formKey.currentState!.validate()) {
       setState(() {
         userName = userNameController.text;
         password = passwordController.text;
       });
-      try {
-        if (Amplify.isConfigured) {
-          await Amplify.Auth.signIn(username: userName, password: password);
-          await Amplify.DataStore.start();
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      MainPage(key: Key('1'), username: userName)));
-        }
-      } on InvalidStateException catch (e) {
-        Amplify.Auth.signOut();
-        SnackBar snackBar = SnackBar(
-          content: Text('${e.message}'),
-          duration: Duration(seconds: 3),
-          action: SnackBarAction(label: 'OK', onPressed: () {}),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      } on NotAuthorizedException catch (e) {
-        SnackBar snackBar = SnackBar(
-          content: Text('${e.message}'),
-          duration: Duration(seconds: 3),
-          action: SnackBarAction(label: 'OK', onPressed: () {}),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoadingPage(
+                  key: Key('1'), username: userName, password: password)));
     }
   }
 
@@ -104,11 +59,6 @@ class _LoginPageState extends State<LoginPage> {
         password = passwordController.text;
       });
       try {
-        await Amplify.Auth.signIn(username: userName, password: password);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => PanicPage(username: userName)));
         return 'success';
       } on InvalidStateException catch (e) {
         Amplify.Auth.signOut();
@@ -137,8 +87,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final ButtonStyle style =
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
-    // final ButtonStyle registerStyle = ElevatedButton.styleFrom(
-    //     textStyle: const TextStyle(fontSize: 20), primary: Colors.lightBlue);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -189,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                     labelText: 'Password',
                     prefixIcon: IconButton(
                       icon: Icon(
-                        _showPassword ? Icons.visibility : Icons.visibility_off,
+                        _showPassword ? Icons.visibility_off : Icons.visibility,
                       ),
                       onPressed: () {
                         setState(() {

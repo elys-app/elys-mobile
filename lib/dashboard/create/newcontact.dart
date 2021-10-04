@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 
-import '../models/Group.dart';
-import '../models/Contact.dart';
-import '../models/ContactGroup.dart';
+import '../../models/Group.dart';
+import '../../models/Contact.dart';
+import '../../models/ContactGroup.dart';
 
 class NewContactPage extends StatefulWidget {
   NewContactPage({Key? key, required this.title}) : super(key: key);
@@ -42,15 +42,13 @@ class _NewContactPageState extends State<NewContactPage> {
 
     try {
       Contact newContact = new Contact(
-        name: nameController.text,
-        email: emailController.text
-      );
+          name: nameController.text,
+          email: emailController.text,
+          groups: List<ContactGroup>.empty(growable: false));
       await Amplify.DataStore.save(newContact);
       print('Saved: ${newContact.toString()}');
       final newContactGroupItem = new ContactGroup(
-        contact: newContact,
-        group: groupWithEveryContact[0]
-      );
+          contact: newContact, group: groupWithEveryContact[0]);
       await Amplify.DataStore.save(newContactGroupItem);
       print('Saved: ${newContactGroupItem.toString()}');
 
@@ -129,19 +127,23 @@ class _NewContactPageState extends State<NewContactPage> {
                   },
                   child: const Text('Add a New Contact'),
                 ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 20),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Cancel'),
-                ),
                 const SizedBox(height: 30)
               ],
             ),
           ),
-        ));
+        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.arrow_back_ios_sharp),
+              backgroundColor: Colors.lightBlue,
+            ),
+          ],
+        ),
+    );
   }
 }

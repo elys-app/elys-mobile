@@ -9,9 +9,9 @@ import 'content.dart';
 import 'contacts.dart';
 import 'schedule.dart';
 
-import 'newcontent.dart';
-import 'newcontact.dart';
-import 'newschedule.dart';
+import 'create/newcontent.dart';
+import 'create/newcontact.dart';
+import 'create/newschedule.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key, required this.username}) : super(key: key);
@@ -168,14 +168,6 @@ class _MainPageState extends State<MainPage> {
                         builder: (context) =>
                             NewSchedulePage(title: 'New Schedule Item')));
                 break;
-              }
-            default:
-              {
-                final snackBar = SnackBar(
-                  content: const Text('To Do: Add Pages'),
-                  action: SnackBarAction(label: 'OK', onPressed: () {}),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
           }
         },

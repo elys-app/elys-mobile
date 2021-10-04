@@ -49,36 +49,53 @@ class _DetailsPageState extends State<DetailsPage> {
     contactStream.listen((_) => _getContacts());
   }
 
-  List<Column> _getContactList() {
-    return (entries
-        .map((item) => new Column(children: <Widget>[
-              new ListTile(
-                title: Text(item.name,
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-                subtitle: Text(item.email),
-                //     style:
-                //         TextStyle(fontSize: 14, fontWeight: FontWeight.normal)),
-                // isThreeLine: false,
-                onLongPress: () {
-                  print('Remove Item');
-                },
-              ),
-              Divider(
-                thickness: 1,
-              )
-            ]))
+  Future<List<ListTile>> _getContactList() async {
+    final result = await Amplify.DataStore.query(Contact.classType,
+        sortBy: [Contact.NAME.ascending()]);
+
+    return (result
+        .map((item) => ListTile(
+              title: Text(item.name,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+              subtitle: Text(item.email),
+              isThreeLine: false,
+              onLongPress: () {
+                _removeContactItem(item);
+              },
+            ))
         .toList());
+  }
+
+  Widget _getContactItems() {
+    return FutureBuilder(
+      future: _getContactList(),
+      builder: (BuildContext context, AsyncSnapshot<List<ListTile>> snapshot) {
+        if (snapshot.hasData) {
+          return new ListView.builder(
+              shrinkWrap: true,
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, item) {
+                return snapshot.data![item];
+              });
+        } else {
+          return Text('Loading');
+        }
+      },
+    );
+  }
+
+  void _removeContactItem(Contact item) async {
+    final contact = (await Amplify.DataStore.query(Contact.classType,
+        where: Contact.ID.eq(item.id)))[0];
+    print('Item: ${contact}');
+
+    // To Do: waiting for fix to delete with hasOne
+    //
+    // await Amplify.DataStore.delete(contact);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
-          children: _errorOccurred
-              ? <Widget>[Text('An Error Occurred')]
-              : _getContactList()),
-    );
+    return Container(padding: EdgeInsets.all(10), child: _getContactItems());
   }
 }

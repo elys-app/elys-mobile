@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_datastore/amplify_datastore.dart';
 
 import '../models/Event.dart';
 import '../models/Group.dart';
@@ -78,11 +78,13 @@ class _SchedulePageState extends State<SchedulePage> {
     );
   }
 
-  List<Column> _getEventList() {
-    return (entries
+  Future<List<ListTile>> _getEventList() async {
+    final result = await Amplify.DataStore.query(Event.classType,
+        sortBy: [Event.DESCRIPTION.ascending()]);
+
+    return (result
         .map(
-          (item) => Column(
-            children: <Widget>[
+          (item) =>
               new ListTile(
                 title: Text(
                   item.name,
@@ -92,23 +94,40 @@ class _SchedulePageState extends State<SchedulePage> {
                     item.groupId, item.eventDate, item.eventMonth),
                 isThreeLine: true,
                 onLongPress: () {
-                  print('Remove item');
+                  _removeScheduleItem(item);
                 },
               ),
-              Divider(thickness: 1)
-            ],
-          ),
         )
         .toList());
+  }
+
+  Widget _getEventItems() {
+    return FutureBuilder(
+      future: _getEventList(),
+      builder: (BuildContext context, AsyncSnapshot<List<ListTile>> snapshot) {
+        if (snapshot.hasData) {
+          return new ListView.builder(
+              shrinkWrap: true,
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, item) {
+                return snapshot.data![item];
+              });
+        } else {
+          return Text('Loading');
+        }
+      },
+    );
+  }
+
+
+  void _removeScheduleItem(Event item) async {
+    await Amplify.DataStore.delete(item);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(10),
-        child: Column(
-            children: _errorOccurred
-                ? <Widget>[Text('An Error Occurred')]
-                : _getEventList()));
+        child: _getEventItems());
   }
 }

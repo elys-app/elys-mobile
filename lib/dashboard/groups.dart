@@ -96,7 +96,7 @@ class _GroupsPageState extends State<GroupsPage> {
     }
   }
 
-  Future<List<DropdownMenuItem<Group>>> _getGroups() async {
+  Future<List<DropdownMenuItem<Group>>> _getGroupList() async {
     List<Group> result = await Amplify.DataStore.query(Group.classType);
     return (result
         .map((item) =>
@@ -106,27 +106,25 @@ class _GroupsPageState extends State<GroupsPage> {
 
   Widget _getGroupDropdownItems() {
     return new FutureBuilder(
-        future: _getGroups(),
+        future: _getGroupList(),
         builder:
             (context, AsyncSnapshot<List<DropdownMenuItem<Group>>> snapshot) {
           if (snapshot.hasData) {
-            return DropdownButton<Group>(
+            return DropdownButtonFormField<Group>(
                 style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
                 value: selectedGroup,
                 icon: const Icon(Icons.arrow_downward),
                 iconSize: 18,
                 elevation: 36,
                 isExpanded: true,
-                underline: Container(
-                  height: 2,
-                  color: Colors.grey,
+                decoration: InputDecoration(
+                  filled: true,
+                  labelText: 'Select Group',
                 ),
                 onChanged: (Group? newValue) {
                   if (newValue != null) {
                     selectedGroup = newValue;
-                    print("Selected Group: " + selectedGroup.toString());
                   }
-                  print('Selected Group is now: ' + selectedGroup.toString());
                 },
                 items: snapshot.data);
           } else

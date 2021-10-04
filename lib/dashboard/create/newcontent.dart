@@ -37,29 +37,6 @@ class _NewContentPageState extends State<NewContentPage> {
     });
   }
 
-  Widget _buildNavigationButton() {
-    return FloatingActionButton(
-        backgroundColor: Colors.lightBlue,
-        child: Icon(Icons.camera_alt),
-        onPressed: () {
-          _getImage();
-        });
-  }
-
-  Widget _addNewContentButton() {
-    return ElevatedButton(
-        style: style,
-    onPressed: () {
-      if (formKey.currentState!.validate()) {
-        print('Add New Photo or Video');
-        print(descriptionController.text);
-        Navigator.pop(context);
-      }
-    },
-    child: Text('Add New Photo or Video')
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,22 +78,45 @@ class _NewContentPageState extends State<NewContentPage> {
                       : Container(
                           child: Image.file(_image), height: 320, width: 320)),
               SizedBox(height: 64),
-              _addNewContentButton(),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 20),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
-              ),
+              ElevatedButton(
+                  style: style,
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      print(descriptionController.text);
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text('Select Photo or Video')),
               const SizedBox(height: 30),
             ],
           ),
         ),
       ),
-      floatingActionButton: _buildNavigationButton(),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.arrow_back_ios_sharp),
+              backgroundColor: Colors.lightBlue,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 30),
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.camera_sharp),
+              backgroundColor: Colors.lightBlue,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
