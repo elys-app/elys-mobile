@@ -30,20 +30,35 @@ class _GroupsPageState extends State<GroupsPage> {
   void initState() {
     super.initState();
     _setup();
-
-    Amplify.DataStore.observe(Contact.classType);
-    Amplify.DataStore.observe(Group.classType);
-    Amplify.DataStore.observe(ContactGroup.classType);
   }
 
   void _setup() async {
     try {
+      _observeContacts();
+      _observeGroups();
+      _observeContactGroups();
+
       await _initGroups();
       await _initContacts();
       await _getSelectedContacts(selectedGroup.id);
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  void _observeGroups() async {
+    final eventStream = await Amplify.DataStore.observe(Group.classType);
+    eventStream.listen((_) => _getGroupDropdownItems());
+  }
+
+  void _observeContacts() async {
+    final eventStream = await Amplify.DataStore.observe(Contact.classType);
+    eventStream.listen((_) => _getSelectedContacts(selectedGroup.id));
+  }
+
+  void _observeContactGroups() async {
+    final eventStream = await Amplify.DataStore.observe(ContactGroup.classType);
+    eventStream.listen((_) => _getSelectedContacts(selectedGroup.id));
   }
 
   Future<void> _initGroups() async {
@@ -154,12 +169,9 @@ class _GroupsPageState extends State<GroupsPage> {
       print(filteredResult[0].toString());
       await Amplify.DataStore.delete(filteredResult[0]);
       _getSelectedContacts(selectedGroup.id);
-    }
-    else {
-      await Amplify.DataStore.save(new ContactGroup(
-        group: selectedGroup,
-        contact: selectedContact
-      ));
+    } else {
+      await Amplify.DataStore.save(
+          new ContactGroup(group: selectedGroup, contact: selectedContact));
       _getSelectedContacts(selectedGroup.id);
     }
   }
@@ -208,7 +220,7 @@ class _GroupsPageState extends State<GroupsPage> {
             padding: EdgeInsets.only(left: 15, right: 15, bottom: 20),
             child: _getGroupDropdownItems()),
         Padding(
-            padding: EdgeInsets.only(left: 25, right: 25),
+            padding: EdgeInsets.only(left: 40, right: 40),
             child: _getContactItems())
       ]),
     );
