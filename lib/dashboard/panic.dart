@@ -6,9 +6,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import '../login/login.dart';
 
 class PanicPage extends StatefulWidget {
-  PanicPage({Key? key, required this.username}) : super(key: key);
-
-  final String username;
+  PanicPage({Key? key}) : super(key: key);
 
   @override
   _PanicPageState createState() => _PanicPageState();
@@ -22,10 +20,7 @@ class _PanicPageState extends State<PanicPage> {
   Future<String> _onLogout() async {
     try {
       Amplify.Auth.signOut().then((_) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginPage(title: 'Welcome to ELYS')));
+        Navigator.pushNamed(context, '/');
       });
       return 'success';
     } on AuthException catch (e) {
@@ -62,7 +57,7 @@ class _PanicPageState extends State<PanicPage> {
                   color: Colors.blue,
                 ),
                 child: Text(
-                  'Hello, ${widget.username}',
+                  'Hello, user',
                   style: TextStyle(color: Colors.white, fontSize: 24),
                 ),
               ),

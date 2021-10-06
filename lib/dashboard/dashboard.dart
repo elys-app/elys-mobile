@@ -14,9 +14,7 @@ import 'create/newcontact.dart';
 import 'create/newschedule.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key? key, required this.username}) : super(key: key);
-
-  final String username;
+  MainPage({Key? key}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -39,10 +37,7 @@ class _MainPageState extends State<MainPage> {
     try {
       Amplify.Auth.signOut().then((_) {
         Amplify.DataStore.clear();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginPage(title: 'Welcome to ELYS')));
+        Navigator.pushNamed(context, '/');
       });
       return 'success';
     } on AuthException catch (e) {
@@ -78,7 +73,7 @@ class _MainPageState extends State<MainPage> {
                     color: Colors.blue,
                   ),
                   child: Text(
-                    'Hello, ${widget.username}',
+                    'Hello, user',
                     style: TextStyle(color: Colors.white, fontSize: 24),
                   ),
                 ),
@@ -144,29 +139,17 @@ class _MainPageState extends State<MainPage> {
           switch (_selectedIndex) {
             case 0:
               {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            NewContentPage(title: 'New Content')));
+                Navigator.pushNamed(context, '/newcontent');
                 break;
               }
             case 1:
               {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            NewContactPage(title: 'New Contact')));
+                Navigator.pushNamed(context, '/newcontact');
                 break;
               }
             case 2:
               {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            NewSchedulePage(title: 'New Schedule Item')));
+                Navigator.pushNamed(context, '/newschedule');
                 break;
               }
           }

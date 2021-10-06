@@ -84,19 +84,18 @@ class _SchedulePageState extends State<SchedulePage> {
 
     return (result
         .map(
-          (item) =>
-              new ListTile(
-                title: Text(
-                  item.name,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                subtitle: _getGroupName(
-                    item.groupId, item.eventDate, item.eventMonth),
-                isThreeLine: true,
-                onLongPress: () {
-                  _removeScheduleItem(item);
-                },
-              ),
+          (item) => new ListTile(
+            title: Text(
+              item.name,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            subtitle:
+                _getGroupName(item.groupId, item.eventDate, item.eventMonth),
+            isThreeLine: true,
+            onLongPress: () {
+              _removeScheduleItem(item);
+            },
+          ),
         )
         .toList());
   }
@@ -106,12 +105,14 @@ class _SchedulePageState extends State<SchedulePage> {
       future: _getEventList(),
       builder: (BuildContext context, AsyncSnapshot<List<ListTile>> snapshot) {
         if (snapshot.hasData) {
-          return new ListView.builder(
-              shrinkWrap: true,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, item) {
-                return snapshot.data![item];
-              });
+          return new ListView.separated(
+            shrinkWrap: true,
+            separatorBuilder: (context, item) => Divider(thickness: 1),
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, item) {
+              return snapshot.data![item];
+            },
+          );
         } else {
           return Text('Loading');
         }
@@ -119,15 +120,12 @@ class _SchedulePageState extends State<SchedulePage> {
     );
   }
 
-
   void _removeScheduleItem(Event item) async {
     await Amplify.DataStore.delete(item);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.all(10),
-        child: _getEventItems());
+    return Container(padding: EdgeInsets.all(10), child: _getEventItems());
   }
 }

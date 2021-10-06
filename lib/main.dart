@@ -1,3 +1,14 @@
+import 'package:elys_mobile/dashboard/dashboard.dart';
+import 'package:elys_mobile/dashboard/contacts.dart';
+import 'package:elys_mobile/dashboard/schedule.dart';
+import 'package:elys_mobile/dashboard/content.dart';
+import 'package:elys_mobile/dashboard/panic.dart';
+
+import 'package:elys_mobile/dashboard/create/newcontent.dart';
+import 'package:elys_mobile/dashboard/create/newcontact.dart';
+import 'package:elys_mobile/dashboard/create/newschedule.dart';
+
+import 'package:elys_mobile/login/loading.dart';
 import 'package:flutter/material.dart';
 import 'login/login.dart';
 
@@ -12,7 +23,16 @@ class ElysApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.lightBlue,
       ),
-      home: LoginPage(title: 'Welcome to ELYS'),
+      routes: {
+        '/': (context) => LoginPage(title: 'Welcome to ELYS'),
+        '/loading': (context) => LoadingPage(),
+        '/panic': (context) => PanicPage(),
+        '/main': (context) => MainPage(),
+        '/newcontent': (context) => NewContentPage(),
+        '/newcontact': (context) => NewContactPage(),
+        '/newschedule': (context) => NewSchedulePage()
+      },
+      initialRoute: '/',
     );
   }
 }

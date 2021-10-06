@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_api/amplify_api.dart';
+import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+
+import '../models/ModelProvider.dart';
+import '../amplifyconfiguration.dart';
 
 import 'password.dart';
 import 'loading.dart';
@@ -29,6 +37,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    _initAmplify();
+
     _showPassword = true;
   }
 
@@ -37,29 +47,35 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<void> _onLoginPressed() async {
-    print('Here');
-    if (formKey.currentState!.validate()) {
-      setState(() {
-        userName = userNameController.text;
-        password = passwordController.text;
-      });
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => LoadingPage(
-                  key: Key('1'), username: userName, password: password)));
+  void _initAmplify() async {
+    final auth = AmplifyAuthCognito();
+    final analytics = AmplifyAnalyticsPinpoint();
+    final api = AmplifyAPI();
+    final storage = AmplifyStorageS3();
+
+    final provider = new ModelProvider();
+    final dataStore =
+        AmplifyDataStore(modelProvider: provider, syncInterval: 3);
+
+    try {
+      if (!Amplify.isConfigured) {
+        Amplify.addPlugins([auth, analytics, api, storage, dataStore]);
+        await Amplify.configure(amplifyconfig);
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
-  Future<String> _onGoToPanicPage() async {
+  Future<void> _onLoginPressed() async {
     if (formKey.currentState!.validate()) {
       setState(() {
         userName = userNameController.text;
         password = passwordController.text;
       });
       try {
-        return 'success';
+        await Amplify.Auth.signIn(username: userName, password: password);
+        Navigator.pushNamed(context, '/loading');
       } on InvalidStateException catch (e) {
         Amplify.Auth.signOut();
         SnackBar snackBar = SnackBar(
@@ -68,7 +84,6 @@ class _LoginPageState extends State<LoginPage> {
           action: SnackBarAction(label: 'OK', onPressed: () {}),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        return 'failed';
       } on NotAuthorizedException catch (e) {
         SnackBar snackBar = SnackBar(
           content: Text('${e.message}'),
@@ -76,10 +91,35 @@ class _LoginPageState extends State<LoginPage> {
           action: SnackBarAction(label: 'OK', onPressed: () {}),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        return 'failed';
       }
-    } else {
-      return 'not valid';
+    }
+  }
+
+  Future<void> _onGoToPanicPage() async {
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        userName = userNameController.text;
+        password = passwordController.text;
+      });
+      try {
+        await Amplify.Auth.signIn(username: userName, password: password);
+        Navigator.pushNamed(context, '/panic');
+      } on InvalidStateException catch (e) {
+        Amplify.Auth.signOut();
+        SnackBar snackBar = SnackBar(
+          content: Text('${e.message}'),
+          duration: Duration(seconds: 3),
+          action: SnackBarAction(label: 'OK', onPressed: () {}),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } on NotAuthorizedException catch (e) {
+        SnackBar snackBar = SnackBar(
+          content: Text('${e.message}'),
+          duration: Duration(seconds: 3),
+          action: SnackBarAction(label: 'OK', onPressed: () {}),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     }
   }
 

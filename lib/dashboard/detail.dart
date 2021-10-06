@@ -56,7 +56,7 @@ class _DetailsPageState extends State<DetailsPage> {
     return (result
         .map((item) => ListTile(
               title: Text(item.name,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               subtitle: Text(item.email),
               isThreeLine: false,
               onLongPress: () {
@@ -71,7 +71,8 @@ class _DetailsPageState extends State<DetailsPage> {
       future: _getContactList(),
       builder: (BuildContext context, AsyncSnapshot<List<ListTile>> snapshot) {
         if (snapshot.hasData) {
-          return new ListView.builder(
+          return new ListView.separated(
+              separatorBuilder: (context, item) => Divider(thickness: 1),
               shrinkWrap: true,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, item) {
@@ -88,6 +89,10 @@ class _DetailsPageState extends State<DetailsPage> {
     final contact = (await Amplify.DataStore.query(Contact.classType,
         where: Contact.ID.eq(item.id)))[0];
     print('Item: ${contact}');
+    SnackBar snackBar = SnackBar(
+        content: Text('Delete is Currently Unavailable'),
+    duration: Duration(seconds: 3),
+    action: SnackBarAction(label: 'OK', onPressed: () {}));
 
     // To Do: waiting for fix to delete with hasOne
     //

@@ -109,12 +109,7 @@ class _PasswordPageState extends State<PasswordPage> {
                 child: ElevatedButton(
                   style: style,
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              LoginPage(title: 'Welcome to ELYS'),
-                        ));
+                    Navigator.pushNamed(context, '/');
                   },
                   child: Text('Send Code and Password'),
                 ),

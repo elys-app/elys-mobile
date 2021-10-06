@@ -79,7 +79,8 @@ class _ContentPageState extends State<ContentPage> {
       future: _getContentList(),
       builder: (BuildContext context, AsyncSnapshot<List<ListTile>> snapshot) {
         if (snapshot.hasData) {
-          return new ListView.builder(
+          return new ListView.separated(
+              separatorBuilder: (context, item) => Divider(thickness: 1),
               shrinkWrap: true,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, item) {

@@ -15,11 +15,8 @@ import '../models/ModelProvider.dart';
 import '../amplifyconfiguration.dart';
 
 class LoadingPage extends StatefulWidget {
-  const LoadingPage({Key? key, required this.username, required this.password})
+  const LoadingPage({Key? key})
       : super(key: key);
-
-  final String username;
-  final String password;
 
   @override
   _LoadingPageState createState() => _LoadingPageState();
@@ -29,65 +26,19 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   initState() {
     super.initState();
-    _initAmplify();
+    _startAmplify();
   }
 
-  Future<void> _initAmplify() async {
-    final auth = AmplifyAuthCognito();
-    final analytics = AmplifyAnalyticsPinpoint();
-    final api = AmplifyAPI();
-    final storage = AmplifyStorageS3();
-
-    final provider = new ModelProvider();
-    final dataStore =
-        AmplifyDataStore(modelProvider: provider, syncInterval: 3);
-
-    try {
-      if (!Amplify.isConfigured) {
-        Amplify.addPlugins([auth, analytics, api, storage, dataStore]);
-        await Amplify.configure(amplifyconfig);
-      }
-    } catch (e) {
-      print(e);
-    }
-
+  Future<void> _startAmplify() async {
     try {
       if (Amplify.isConfigured) {
-        await Amplify.Auth.signIn(
-            username: widget.username, password: widget.password);
         await Amplify.DataStore.start();
         print('Ready!');
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    MainPage(key: Key('1'), username: widget.username)));
+        Navigator.pushNamed(
+            context,'/main');
       }
-    } on InvalidStateException catch (e) {
-      Amplify.Auth.signOut();
-      SnackBar snackBar = SnackBar(
-        content: Text('${e.message}'),
-        duration: Duration(seconds: 3),
-        action: SnackBarAction(label: 'OK', onPressed: () {}),
-      );
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  LoginPage(key: Key('1'), title: 'Welcome to ELYS')));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } on NotAuthorizedException catch (e) {
-      SnackBar snackBar = SnackBar(
-        content: Text('${e.message}'),
-        duration: Duration(seconds: 3),
-        action: SnackBarAction(label: 'OK', onPressed: () {}),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  LoginPage(key: Key('1'), title: 'Welcome to ELYS')));
+    } catch(e) {
+      print(e);
     }
   }
 

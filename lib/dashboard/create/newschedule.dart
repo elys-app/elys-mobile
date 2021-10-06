@@ -8,9 +8,7 @@ import '../../models/Content.dart';
 import '../../models/ContactGroup.dart';
 
 class NewSchedulePage extends StatefulWidget {
-  NewSchedulePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  NewSchedulePage({Key? key}) : super(key: key);
 
   @override
   _NewSchedulePageState createState() => _NewSchedulePageState();
@@ -193,7 +191,7 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.title,
+          'Add New Event',
           style: TextStyle(color: Colors.white),
         ),
         automaticallyImplyLeading: false,

@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class NewContentPage extends StatefulWidget {
-  NewContentPage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  NewContentPage({Key? key}) : super(key: key);
 
   @override
   _NewContentPageState createState() => _NewContentPageState();
@@ -14,7 +12,7 @@ class NewContentPage extends StatefulWidget {
 
 class _NewContentPageState extends State<NewContentPage> {
   bool _imageSelected = false;
-  File _image = new File('assets/images/elys.jpeg');
+  File _image = new File('');
 
   final formKey = GlobalKey<FormState>();
   final imagePicker = ImagePicker();
@@ -23,16 +21,23 @@ class _NewContentPageState extends State<NewContentPage> {
       textStyle: const TextStyle(fontSize: 20), primary: Colors.lightBlue);
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }
 
   Future _getImage() async {
-    final image = await imagePicker.pickImage(source: ImageSource.camera);
+    final image = await imagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       if (image != null) {
         _image = File(image.path);
         _imageSelected = true;
+        print(image.path);
+        print(_imageSelected.toString());
       }
     });
   }
@@ -42,7 +47,7 @@ class _NewContentPageState extends State<NewContentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.title,
+          'Add New Content',
           style: TextStyle(color: Colors.white),
         ),
         automaticallyImplyLeading: false,
@@ -78,15 +83,6 @@ class _NewContentPageState extends State<NewContentPage> {
                       : Container(
                           child: Image.file(_image), height: 320, width: 320)),
               SizedBox(height: 64),
-              ElevatedButton(
-                  style: style,
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      print(descriptionController.text);
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Text('Select Photo or Video')),
               const SizedBox(height: 30),
             ],
           ),
@@ -94,24 +90,40 @@ class _NewContentPageState extends State<NewContentPage> {
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Padding(
-            padding: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.only(bottom: 20),
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.pop(context);
+                _getImage();
               },
-              child: const Icon(Icons.arrow_back_ios_sharp),
-              backgroundColor: Colors.lightBlue,
+              child: const Icon(Icons.camera_sharp),
+              heroTag: null,
+              backgroundColor: _imageSelected ? Colors.lightBlue[100] : Colors.lightBlue,
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(bottom: 30),
+            padding: EdgeInsets.only(bottom: 20),
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.pop(context);
+                      if (formKey.currentState!.validate()) {
+                        Navigator.pushNamed(context, '/main');
+                      }
+                    },
+              child: const Icon(Icons.upload_sharp),
+              heroTag: null,
+              backgroundColor: _imageSelected ? Colors.lightBlue : Colors.lightBlue[100],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 5),
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/main');
               },
-              child: const Icon(Icons.camera_sharp),
+              child: const Icon(Icons.arrow_back_ios_sharp),
+              heroTag: 'Back',
               backgroundColor: Colors.lightBlue,
             ),
           ),
