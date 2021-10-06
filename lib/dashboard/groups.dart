@@ -24,7 +24,7 @@ class _GroupsPageState extends State<GroupsPage> {
   List<Contact> everyContact = List<Contact>.empty(growable: true);
   List<ContactGroup> selectedContacts =
       List<ContactGroup>.empty(growable: true);
-  Set<ContactGroup> selectedContactSet = Set<ContactGroup>.identity();
+  Set<Contact> selectedContactSet = {};
 
   @override
   void initState() {
@@ -81,12 +81,14 @@ class _GroupsPageState extends State<GroupsPage> {
   }
 
   Future<void> _getSelectedContacts(String groupId) async {
-    selectedContacts.clear();
+    selectedContactSet.clear();
     try {
-      final result = await Amplify.DataStore.query(ContactGroup.classType); //,
+      final result = await Amplify.DataStore.query(ContactGroup.classType);
+      final filteredResult =
+          result.where((item) => item.group.id == selectedGroup.id);
 
       setState(() {
-        selectedContactSet = result.toSet();
+        filteredResult.forEach((item) => selectedContactSet.add(item.contact));
         print('Selected Contact Set: ${selectedContactSet.toString()}');
         _errorOccurred = false;
       });
@@ -129,7 +131,7 @@ class _GroupsPageState extends State<GroupsPage> {
                 onChanged: (Group? newValue) {
                   if (newValue != null) {
                     selectedGroup = newValue;
-                    _getSelectedContacts(selectedGroup.name);
+                    _getSelectedContacts(selectedGroup.id);
                   }
                 },
                 items: snapshot.data);
@@ -138,17 +140,41 @@ class _GroupsPageState extends State<GroupsPage> {
         });
   }
 
+  void _changeContactMembership(Contact selectedContact) async {
+    print('Move in or Out of Group');
+    if (selectedContactSet.contains(selectedContact)) {
+      final List<ContactGroup> result =
+          await Amplify.DataStore.query(ContactGroup.classType);
+      final filteredResult = result
+          .where((item) =>
+              (item.group.id == selectedGroup.id) &&
+              (item.contact.id == selectedContact.id))
+          .toList();
+
+      print(filteredResult[0].toString());
+      await Amplify.DataStore.delete(filteredResult[0]);
+      _getSelectedContacts(selectedGroup.id);
+    }
+    else {
+      await Amplify.DataStore.save(new ContactGroup(
+        group: selectedGroup,
+        contact: selectedContact
+      ));
+      _getSelectedContacts(selectedGroup.id);
+    }
+  }
+
   Future<List<ListTile>> _getContactList() async {
     await _initContacts();
     return (everyContact.map(
       (item) => new ListTile(
         title: Text(item.name,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal)),
-        trailing: true
-            ? Icon(Icons.check_box_outline_blank_sharp)
-            : Icon(Icons.check_box_sharp),
+        trailing: selectedContactSet.contains(item)
+            ? Icon(Icons.check_box_sharp)
+            : Icon(Icons.check_box_outline_blank_sharp),
         onTap: () {
-          print('Move in or Out of Group');
+          _changeContactMembership(item);
         },
       ),
     )).toList();
