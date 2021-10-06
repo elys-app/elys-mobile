@@ -265,34 +265,40 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
                     left: 30, top: 0, right: 30.0, bottom: 8.0),
                 child: _getGroupDropdownItems(),
               ),
-              SizedBox(height: 40),
-              ElevatedButton(
-                style: style,
-                onPressed: () {
-                  _onAddEventPressed();
-                },
-                child: const Text('Add New Event'),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 20),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
-              ),
-              const SizedBox(height: 30),
+              SizedBox(height: 200),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Icon(Icons.arrow_back_ios_sharp),
-        backgroundColor: Colors.lightBlue,
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: FloatingActionButton(
+              onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  _onAddEventPressed();
+                  Navigator.pushNamed(context, '/main');
+                }
+              },
+              child: const Icon(Icons.upload_sharp),
+              heroTag: null,
+              backgroundColor: Colors.lightBlue,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.arrow_back_ios_sharp),
+              backgroundColor: Colors.lightBlue,
+            ),
+          )
+        ],
       ),
     );
   }

@@ -22,7 +22,8 @@ class _GroupsPageState extends State<GroupsPage> {
   List<Group> entries = List<Group>.empty(growable: true);
   List<ContactGroup> contactGroup = List<ContactGroup>.empty(growable: true);
   List<Contact> everyContact = List<Contact>.empty(growable: true);
-  List<ContactGroup> selectedContacts = List<ContactGroup>.empty(growable: true);
+  List<ContactGroup> selectedContacts =
+      List<ContactGroup>.empty(growable: true);
 
   @override
   void initState() {
@@ -39,8 +40,7 @@ class _GroupsPageState extends State<GroupsPage> {
       await _initGroups();
       await _initContacts();
       await _getSelectedContacts(selectedGroup.id);
-    }
-    catch (e) {
+    } catch (e) {
       print(e.toString());
     }
   }
@@ -111,7 +111,10 @@ class _GroupsPageState extends State<GroupsPage> {
             (context, AsyncSnapshot<List<DropdownMenuItem<Group>>> snapshot) {
           if (snapshot.hasData) {
             return DropdownButtonFormField<Group>(
-                style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
                 value: selectedGroup,
                 icon: const Icon(Icons.arrow_downward),
                 iconSize: 18,
@@ -132,7 +135,8 @@ class _GroupsPageState extends State<GroupsPage> {
         });
   }
 
-  List<ListTile> _getContactList() {
+  Future<List<ListTile>> _getContactList() async {
+    await _initContacts();
     return (everyContact.map(
       (item) => new ListTile(
         title: Text(item.name,
@@ -145,13 +149,36 @@ class _GroupsPageState extends State<GroupsPage> {
     )).toList();
   }
 
+  Widget _getContactItems() {
+    return FutureBuilder(
+      future: _getContactList(),
+      builder: (BuildContext context, AsyncSnapshot<List<ListTile>> snapshot) {
+        if (snapshot.hasData) {
+          return new ListView.separated(
+              separatorBuilder: (context, item) => Divider(thickness: 1),
+              shrinkWrap: true,
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, item) {
+                return snapshot.data![item];
+              });
+        } else {
+          return Text('Loading');
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Column(children: <Widget>[
-        Padding(padding: EdgeInsets.only(left: 15, right: 15), child: _getGroupDropdownItems()),
-        Column(children: _getContactList())
+        Padding(
+            padding: EdgeInsets.only(left: 15, right: 15),
+            child: _getGroupDropdownItems()),
+        Padding(
+            padding: EdgeInsets.only(left: 15, right: 15),
+            child: _getContactItems())
       ]),
     );
   }

@@ -1,10 +1,8 @@
 import 'package:elys_mobile/dashboard/dashboard.dart';
-import 'package:elys_mobile/dashboard/contacts.dart';
-import 'package:elys_mobile/dashboard/schedule.dart';
-import 'package:elys_mobile/dashboard/content.dart';
 import 'package:elys_mobile/dashboard/panic.dart';
 
 import 'package:elys_mobile/dashboard/create/newcontent.dart';
+import 'package:elys_mobile/dashboard/create/newgroup.dart';
 import 'package:elys_mobile/dashboard/create/newcontact.dart';
 import 'package:elys_mobile/dashboard/create/newschedule.dart';
 
@@ -30,6 +28,7 @@ class ElysApp extends StatelessWidget {
         '/main': (context) => MainPage(),
         '/newcontent': (context) => NewContentPage(),
         '/newcontact': (context) => NewContactPage(),
+        '/newgroup': (context) => NewGroupPage(),
         '/newschedule': (context) => NewSchedulePage()
       },
       initialRoute: '/',

@@ -3,25 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 
 import '../../models/Group.dart';
-import '../../models/Contact.dart';
 import '../../models/ContactGroup.dart';
 
-class NewContactPage extends StatefulWidget {
-  NewContactPage({Key? key}) : super(key: key);
+class NewGroupPage extends StatefulWidget {
+  NewGroupPage({Key? key}) : super(key: key);
 
   @override
-  _NewContactPageState createState() => _NewContactPageState();
+  _NewGroupPageState createState() => _NewGroupPageState();
 }
 
-class _NewContactPageState extends State<NewContactPage> {
+class _NewGroupPageState extends State<NewGroupPage> {
   final ButtonStyle style =
       ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
-  final emailController = TextEditingController();
 
   String name = '';
-  String email = '';
 
   @override
   void initState() {
@@ -33,21 +30,12 @@ class _NewContactPageState extends State<NewContactPage> {
     super.dispose();
   }
 
-  void onAddNewContactPressed() async {
-    final groupWithEveryContact = await Amplify.DataStore.query(Group.classType,
-        where: Group.NAME.eq('ALL'));
-
+  void onAddNewGroupPressed() async {
     try {
-      Contact newContact = new Contact(
+      Group newGroup = new Group(
           name: nameController.text,
-          email: emailController.text,
-          groups: List<ContactGroup>.empty(growable: false));
-      await Amplify.DataStore.save(newContact);
-      print('Saved: ${newContact.toString()}');
-      final newContactGroupItem = new ContactGroup(
-          contact: newContact, group: groupWithEveryContact[0]);
-      await Amplify.DataStore.save(newContactGroupItem);
-      print('Saved: ${newContactGroupItem.toString()}');
+          contacts: List<ContactGroup>.empty(growable: false));
+      await Amplify.DataStore.save(newGroup);
 
       Navigator.pushNamed(context, '/main');
     } catch (e) {
@@ -60,7 +48,7 @@ class _NewContactPageState extends State<NewContactPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add a New Contact',
+          'Add a New Group',
           style: TextStyle(color: Colors.white),
         ),
         automaticallyImplyLeading: false,
@@ -77,7 +65,7 @@ class _NewContactPageState extends State<NewContactPage> {
                 child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please Enter a Contact Name';
+                      return 'Please Enter a Group Name';
                     }
                     return null;
                   },
@@ -86,26 +74,7 @@ class _NewContactPageState extends State<NewContactPage> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.person),
                     border: OutlineInputBorder(),
-                    labelText: 'Contact Name',
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter an Email';
-                    }
-                    return null;
-                  },
-                  controller: emailController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(),
-                    labelText: 'Email Address',
+                    labelText: 'Group Name',
                   ),
                 ),
               ),
@@ -124,7 +93,7 @@ class _NewContactPageState extends State<NewContactPage> {
             child: FloatingActionButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  onAddNewContactPressed();
+                  onAddNewGroupPressed();
                 }
               },
               child: const Icon(Icons.upload_sharp),

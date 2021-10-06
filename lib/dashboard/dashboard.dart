@@ -3,15 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
-import '../login/login.dart';
-
 import 'content.dart';
-import 'contacts.dart';
+import 'detail.dart';
+import 'groups.dart';
 import 'schedule.dart';
-
-import 'create/newcontent.dart';
-import 'create/newcontact.dart';
-import 'create/newschedule.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -22,10 +17,12 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
+  bool _contactPage = true;
 
   List<Widget> _widgetOptions = <Widget>[
     ContentPage(),
-    ContactsPage(),
+    DetailsPage(),
+    GroupsPage(),
     SchedulePage()
   ];
 
@@ -67,29 +64,35 @@ class _MainPageState extends State<MainPage> {
           padding: EdgeInsets.all(5),
           children: <Widget>[
             Container(
-                height: 120,
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                  ),
-                  child: Text(
-                    'Hello, user',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                  ),
+              height: 120,
+              child: DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
                 ),
+                child: Text(
+                  'Hello, user',
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
+              ),
             ),
             ListTile(
               leading: Icon(Icons.settings, color: Colors.blueAccent),
               title: Text(
                 'Settings',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: Colors.blue[900]),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.blue[900]),
               ),
             ),
             ListTile(
                 leading: Icon(Icons.info_outline, color: Colors.blueAccent),
                 title: Text(
                   'About',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: Colors.blue[900]),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.blue[900]),
                 ),
                 onTap: () {
                   showAboutDialog(
@@ -101,7 +104,10 @@ class _MainPageState extends State<MainPage> {
               leading: Icon(Icons.logout_sharp, color: Colors.blueAccent),
               title: Text(
                 'Logout',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: Colors.blue[900]),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.blue[900]),
               ),
               onTap: _onLogout,
             ),
@@ -113,7 +119,7 @@ class _MainPageState extends State<MainPage> {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.lightBlue,
+        selectedItemColor: Colors.blue[900],
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.video_camera_front_rounded),
@@ -122,6 +128,10 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.email_sharp),
               label: 'Contacts',
+              backgroundColor: Colors.lightBlue),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.group_sharp),
+              label: 'Groups',
               backgroundColor: Colors.lightBlue),
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today_sharp),
@@ -148,6 +158,11 @@ class _MainPageState extends State<MainPage> {
                 break;
               }
             case 2:
+              {
+                Navigator.pushNamed(context, '/newgroup');
+                break;
+              }
+            case 3:
               {
                 Navigator.pushNamed(context, '/newschedule');
                 break;
