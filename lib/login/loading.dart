@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -15,14 +16,16 @@ import '../models/ModelProvider.dart';
 import '../amplifyconfiguration.dart';
 
 class LoadingPage extends StatefulWidget {
-  const LoadingPage({Key? key})
-      : super(key: key);
+  const LoadingPage({Key? key}) : super(key: key);
 
   @override
   _LoadingPageState createState() => _LoadingPageState();
 }
 
 class _LoadingPageState extends State<LoadingPage> {
+  late StreamSubscription hubSubscription;
+  bool _listeningToHub = true;
+
   @override
   initState() {
     super.initState();
@@ -33,14 +36,23 @@ class _LoadingPageState extends State<LoadingPage> {
     try {
       if (Amplify.isConfigured) {
         await Amplify.DataStore.start();
-        print('Ready!');
-        Navigator.pushNamed(
-            context,'/main');
+        Navigator.pushNamed(context, '/main');
       }
-    } catch(e) {
+    } catch (e) {
       print(e);
     }
   }
+
+  // void listenToHub() {
+  //   setState(() {
+  //     hubSubscription = Amplify.Hub.listen([HubChannel.DataStore], (msg) {
+  //       if (msg.eventName == "ready") {
+  //          print(msg);
+  //       }
+  //     });
+  //     _listeningToHub = true;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

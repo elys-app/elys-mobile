@@ -24,6 +24,7 @@ class _GroupsPageState extends State<GroupsPage> {
   List<Contact> everyContact = List<Contact>.empty(growable: true);
   List<ContactGroup> selectedContacts =
       List<ContactGroup>.empty(growable: true);
+  Set<ContactGroup> selectedContactSet = Set<ContactGroup>.identity();
 
   @override
   void initState() {
@@ -85,7 +86,8 @@ class _GroupsPageState extends State<GroupsPage> {
       final result = await Amplify.DataStore.query(ContactGroup.classType); //,
 
       setState(() {
-        selectedContacts = result;
+        selectedContactSet = result.toSet();
+        print('Selected Contact Set: ${selectedContactSet.toString()}');
         _errorOccurred = false;
       });
     } catch (e) {
@@ -127,6 +129,7 @@ class _GroupsPageState extends State<GroupsPage> {
                 onChanged: (Group? newValue) {
                   if (newValue != null) {
                     selectedGroup = newValue;
+                    _getSelectedContacts(selectedGroup.name);
                   }
                 },
                 items: snapshot.data);
@@ -141,7 +144,9 @@ class _GroupsPageState extends State<GroupsPage> {
       (item) => new ListTile(
         title: Text(item.name,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal)),
-        trailing: Icon(Icons.check_box_outline_blank_sharp),
+        trailing: true
+            ? Icon(Icons.check_box_outline_blank_sharp)
+            : Icon(Icons.check_box_sharp),
         onTap: () {
           print('Move in or Out of Group');
         },
@@ -174,10 +179,10 @@ class _GroupsPageState extends State<GroupsPage> {
       padding: EdgeInsets.all(10),
       child: Column(children: <Widget>[
         Padding(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: EdgeInsets.only(left: 15, right: 15, bottom: 20),
             child: _getGroupDropdownItems()),
         Padding(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: EdgeInsets.only(left: 25, right: 25),
             child: _getContactItems())
       ]),
     );
