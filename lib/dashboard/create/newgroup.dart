@@ -30,6 +30,13 @@ class _NewGroupPageState extends State<NewGroupPage> {
     super.dispose();
   }
 
+  @override
+  void setState(fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
+
   void onAddNewGroupPressed() async {
     try {
       Group newGroup = new Group(
@@ -37,7 +44,7 @@ class _NewGroupPageState extends State<NewGroupPage> {
           contacts: List<ContactGroup>.empty(growable: false));
       await Amplify.DataStore.save(newGroup);
 
-      Navigator.pushNamed(context, '/main');
+      Navigator.pop(context);
     } catch (e) {
       print(e);
     }

@@ -32,6 +32,13 @@ class _GroupsPageState extends State<GroupsPage> {
     _setup();
   }
 
+  @override
+  void setState(fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
+
   void _setup() async {
     try {
       _observeContacts();
@@ -183,7 +190,7 @@ class _GroupsPageState extends State<GroupsPage> {
         title: Text(item.name,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal)),
         trailing: selectedContactSet.contains(item)
-            ? Icon(Icons.check_box_sharp)
+            ? Icon(Icons.check_box_sharp, color: Colors.orange)
             : Icon(Icons.check_box_outline_blank_sharp),
         onTap: () {
           _changeContactMembership(item);

@@ -13,7 +13,11 @@
 * permissions and limitations under the License.
 */
 
-// ignore_for_file: public_member_api_docs
+// NOTE: This file is generated and may not follow lint rules defined in your app
+// Generated files can be excluded from analysis in analysis_options.yaml
+// For more info, see: https://dart.dev/guides/language/analysis-options#excluding-code-from-analysis
+
+// ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'Account.dart';
@@ -22,6 +26,7 @@ import 'ContactGroup.dart';
 import 'Content.dart';
 import 'Event.dart';
 import 'Group.dart';
+import 'SpecialEvent.dart';
 
 export 'Account.dart';
 export 'Contact.dart';
@@ -29,12 +34,13 @@ export 'ContactGroup.dart';
 export 'Content.dart';
 export 'Event.dart';
 export 'Group.dart';
+export 'SpecialEvent.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "90dabb06eae386de2e1a84f4f9fcf6e1";
+  String version = "a76ddbafe27ce9961fa4b3bbc09feaa5";
   @override
-  List<ModelSchema> modelSchemas = [Account.schema, Contact.schema, ContactGroup.schema, Content.schema, Event.schema, Group.schema];
+  List<ModelSchema> modelSchemas = [Account.schema, Contact.schema, ContactGroup.schema, Content.schema, Event.schema, Group.schema, SpecialEvent.schema];
   static final ModelProvider _instance = ModelProvider();
 
   static ModelProvider get instance => _instance;
@@ -63,6 +69,10 @@ class ModelProvider implements ModelProviderInterface {
     break;
     case "Group": {
     return Group.classType;
+    }
+    break;
+    case "SpecialEvent": {
+    return SpecialEvent.classType;
     }
     break;
     default: {

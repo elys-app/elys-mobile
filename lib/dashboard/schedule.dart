@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_datastore/amplify_datastore.dart';
 
 import '../models/Event.dart';
 import '../models/Group.dart';
@@ -14,8 +13,6 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  bool _errorOccurred = false;
-
   List<Event> entries = List<Event>.empty(growable: true);
 
   @override
@@ -32,6 +29,11 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
+  void _observeEvents() async {
+    final eventStream = await Amplify.DataStore.observe(Event.classType);
+    eventStream.listen((_) => _getEvents());
+  }
+
   void _getEvents() async {
     entries.clear();
     try {
@@ -39,18 +41,10 @@ class _SchedulePageState extends State<SchedulePage> {
           sortBy: [Event.EVENTMONTH.ascending()]);
       setState(() {
         entries = result;
-        _errorOccurred = false;
       });
     } catch (e) {
-      setState(() {
-        _errorOccurred = true;
-      });
+      setState(() {});
     }
-  }
-
-  void _observeEvents() async {
-    final eventStream = await Amplify.DataStore.observe(Event.classType);
-    eventStream.listen((_) => _getEvents());
   }
 
   Future<String> _getGroupNameFromId(String id) async {

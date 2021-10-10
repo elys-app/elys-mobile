@@ -1,7 +1,14 @@
+import 'dart:core';
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:elys_mobile/amplifyconfiguration.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../models/content.dart';
 
 class NewContentPage extends StatefulWidget {
   NewContentPage({Key? key}) : super(key: key);
@@ -14,6 +21,10 @@ class _NewContentPageState extends State<NewContentPage> {
   bool _imageSelected = false;
   File _image = new File('');
 
+  int _currentStep = 0;
+  String _bucket = '';
+  String _region = '';
+
   final formKey = GlobalKey<FormState>();
   final imagePicker = ImagePicker();
   final descriptionController = TextEditingController();
@@ -23,6 +34,13 @@ class _NewContentPageState extends State<NewContentPage> {
   @override
   void initState() {
     super.initState();
+    _getS3Config();
+  }
+
+  void _getS3Config() {
+    final _S3config = jsonDecode(amplifyconfig)['storage']['plugins']['awsS3StoragePlugin'];
+    _bucket = _S3config['bucket'];
+    _region = _S3config['region'];
   }
 
   @override
@@ -30,7 +48,7 @@ class _NewContentPageState extends State<NewContentPage> {
     super.dispose();
   }
 
-  Future _getImage() async {
+  Future<void> _getImage() async {
     final image = await imagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       if (image != null) {
@@ -40,6 +58,50 @@ class _NewContentPageState extends State<NewContentPage> {
         print(_imageSelected.toString());
       }
     });
+  }
+
+  Future<void> onAddNewContentPressed() async {
+    final username = (await Amplify.Auth.getCurrentUser()).username;
+    final filename = _image.path.split('/').last;
+    final key = username + '-' + filename;
+    try {
+      final UploadFileResult result =
+      await Amplify.Storage.uploadFile(local: File(_image.path), key: key);
+      await Amplify.DataStore.save(new Content(
+        dateSubmitted: new DateTime.now().toString(),
+        name: key,
+        description: descriptionController.text,
+        region: _region,
+        bucket: _bucket,
+        key: filename,
+        type: key.split('.').last
+      ));
+      Navigator.pop(context, '/main');
+    } on StorageException catch (e) {
+      print('Error uploading image: $e');
+    }
+  }
+
+  void _continue() {
+    if (_currentStep < 1) {
+      if (formKey.currentState!.validate()) {
+        setState(() => _currentStep += 1);
+      }
+      return;
+    } else if (_currentStep == 1) {
+      onAddNewContentPressed();
+      return;
+    }
+  }
+
+  void _cancel() {
+    if (_currentStep == 0) {
+      Navigator.pop(context);
+      return;
+    } else if (_currentStep > 0) {
+      setState(() => _currentStep -= 1);
+    }
+    return;
   }
 
   @override
@@ -52,82 +114,88 @@ class _NewContentPageState extends State<NewContentPage> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: Form(
-        key: formKey,
-        child: Center(
+      body: Container(
+        child: Form(
+          key: formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 30.0, top: 5.0, right: 30.0, bottom: 5.0),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter a Description';
-                    }
-                    return null;
-                  },
-                  controller: descriptionController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: 'Description',
-                  ),
+            children: [
+              Expanded(
+                child: Stepper(
+                  type: StepperType.vertical,
+                  physics: ScrollPhysics(),
+                  currentStep: _currentStep,
+                  onStepTapped: (step) => setState(() => _currentStep = step),
+                  onStepContinue: _continue,
+                  onStepCancel: _cancel,
+                  steps: <Step>[
+                    Step(
+                      title: new Text('Select'),
+                      content: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 30.0, top: 5.0, right: 30.0, bottom: 5.0),
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter a Description';
+                                }
+                                return null;
+                              },
+                              controller: descriptionController,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelText: 'Description',
+                              ),
+                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 30.0,
+                                  top: 5.0,
+                                  right: 30.0,
+                                  bottom: 5.0),
+                              child: new ElevatedButton.icon(
+                                  icon: Icon(Icons.photo_camera),
+                                  label: Text('Select a Photo or Video'),
+                                  onPressed: () {
+                                    _getImage();
+                                  })),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 30.0,
+                                  top: 5.0,
+                                  right: 30.0,
+                                  bottom: 5.0),
+                              child: !_imageSelected
+                                  ? Text('No Image Selected')
+                                  : Container(
+                                      child: Image.file(_image),
+                                      height: 120,
+                                      width: 120)),
+                          SizedBox(height: 64),
+                          const SizedBox(height: 30),
+                        ],
+                      ),
+                      isActive: _currentStep >= 0,
+                      state: _currentStep >= 0
+                          ? StepState.complete
+                          : StepState.disabled,
+                    ),
+                    Step(
+                      title: new Text('Upload'),
+                      content: Text('Press Continue to Upload', style: (TextStyle(fontSize: 18))),
+                      isActive: _currentStep >= 0,
+                      state: _currentStep >= 1
+                          ? StepState.complete
+                          : StepState.disabled,
+                    ),
+                  ],
                 ),
               ),
-              Padding(
-                  padding: EdgeInsets.only(
-                      left: 30.0, top: 5.0, right: 30.0, bottom: 5.0),
-                  child: !_imageSelected
-                      ? Text('No Image Selected')
-                      : Container(
-                          child: Image.file(_image), height: 320, width: 320)),
-              SizedBox(height: 64),
-              const SizedBox(height: 30),
             ],
           ),
         ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 20),
-            child: FloatingActionButton(
-              onPressed: () {
-                _getImage();
-              },
-              child: const Icon(Icons.camera_sharp),
-              heroTag: null,
-              backgroundColor: _imageSelected ? Colors.lightBlue[100] : Colors.lightBlue,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 20),
-            child: FloatingActionButton(
-              onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        Navigator.pushNamed(context, '/main');
-                      }
-                    },
-              child: const Icon(Icons.upload_sharp),
-              heroTag: null,
-              backgroundColor: _imageSelected ? Colors.lightBlue : Colors.lightBlue[100],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 5),
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/main');
-              },
-              child: const Icon(Icons.arrow_back_ios_sharp),
-              heroTag: 'Back',
-              backgroundColor: Colors.lightBlue,
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -186,8 +186,6 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle style =
-        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
     return Scaffold(
       appBar: AppBar(
         title: Text(

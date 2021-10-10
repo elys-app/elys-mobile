@@ -33,6 +33,13 @@ class _NewContactPageState extends State<NewContactPage> {
     super.dispose();
   }
 
+  @override
+  void setState(fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
+
   void onAddNewContactPressed() async {
     final groupWithEveryContact = await Amplify.DataStore.query(Group.classType,
         where: Group.NAME.eq('ALL'));

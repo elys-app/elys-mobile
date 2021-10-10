@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'login.dart';
-
 class PasswordPage extends StatefulWidget {
   PasswordPage({Key? key, required this.title}) : super(key: key);
 

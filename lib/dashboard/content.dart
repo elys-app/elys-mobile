@@ -15,8 +15,6 @@ class ContentPage extends StatefulWidget {
 }
 
 class _ContentPageState extends State<ContentPage> {
-  bool _errorOccurred = false;
-
   List<Content> entries = List<Content>.empty(growable: true);
 
   @override
@@ -38,13 +36,10 @@ class _ContentPageState extends State<ContentPage> {
           sortBy: [Content.DESCRIPTION.ascending()]);
       setState(() {
         entries = result;
-        _errorOccurred = false;
       });
     } catch (e) {
       print(e);
-      setState(() {
-        _errorOccurred = true;
-      });
+      setState(() {});
     }
   }
 
@@ -100,8 +95,7 @@ class _ContentPageState extends State<ContentPage> {
 
   void _removeContentItem(Content item) async {
     try {
-      final RemoveResult result = await Amplify.Storage.remove(key: item.key);
-      print('Deleted file: ${result}');
+      await Amplify.Storage.remove(key: item.key);
     } on StorageException catch (e) {
       print('Error deleting file: $e');
     }

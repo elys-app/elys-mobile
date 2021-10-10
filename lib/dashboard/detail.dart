@@ -11,8 +11,6 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  bool _errorOccurred = false;
-
   List<Contact> entries = List<Contact>.empty(growable: true);
 
   @override
@@ -35,12 +33,9 @@ class _DetailsPageState extends State<DetailsPage> {
           sortBy: [Contact.NAME.ascending()]);
       setState(() {
         entries = result;
-        _errorOccurred = false;
       });
     } catch (e) {
-      setState(() {
-        _errorOccurred = true;
-      });
+      setState(() {});
     }
   }
 
@@ -91,8 +86,8 @@ class _DetailsPageState extends State<DetailsPage> {
     print('Item: ${contact}');
     SnackBar snackBar = SnackBar(
         content: Text('Delete is Currently Unavailable'),
-    duration: Duration(seconds: 3),
-    action: SnackBarAction(label: 'OK', onPressed: () {}));
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}));
 
     // To Do: waiting for fix to delete with hasOne
     //

@@ -3,17 +3,7 @@ import 'dart:async';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_datastore/amplify_datastore.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
-
-import 'login.dart';
-import '../dashboard/dashboard.dart';
-import '../models/ModelProvider.dart';
-import '../amplifyconfiguration.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key}) : super(key: key);
@@ -30,6 +20,11 @@ class _LoadingPageState extends State<LoadingPage> {
   initState() {
     super.initState();
     _startAmplify();
+  }
+
+  @override dispose () {
+    hubSubscription.cancel();
+    super.dispose();
   }
 
   Future<void> _startAmplify() async {

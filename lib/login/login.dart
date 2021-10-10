@@ -6,13 +6,11 @@ import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 import '../models/ModelProvider.dart';
 import '../amplifyconfiguration.dart';
 
 import 'password.dart';
-import 'loading.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, required this.title}) : super(key: key);

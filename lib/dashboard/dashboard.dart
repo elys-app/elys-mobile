@@ -17,7 +17,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
-  bool _contactPage = true;
+  String _user = '';
 
   List<Widget> _widgetOptions = <Widget>[
     ContentPage(),
@@ -28,15 +28,35 @@ class _MainPageState extends State<MainPage> {
 
   void initState() {
     super.initState();
+    _setUser();
   }
 
-  Future<String> _onLogout() async {
+  Future<void> _setUser() async {
+    final user = await Amplify.Auth.getCurrentUser();
+    _user = user.username;
+  }
+
+  Widget _getUserName() {
+    return new FutureBuilder(
+      builder: (context, AsyncSnapshot<AuthUser> snapshot) {
+        if (snapshot.hasData) {
+          String welcome = 'Welcome: ${snapshot.data!.username}';
+          return Text(welcome,
+              style: TextStyle(color: Colors.white, fontSize: 24));
+        } else {
+          return Text('Loading');
+        }
+      },
+      future: Amplify.Auth.getCurrentUser(),
+    );
+  }
+
+  Future<void> _onLogout() async {
     try {
       Amplify.Auth.signOut().then((_) {
         Amplify.DataStore.clear();
         Navigator.pushNamed(context, '/');
       });
-      return 'success';
     } on AuthException catch (e) {
       SnackBar snackBar = SnackBar(
         content: Text('${e.message}'),
@@ -44,7 +64,6 @@ class _MainPageState extends State<MainPage> {
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return 'failed';
     }
   }
 
@@ -69,10 +88,7 @@ class _MainPageState extends State<MainPage> {
                 decoration: BoxDecoration(
                   color: Colors.blue,
                 ),
-                child: Text(
-                  'Hello, user',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                ),
+                child: _getUserName(),
               ),
             ),
             ListTile(

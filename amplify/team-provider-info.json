@@ -35,6 +35,10 @@
         "newCard": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
           "s3Key": "amplify-builds/newCard-726865567856334f7a65-build.zip"
+        },
+        "checkSpecialEvents": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/checkSpecialEvents-4e59456b767259763739-build.zip"
         }
       }
     }
