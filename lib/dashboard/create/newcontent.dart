@@ -38,9 +38,9 @@ class _NewContentPageState extends State<NewContentPage> {
   }
 
   void _getS3Config() {
-    final _S3config = jsonDecode(amplifyconfig)['storage']['plugins']['awsS3StoragePlugin'];
-    _bucket = _S3config['bucket'];
-    _region = _S3config['region'];
+    final s3config = jsonDecode(amplifyconfig)['storage']['plugins']['awsS3StoragePlugin'];
+    _bucket = s3config['bucket'];
+    _region = s3config['region'];
   }
 
   @override
@@ -65,7 +65,6 @@ class _NewContentPageState extends State<NewContentPage> {
     final filename = _image.path.split('/').last;
     final key = username + '-' + filename;
     try {
-      final UploadFileResult result =
       await Amplify.Storage.uploadFile(local: File(_image.path), key: key);
       await Amplify.DataStore.save(new Content(
         dateSubmitted: new DateTime.now().toString(),
@@ -184,7 +183,7 @@ class _NewContentPageState extends State<NewContentPage> {
                     ),
                     Step(
                       title: new Text('Upload'),
-                      content: Text('Press Continue to Upload', style: (TextStyle(fontSize: 18))),
+                      content: Spacer(),
                       isActive: _currentStep >= 0,
                       state: _currentStep >= 1
                           ? StepState.complete

@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:amplify_flutter/amplify.dart';
 
 class LoadingPage extends StatefulWidget {
-  const LoadingPage({Key? key}) : super(key: key);
+  const LoadingPage({Key? key, required this.destination}) : super(key: key);
+
+  final String destination;
 
   @override
   _LoadingPageState createState() => _LoadingPageState();
@@ -14,7 +16,6 @@ class LoadingPage extends StatefulWidget {
 
 class _LoadingPageState extends State<LoadingPage> {
   late StreamSubscription hubSubscription;
-  bool _listeningToHub = true;
 
   @override
   initState() {
@@ -22,32 +23,38 @@ class _LoadingPageState extends State<LoadingPage> {
     _startAmplify();
   }
 
-  @override dispose () {
-    hubSubscription.cancel();
+  @override
+  dispose() {
     super.dispose();
+    hubSubscription.cancel();
   }
 
   Future<void> _startAmplify() async {
     try {
       if (Amplify.isConfigured) {
         await Amplify.DataStore.start();
-        Navigator.pushNamed(context, '/main');
+        hubSubscription = Amplify.Hub.listen([HubChannel.DataStore], (event) {
+          print('Event: ${event.eventName}');
+          if (event.eventName == 'ready') {
+            if (widget.destination == 'main') {
+              Navigator.pushNamed(context, '/main');
+            }
+            else {
+              Navigator.pushNamed(context, '/panic');
+            }
+          }
+        });
       }
     } catch (e) {
       print(e);
     }
   }
 
-  // void listenToHub() {
-  //   setState(() {
-  //     hubSubscription = Amplify.Hub.listen([HubChannel.DataStore], (msg) {
-  //       if (msg.eventName == "ready") {
-  //          print(msg);
-  //       }
-  //     });
-  //     _listeningToHub = true;
-  //   });
-  // }
+  Future<void> _exit() async {
+    await Amplify.DataStore.clear();
+    await Amplify.Auth.signOut();
+    Navigator.pushNamed(context, '/');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +66,26 @@ class _LoadingPageState extends State<LoadingPage> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: Container(
-        child: SpinKitThreeBounce(
-          color: Colors.lightBlue,
-          size: 50.0,
-        ),
-      ),
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SpinKitThreeBounce(
+              color: Colors.lightBlue,
+              size: 50.0,
+            ),
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _exit();
+                  },
+                  child: Text(
+                    'Stuck?',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ))
+          ]),
     );
   }
 }

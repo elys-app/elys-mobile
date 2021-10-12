@@ -38,7 +38,7 @@ export 'SpecialEvent.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "a76ddbafe27ce9961fa4b3bbc09feaa5";
+  String version = "8e93d98c1d8f993c390d3143fcb8f3e7";
   @override
   List<ModelSchema> modelSchemas = [Account.schema, Contact.schema, ContactGroup.schema, Content.schema, Event.schema, Group.schema, SpecialEvent.schema];
   static final ModelProvider _instance = ModelProvider();

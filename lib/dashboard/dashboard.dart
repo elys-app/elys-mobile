@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify.dart';
@@ -16,8 +17,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  late StreamSubscription hubSubscription;
+
   int _selectedIndex = 0;
-  String _user = '';
 
   List<Widget> _widgetOptions = <Widget>[
     ContentPage(),
@@ -28,12 +30,6 @@ class _MainPageState extends State<MainPage> {
 
   void initState() {
     super.initState();
-    _setUser();
-  }
-
-  Future<void> _setUser() async {
-    final user = await Amplify.Auth.getCurrentUser();
-    _user = user.username;
   }
 
   Widget _getUserName() {
@@ -53,8 +49,9 @@ class _MainPageState extends State<MainPage> {
 
   Future<void> _onLogout() async {
     try {
+      Navigator.pop(context);
+      await Amplify.DataStore.clear();
       Amplify.Auth.signOut().then((_) {
-        Amplify.DataStore.clear();
         Navigator.pushNamed(context, '/');
       });
     } on AuthException catch (e) {

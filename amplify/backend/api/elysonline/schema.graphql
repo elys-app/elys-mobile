@@ -1,31 +1,24 @@
-type Account @model 
-@auth(rules: [{allow: owner}])
-@key(name: "byUserName", fields:["userName"], queryField: "accountByUserName")
-{
+type Account @model @auth(rules: [{allow: owner}]) @key(name: "byUserName", fields: ["userName"], queryField: "accountByUserName") {
   id: ID!
   userName: String!
   executorId: ID!
-  customerId: String! 
+  customerId: String!
   subscriptionId: String
-  executor: Contact @connection (fields: ["executorId"])
+  executor: Contact @connection(fields: ["executorId"])
 }
 
-type Content @model
-@auth(rules: [{allow: owner}])
-{
+type Content @model @auth(rules: [{allow: owner}]) {
   id: ID!
   dateSubmitted: String!
   description: String!
   name: String!
   type: String!
   bucket: String!
-  region: String! 
+  region: String!
   key: String!
 }
 
-type Event @model 
-@auth(rules: [{allow: owner}])
-{
+type Event @model @auth(rules: [{allow: owner}]) {
   id: ID!
   groupId: ID!
   contentId: ID!
@@ -36,39 +29,30 @@ type Event @model
   description: String
 }
 
-type SpecialEvent @model
-@auth(rules: [{allow: owner}])
-{
+type SpecialEvent @model @auth(rules: [{allow: owner}]) {
   id: ID!
   eventId: ID!
   timeSubmitted: AWSDateTime!
-  event: Event @connection (fields: ["eventId"])
+  event: Event @connection(fields: ["eventId"])
+  warned: Boolean
+  sent: Boolean
 }
 
-type Contact @model 
-@auth(rules: [{allow: owner}])
-@key (fields: ["email"], name: "contactByEmail",  queryField: "contactByEmail")
-{
+type Contact @model @auth(rules: [{allow: owner}]) @key(fields: ["email"], name: "contactByEmail", queryField: "contactByEmail") {
   id: ID!
   name: String!
   email: String!
   relationship: String
-  groups: [ContactGroup] @connection(name: "byContact" fields: ["id"])
+  groups: [ContactGroup] @connection(name: "byContact", fields: ["id"])
 }
 
-type Group @model 
-@auth(rules: [{allow: owner}])
-@key (fields: ["name"], name: "groupByName", queryField: "groupByName") 
-{
+type Group @model @auth(rules: [{allow: owner}]) @key(fields: ["name"], name: "groupByName", queryField: "groupByName") {
   id: ID!
   name: String!
-  contacts: [ContactGroup]! @connection(name: "byGroup" fields: ["id"])
+  contacts: [ContactGroup]! @connection(name: "byGroup", fields: ["id"])
 }
 
-type ContactGroup @model 
-@auth(rules: [{allow: owner}])
-@key(name: "byContact", fields: ["contactId", "groupId"], queryField: "groupsByContact")
-@key(name: "byGroup", fields: ["groupId", "contactId"], queryField: "contactsByGroup") {
+type ContactGroup @model @auth(rules: [{allow: owner}]) @key(name: "byContact", fields: ["contactId", "groupId"], queryField: "groupsByContact") @key(name: "byGroup", fields: ["groupId", "contactId"], queryField: "contactsByGroup") {
   id: ID!
   contactId: ID!
   groupId: ID!
@@ -76,8 +60,7 @@ type ContactGroup @model
   group: Group! @connection(fields: ["groupId"])
 }
 
-type StripeSubscription
-{
+type StripeSubscription {
   subscriptionId: String
   clientSecret: String
 }
@@ -94,5 +77,6 @@ type Mutation {
   getInvoices(customerId: String): [StripeInvoices]! @function(name: "getInvoices-${env}")
   emailGroup(toAddresses: [String]!, eventText: String!): String @function(name: "emailGroup-${env}")
   newCard(customerId: String!, paymentMethodId: String!): String @function(name: "newCard-${env}")
-  checkSpecialEvents(startTime: String!): String@function(name: "checkSpecialEvents-${env}")
+  checkSpecialEvents(startTime: String!): String @function(name: "checkSpecialEvents-${env}")
 }
+ 

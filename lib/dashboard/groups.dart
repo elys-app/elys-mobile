@@ -15,8 +15,6 @@ class GroupsPage extends StatefulWidget {
 }
 
 class _GroupsPageState extends State<GroupsPage> {
-  bool _errorOccurred = false;
-
   Group selectedGroup =
       new Group(name: '', contacts: List<ContactGroup>.empty(growable: true));
   List<Group> entries = List<Group>.empty(growable: true);
@@ -77,12 +75,9 @@ class _GroupsPageState extends State<GroupsPage> {
         List<Group> s = result.where((group) => group.name == 'ALL').toList();
         selectedGroup = s[0];
         print("Selected Group: " + selectedGroup.toString());
-        _errorOccurred = false;
       });
     } catch (e) {
-      setState(() {
-        _errorOccurred = true;
-      });
+      setState(() {});
     }
   }
 
@@ -93,12 +88,9 @@ class _GroupsPageState extends State<GroupsPage> {
       result.sort((a, b) => a.name.compareTo(b.name));
       setState(() {
         everyContact = result;
-        _errorOccurred = false;
       });
     } catch (e) {
-      setState(() {
-        _errorOccurred = true;
-      });
+      setState(() {});
     }
   }
 
@@ -112,12 +104,10 @@ class _GroupsPageState extends State<GroupsPage> {
       setState(() {
         filteredResult.forEach((item) => selectedContactSet.add(item.contact));
         print('Selected Contact Set: ${selectedContactSet.toString()}');
-        _errorOccurred = false;
       });
     } catch (e) {
       setState(() {
         print(e.toString());
-        _errorOccurred = true;
       });
     }
   }
@@ -163,23 +153,24 @@ class _GroupsPageState extends State<GroupsPage> {
   }
 
   void _changeContactMembership(Contact selectedContact) async {
-    print('Move in or Out of Group');
-    if (selectedContactSet.contains(selectedContact)) {
-      final List<ContactGroup> result =
-          await Amplify.DataStore.query(ContactGroup.classType);
-      final filteredResult = result
-          .where((item) =>
-              (item.group.id == selectedGroup.id) &&
-              (item.contact.id == selectedContact.id))
-          .toList();
+    if (selectedGroup.name != 'ALL') {
+      if (selectedContactSet.contains(selectedContact)) {
+        final List<ContactGroup> result =
+        await Amplify.DataStore.query(ContactGroup.classType);
+        final filteredResult = result
+            .where((item) =>
+        (item.group.id == selectedGroup.id) &&
+            (item.contact.id == selectedContact.id))
+            .toList();
 
-      print(filteredResult[0].toString());
-      await Amplify.DataStore.delete(filteredResult[0]);
-      _getSelectedContacts(selectedGroup.id);
-    } else {
-      await Amplify.DataStore.save(
-          new ContactGroup(group: selectedGroup, contact: selectedContact));
-      _getSelectedContacts(selectedGroup.id);
+        print(filteredResult[0].toString());
+        await Amplify.DataStore.delete(filteredResult[0]);
+        _getSelectedContacts(selectedGroup.id);
+      } else {
+        await Amplify.DataStore.save(
+            new ContactGroup(group: selectedGroup, contact: selectedContact));
+        _getSelectedContacts(selectedGroup.id);
+      }
     }
   }
 

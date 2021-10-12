@@ -20,7 +20,6 @@ class _ContentPageState extends State<ContentPage> {
   @override
   void initState() {
     super.initState();
-    // _getContent();
   }
 
   @override

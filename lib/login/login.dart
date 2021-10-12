@@ -6,9 +6,9 @@ import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import '../amplifyconfiguration.dart';
 
 import '../models/ModelProvider.dart';
-import '../amplifyconfiguration.dart';
 
 import 'password.dart';
 
@@ -52,8 +52,7 @@ class _LoginPageState extends State<LoginPage> {
     final storage = AmplifyStorageS3();
 
     final provider = new ModelProvider();
-    final dataStore =
-        AmplifyDataStore(modelProvider: provider, syncInterval: 3);
+    final dataStore = AmplifyDataStore(modelProvider: provider);
 
     try {
       if (!Amplify.isConfigured) {
@@ -65,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _onLoginPressed() async {
+  Future<void> _load(String destination) async {
     if (formKey.currentState!.validate()) {
       setState(() {
         userName = userNameController.text;
@@ -73,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
       });
       try {
         await Amplify.Auth.signIn(username: userName, password: password);
-        Navigator.pushNamed(context, '/loading');
+        Navigator.pushNamed(context, '/loading', arguments: destination);
       } on InvalidStateException catch (e) {
         Amplify.Auth.signOut();
         SnackBar snackBar = SnackBar(
@@ -93,32 +92,12 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Future<void> _onLoginPressed() async {
+    _load('main');
+  }
+
   Future<void> _onGoToPanicPage() async {
-    if (formKey.currentState!.validate()) {
-      setState(() {
-        userName = userNameController.text;
-        password = passwordController.text;
-      });
-      try {
-        await Amplify.Auth.signIn(username: userName, password: password);
-        Navigator.pushNamed(context, '/panic');
-      } on InvalidStateException catch (e) {
-        Amplify.Auth.signOut();
-        SnackBar snackBar = SnackBar(
-          content: Text('${e.message}'),
-          duration: Duration(seconds: 3),
-          action: SnackBarAction(label: 'OK', onPressed: () {}),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      } on NotAuthorizedException catch (e) {
-        SnackBar snackBar = SnackBar(
-          content: Text('${e.message}'),
-          duration: Duration(seconds: 3),
-          action: SnackBarAction(label: 'OK', onPressed: () {}),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-    }
+    _load('panic');
   }
 
   @override

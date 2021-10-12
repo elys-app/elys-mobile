@@ -1,20 +1,20 @@
 {
-  "features": {
-    "graphqltransformer": {
-      "addmissingownerfields": true,
-      "validatetypenamereservedwords": true,
-      "useexperimentalpipelinedtransformer": false,
-      "enableiterativegsiupdates": false
-    },
-    "frontend-ios": {
-      "enablexcodeintegration": true
-    },
-    "auth": {
-      "enablecaseinsensitivity": true
-    },
-    "codegen": {
-      "useappsyncmodelgenplugin": true,
-      "enableDartNullSafety": true
+    "features": {
+        "graphqltransformer": {
+            "addmissingownerfields": true,
+            "validatetypenamereservedwords": true,
+            "useexperimentalpipelinedtransformer": false,
+            "enableiterativegsiupdates": true
+        },
+        "frontend-ios": {
+            "enablexcodeintegration": true
+        },
+        "auth": {
+            "enablecaseinsensitivity": true
+        },
+        "codegen": {
+            "useappsyncmodelgenplugin": true,
+            "enableDartNullSafety": true
+        }
     }
-  }
 }

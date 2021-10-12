@@ -83,11 +83,11 @@ class _DetailsPageState extends State<DetailsPage> {
   void _removeContactItem(Contact item) async {
     final contact = (await Amplify.DataStore.query(Contact.classType,
         where: Contact.ID.eq(item.id)))[0];
-    print('Item: ${contact}');
     SnackBar snackBar = SnackBar(
         content: Text('Delete is Currently Unavailable'),
         duration: Duration(seconds: 3),
         action: SnackBarAction(label: 'OK', onPressed: () {}));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
     // To Do: waiting for fix to delete with hasOne
     //
