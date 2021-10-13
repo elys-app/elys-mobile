@@ -56,7 +56,7 @@ class _NewContactPageState extends State<NewContactPage> {
       await Amplify.DataStore.save(newContactGroupItem);
       print('Saved: ${newContactGroupItem.toString()}');
 
-      Navigator.pushNamed(context, '/main');
+      Navigator.pop(context);
     } catch (e) {
       print(e);
     }

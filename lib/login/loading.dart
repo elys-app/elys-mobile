@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_datastore/amplify_datastore.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key, required this.destination}) : super(key: key);
@@ -32,6 +33,8 @@ class _LoadingPageState extends State<LoadingPage> {
   Future<void> _startAmplify() async {
     try {
       if (Amplify.isConfigured) {
+        await Amplify.DataStore.clear();
+        await Amplify.DataStore.stop();
         await Amplify.DataStore.start();
         hubSubscription = Amplify.Hub.listen([HubChannel.DataStore], (event) {
           print('Event: ${event.eventName}');

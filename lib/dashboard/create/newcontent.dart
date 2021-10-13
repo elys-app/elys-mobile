@@ -75,7 +75,7 @@ class _NewContentPageState extends State<NewContentPage> {
         key: filename,
         type: key.split('.').last
       ));
-      Navigator.pop(context, '/main');
+      Navigator.pop(context);
     } on StorageException catch (e) {
       print('Error uploading image: $e');
     }

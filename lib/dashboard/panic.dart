@@ -157,9 +157,6 @@ class _PanicPageState extends State<PanicPage> {
 
     await Amplify.Storage.remove(key: contentItems[0].key);
     await Amplify.DataStore.delete(specialEvents[0]);
-    await Amplify.DataStore.delete(events[0]);
-    await Amplify.DataStore.delete(_contentItem[0]);
-    await Amplify.DataStore.delete(_group[0]);
   }
 
   void _cancelCountDown() {

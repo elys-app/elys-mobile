@@ -90,8 +90,8 @@ class _DetailsPageState extends State<DetailsPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
     // To Do: waiting for fix to delete with hasOne
-    //
-    // await Amplify.DataStore.delete(contact);
+
+    await Amplify.DataStore.delete(contact);
   }
 
   @override
