@@ -28,7 +28,6 @@ import 'package:flutter/foundation.dart';
 class Content extends Model {
   static const classType = const _ContentModelType();
   final String id;
-  final String? _dateSubmitted;
   final String? _description;
   final String? _name;
   final String? _type;
@@ -42,14 +41,6 @@ class Content extends Model {
   @override
   String getId() {
     return id;
-  }
-  
-  String get dateSubmitted {
-    try {
-      return _dateSubmitted!;
-    } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
-    }
   }
   
   String get description {
@@ -100,12 +91,11 @@ class Content extends Model {
     }
   }
   
-  const Content._internal({required this.id, required dateSubmitted, required description, required name, required type, required bucket, required region, required key}): _dateSubmitted = dateSubmitted, _description = description, _name = name, _type = type, _bucket = bucket, _region = region, _key = key;
+  const Content._internal({required this.id, required description, required name, required type, required bucket, required region, required key}): _description = description, _name = name, _type = type, _bucket = bucket, _region = region, _key = key;
   
-  factory Content({String? id, required String dateSubmitted, required String description, required String name, required String type, required String bucket, required String region, required String key}) {
+  factory Content({String? id, required String description, required String name, required String type, required String bucket, required String region, required String key}) {
     return Content._internal(
       id: id == null ? UUID.getUUID() : id,
-      dateSubmitted: dateSubmitted,
       description: description,
       name: name,
       type: type,
@@ -123,7 +113,6 @@ class Content extends Model {
     if (identical(other, this)) return true;
     return other is Content &&
       id == other.id &&
-      _dateSubmitted == other._dateSubmitted &&
       _description == other._description &&
       _name == other._name &&
       _type == other._type &&
@@ -141,7 +130,6 @@ class Content extends Model {
     
     buffer.write("Content {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("dateSubmitted=" + "$_dateSubmitted" + ", ");
     buffer.write("description=" + "$_description" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("type=" + "$_type" + ", ");
@@ -153,10 +141,9 @@ class Content extends Model {
     return buffer.toString();
   }
   
-  Content copyWith({String? id, String? dateSubmitted, String? description, String? name, String? type, String? bucket, String? region, String? key}) {
+  Content copyWith({String? id, String? description, String? name, String? type, String? bucket, String? region, String? key}) {
     return Content(
       id: id ?? this.id,
-      dateSubmitted: dateSubmitted ?? this.dateSubmitted,
       description: description ?? this.description,
       name: name ?? this.name,
       type: type ?? this.type,
@@ -167,7 +154,6 @@ class Content extends Model {
   
   Content.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _dateSubmitted = json['dateSubmitted'],
       _description = json['description'],
       _name = json['name'],
       _type = json['type'],
@@ -176,11 +162,10 @@ class Content extends Model {
       _key = json['key'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'dateSubmitted': _dateSubmitted, 'description': _description, 'name': _name, 'type': _type, 'bucket': _bucket, 'region': _region, 'key': _key
+    'id': id, 'description': _description, 'name': _name, 'type': _type, 'bucket': _bucket, 'region': _region, 'key': _key
   };
 
   static final QueryField ID = QueryField(fieldName: "content.id");
-  static final QueryField DATESUBMITTED = QueryField(fieldName: "dateSubmitted");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField TYPE = QueryField(fieldName: "type");
@@ -205,12 +190,6 @@ class Content extends Model {
     ];
     
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Content.DATESUBMITTED,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Content.DESCRIPTION,

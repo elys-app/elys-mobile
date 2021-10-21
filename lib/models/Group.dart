@@ -149,7 +149,7 @@ class Group extends Model {
       key: Group.CONTACTS,
       isRequired: false,
       ofModelName: (ContactGroup).toString(),
-      associatedKey: ContactGroup.ID
+      associatedKey: ContactGroup.GROUP
     ));
   });
 }

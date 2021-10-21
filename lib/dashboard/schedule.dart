@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 
 import '../models/Event.dart';
-import '../models/Group.dart';
+import '../models/Collection.dart';
 
 class SchedulePage extends StatefulWidget {
   SchedulePage({Key? key}) : super(key: key);
@@ -48,8 +48,9 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   Future<String> _getGroupNameFromId(String id) async {
-    List<Group> result = await Amplify.DataStore.query(Group.classType);
-    List<Group> group = result.where((item) => item.id == id).toList();
+    List<Collection> result =
+        await Amplify.DataStore.query(Collection.classType);
+    List<Collection> group = result.where((item) => item.id == id).toList();
     if (group != null) {
       return group[0].name;
     } else {

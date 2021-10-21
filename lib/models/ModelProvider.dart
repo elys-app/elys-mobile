@@ -21,26 +21,26 @@
 
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'Account.dart';
+import 'Collection.dart';
 import 'Contact.dart';
 import 'ContactGroup.dart';
 import 'Content.dart';
 import 'Event.dart';
-import 'Group.dart';
 import 'SpecialEvent.dart';
 
 export 'Account.dart';
+export 'Collection.dart';
 export 'Contact.dart';
 export 'ContactGroup.dart';
 export 'Content.dart';
 export 'Event.dart';
-export 'Group.dart';
 export 'SpecialEvent.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "8e93d98c1d8f993c390d3143fcb8f3e7";
+  String version = "bc3cf1d041ad6983a55e096579edd735";
   @override
-  List<ModelSchema> modelSchemas = [Account.schema, Contact.schema, ContactGroup.schema, Content.schema, Event.schema, Group.schema, SpecialEvent.schema];
+  List<ModelSchema> modelSchemas = [Account.schema, Collection.schema, Contact.schema, ContactGroup.schema, Content.schema, Event.schema, SpecialEvent.schema];
   static final ModelProvider _instance = ModelProvider();
 
   static ModelProvider get instance => _instance;
@@ -49,6 +49,10 @@ class ModelProvider implements ModelProviderInterface {
     switch(modelName) {
     case "Account": {
     return Account.classType;
+    }
+    break;
+    case "Collection": {
+    return Collection.classType;
     }
     break;
     case "Contact": {
@@ -65,10 +69,6 @@ class ModelProvider implements ModelProviderInterface {
     break;
     case "Event": {
     return Event.classType;
-    }
-    break;
-    case "Group": {
-    return Group.classType;
     }
     break;
     case "SpecialEvent": {

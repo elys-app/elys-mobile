@@ -30,7 +30,7 @@ class ContactGroup extends Model {
   static const classType = const _ContactGroupModelType();
   final String id;
   final Contact? _contact;
-  final Group? _group;
+  final Collection? _group;
 
   @override
   getInstanceType() => classType;
@@ -48,7 +48,7 @@ class ContactGroup extends Model {
     }
   }
   
-  Group get group {
+  Collection get group {
     try {
       return _group!;
     } catch(e) {
@@ -58,7 +58,7 @@ class ContactGroup extends Model {
   
   const ContactGroup._internal({required this.id, required contact, required group}): _contact = contact, _group = group;
   
-  factory ContactGroup({String? id, required Contact contact, required Group group}) {
+  factory ContactGroup({String? id, required Contact contact, required Collection group}) {
     return ContactGroup._internal(
       id: id == null ? UUID.getUUID() : id,
       contact: contact,
@@ -94,7 +94,7 @@ class ContactGroup extends Model {
     return buffer.toString();
   }
   
-  ContactGroup copyWith({String? id, Contact? contact, Group? group}) {
+  ContactGroup copyWith({String? id, Contact? contact, Collection? group}) {
     return ContactGroup(
       id: id ?? this.id,
       contact: contact ?? this.contact,
@@ -107,7 +107,7 @@ class ContactGroup extends Model {
         ? Contact.fromJson(new Map<String, dynamic>.from(json['contact']['serializedData']))
         : null,
       _group = json['group']?['serializedData'] != null
-        ? Group.fromJson(new Map<String, dynamic>.from(json['group']['serializedData']))
+        ? Collection.fromJson(new Map<String, dynamic>.from(json['group']['serializedData']))
         : null;
   
   Map<String, dynamic> toJson() => {
@@ -120,7 +120,7 @@ class ContactGroup extends Model {
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Contact).toString()));
   static final QueryField GROUP = QueryField(
     fieldName: "group",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Group).toString()));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Collection).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "ContactGroup";
     modelSchemaDefinition.pluralName = "ContactGroups";
@@ -150,8 +150,8 @@ class ContactGroup extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: ContactGroup.GROUP,
       isRequired: true,
-      targetName: "groupId",
-      ofModelName: (Group).toString()
+      targetName: "collectionId",
+      ofModelName: (Collection).toString()
     ));
   });
 }

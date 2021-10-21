@@ -67,7 +67,6 @@ class _NewContentPageState extends State<NewContentPage> {
     try {
       await Amplify.Storage.uploadFile(local: File(_image.path), key: key);
       await Amplify.DataStore.save(new Content(
-        dateSubmitted: new DateTime.now().toString(),
         name: key,
         description: descriptionController.text,
         region: _region,

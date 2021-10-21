@@ -91,37 +91,21 @@ class _PanicPageState extends State<PanicPage> {
       videoPlayerController!.initialize();
       setState(() {});
 
+      final user = await Amplify.Auth.getCurrentUser();
+      final account = await Amplify.DataStore.query(Account.classType,
+          where: Account.USERNAME.eq(user.username));
+
       final key = video.path.split('/').last;
       try {
         await Amplify.Storage.uploadFile(local: File(video.path), key: key);
-        final newContent = new Content(
-            dateSubmitted: new DateTime.now().toString(),
-            name: key,
-            description: 'Hot Button Recording',
+        await Amplify.DataStore.save(new SpecialEvent(
             region: _region,
             bucket: _bucket,
             key: key,
-            type: key.split('.').last);
-        await Amplify.DataStore.save(newContent);
-        final newGroup = new Group(
-            name: _generateRandomString(16),
-            contacts: List<ContactGroup>.empty(growable: true));
-        await Amplify.DataStore.save(newGroup);
-        final newEvent = new Event(
-            contentId: newContent.id,
-            groupId: newGroup.id,
-            name: 'Hot Button Event',
-            description: '',
-            eventDate: DateTime.now().day.toString(),
-            eventMonth: DateTime.now().month.toString(),
-            eventYear: DateTime.now().year.toString());
-        await Amplify.DataStore.save(newEvent);
-        await Amplify.DataStore.save(new SpecialEvent(
-            eventId: newEvent.id,
+            executorEmail: account[0].executor!.email,
             timeSubmitted: TemporalDateTime.now(),
             sent: false,
-            warned: false,
-            event: newEvent));
+            warned: false));
       } catch (e) {
         print(e);
       }
@@ -145,17 +129,8 @@ class _PanicPageState extends State<PanicPage> {
   Future<void> _deleteVideo() async {
     List<SpecialEvent> specialEvents =
         await Amplify.DataStore.query(SpecialEvent.classType);
-    List<Event> events = await Amplify.DataStore.query(Event.classType,
-        where: Event.ID.eq(specialEvents[0].eventId));
-    List<Group> groups = await Amplify.DataStore.query(Group.classType);
-    List<Group> _group =
-        groups.where((item) => item.id == events[0].groupId).toList();
-    List<Content> contentItems =
-        await Amplify.DataStore.query(Content.classType);
-    List<Content> _contentItem =
-        contentItems.where((item) => item.id == events[0].contentId).toList();
 
-    await Amplify.Storage.remove(key: contentItems[0].key);
+    await Amplify.Storage.remove(key: specialEvents[0].key);
     await Amplify.DataStore.delete(specialEvents[0]);
   }
 
@@ -225,16 +200,6 @@ class _PanicPageState extends State<PanicPage> {
                   'Hello, user',
                   style: TextStyle(color: Colors.white, fontSize: 24),
                 ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.settings, color: Colors.blueAccent),
-              title: Text(
-                'Settings',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.blue[900]),
               ),
             ),
             ListTile(
@@ -328,10 +293,6 @@ class _PanicPageState extends State<PanicPage> {
                 child: !_submitted
                     ? Center(child: Text('No Video Recorded'))
                     : Center(child: Text('Video Available')),
-                // : AspectRatio(
-                //     aspectRatio: videoPlayerController!.value.aspectRatio,
-                //     child: VideoPlayer(videoPlayerController!),
-                //   ),
               ),
             ),
           ),

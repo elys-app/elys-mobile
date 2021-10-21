@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify.dart';
 
-import '../../models/Group.dart';
+import '../../models/Collection.dart';
 import '../../models/Contact.dart';
 import '../../models/ContactGroup.dart';
 
@@ -41,8 +41,9 @@ class _NewContactPageState extends State<NewContactPage> {
   }
 
   void onAddNewContactPressed() async {
-    final groupWithEveryContact = await Amplify.DataStore.query(Group.classType,
-        where: Group.NAME.eq('ALL'));
+    final groupWithEveryContact = await Amplify.DataStore.query(
+        Collection.classType,
+        where: Collection.NAME.eq('ALL'));
 
     try {
       Contact newContact = new Contact(

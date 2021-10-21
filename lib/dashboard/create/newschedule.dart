@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify.dart';
 
-import '../../models/Group.dart';
+import '../../models/Collection.dart';
 import '../../models/Event.dart';
 import '../../models/Content.dart';
 import '../../models/ContactGroup.dart';
@@ -20,18 +20,12 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
   final eventDateController = TextEditingController();
 
   String selectedMonth = '';
-  List<Group> groups = new List<Group>.empty(growable: true);
+  List<Collection> groups = new List<Collection>.empty(growable: true);
   List<Content> contentItems = new List<Content>.empty(growable: true);
-  Group selectedGroup =
-      new Group(name: '', contacts: List<ContactGroup>.empty(growable: true));
+  Collection selectedGroup = new Collection(
+      name: '', contacts: List<ContactGroup>.empty(growable: true));
   Content selectedContent = new Content(
-      name: '',
-      description: '',
-      dateSubmitted: '',
-      region: '',
-      key: '',
-      bucket: '',
-      type: '');
+      name: '', description: '', region: '', key: '', bucket: '', type: '');
 
   @override
   void dispose() {
@@ -49,10 +43,11 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
 
   Future<void> _initGroups() async {
     try {
-      final result = await Amplify.DataStore.query(Group.classType);
+      final result = await Amplify.DataStore.query(Collection.classType);
       setState(() {
         groups = result;
-        List<Group> s = result.where((group) => group.name == 'ALL').toList();
+        List<Collection> s =
+            result.where((group) => group.name == 'ALL').toList();
         selectedGroup = s[0];
         print("Selected Group: " + selectedGroup.toString());
       });
@@ -86,21 +81,22 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
         .toList());
   }
 
-  Future<List<DropdownMenuItem<Group>>> _getGroups() async {
-    List<Group> result = await Amplify.DataStore.query(Group.classType);
+  Future<List<DropdownMenuItem<Collection>>> _getGroups() async {
+    List<Collection> result =
+        await Amplify.DataStore.query(Collection.classType);
     return (result
-        .map((item) =>
-            new DropdownMenuItem<Group>(value: item, child: Text(item.name)))
+        .map((item) => new DropdownMenuItem<Collection>(
+            value: item, child: Text(item.name)))
         .toList());
   }
 
   Widget _getGroupDropdownItems() {
     return new FutureBuilder(
         future: _getGroups(),
-        builder:
-            (context, AsyncSnapshot<List<DropdownMenuItem<Group>>> snapshot) {
+        builder: (context,
+            AsyncSnapshot<List<DropdownMenuItem<Collection>>> snapshot) {
           if (snapshot.hasData) {
-            return DropdownButtonFormField<Group>(
+            return DropdownButtonFormField<Collection>(
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -114,7 +110,7 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
                   filled: true,
                   labelText: 'Group to Share With',
                 ),
-                onChanged: (Group? newValue) {
+                onChanged: (Collection? newValue) {
                   if (newValue != null) {
                     selectedGroup = newValue;
                   }

@@ -183,7 +183,7 @@ class Contact extends Model {
       key: Contact.GROUPS,
       isRequired: false,
       ofModelName: (ContactGroup).toString(),
-      associatedKey: ContactGroup.ID
+      associatedKey: ContactGroup.CONTACT
     ));
   });
 }

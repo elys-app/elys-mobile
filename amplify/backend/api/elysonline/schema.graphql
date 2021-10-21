@@ -9,7 +9,6 @@ type Account @model @auth(rules: [{allow: owner}]) @key(name: "byUserName", fiel
 
 type Content @model @auth(rules: [{allow: owner}]) {
   id: ID!
-  dateSubmitted: String!
   description: String!
   name: String!
   type: String!
@@ -31,9 +30,11 @@ type Event @model @auth(rules: [{allow: owner}]) {
 
 type SpecialEvent @model @auth(rules: [{allow: owner}]) {
   id: ID!
-  eventId: ID!
+  bucket: String!
+  region: String!
+  key: String! 
+  executorEmail: String!
   timeSubmitted: AWSDateTime!
-  event: Event @connection(fields: ["eventId"])
   warned: Boolean
   sent: Boolean
 }
@@ -43,21 +44,24 @@ type Contact @model @auth(rules: [{allow: owner}]) @key(fields: ["email"], name:
   name: String!
   email: String!
   relationship: String
-  groups: [ContactGroup] @connection(name: "byContact", fields: ["id"])
+  groups: [ContactGroup] @connection(keyName: "byContact", fields: ["id"])
 }
 
-type Group @model @auth(rules: [{allow: owner}]) @key(fields: ["name"], name: "groupByName", queryField: "groupByName") {
+type Collection @model @auth(rules: [{allow: owner}]) @key(fields: ["name"], name: "groupByName", queryField: "groupByName") {
   id: ID!
   name: String!
-  contacts: [ContactGroup]! @connection(name: "byGroup", fields: ["id"])
+  contacts: [ContactGroup]! @connection(keyName: "byGroup", fields: ["id"])
 }
 
-type ContactGroup @model @auth(rules: [{allow: owner}]) @key(name: "byContact", fields: ["contactId", "groupId"], queryField: "groupsByContact") @key(name: "byGroup", fields: ["groupId", "contactId"], queryField: "contactsByGroup") {
+type ContactGroup @model @auth(rules: [{allow: owner}]) 
+@key(name: "byContact", fields: ["contactId", "collectionId"], queryField: "groupsByContact") 
+@key(name: "byGroup", fields: ["collectionId", "contactId"], queryField: "contactsByGroup") 
+{
   id: ID!
   contactId: ID!
-  groupId: ID!
+  collectionId: ID!
   contact: Contact! @connection(fields: ["contactId"])
-  group: Group! @connection(fields: ["groupId"])
+  group: Collection! @connection(fields: ["collectionId"])
 }
 
 type StripeSubscription {
@@ -79,4 +83,3 @@ type Mutation {
   newCard(customerId: String!, paymentMethodId: String!): String @function(name: "newCard-${env}")
   checkSpecialEvents(startTime: String!): String @function(name: "checkSpecialEvents-${env}")
 }
- 

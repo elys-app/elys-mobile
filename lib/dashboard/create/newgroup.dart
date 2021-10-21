@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify.dart';
 
-import '../../models/Group.dart';
+import '../../models/Collection.dart';
 import '../../models/ContactGroup.dart';
 
 class NewGroupPage extends StatefulWidget {
@@ -39,7 +39,7 @@ class _NewGroupPageState extends State<NewGroupPage> {
 
   void onAddNewGroupPressed() async {
     try {
-      Group newGroup = new Group(
+      Collection newGroup = new Collection(
           name: nameController.text,
           contacts: List<ContactGroup>.empty(growable: false));
       await Amplify.DataStore.save(newGroup);

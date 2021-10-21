@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify.dart';
 
-import '../models/Group.dart';
+import '../models/Collection.dart';
 import '../models/Contact.dart';
 import '../models/ContactGroup.dart';
 
@@ -15,9 +15,9 @@ class GroupsPage extends StatefulWidget {
 }
 
 class _GroupsPageState extends State<GroupsPage> {
-  Group selectedGroup =
-      new Group(name: '', contacts: List<ContactGroup>.empty(growable: true));
-  List<Group> entries = List<Group>.empty(growable: true);
+  Collection selectedGroup = new Collection(
+      name: '', contacts: List<ContactGroup>.empty(growable: true));
+  List<Collection> entries = List<Collection>.empty(growable: true);
   List<ContactGroup> contactGroup = List<ContactGroup>.empty(growable: true);
   List<Contact> everyContact = List<Contact>.empty(growable: true);
   List<ContactGroup> selectedContacts =
@@ -52,7 +52,7 @@ class _GroupsPageState extends State<GroupsPage> {
   }
 
   void _observeGroups() async {
-    final eventStream = await Amplify.DataStore.observe(Group.classType);
+    final eventStream = await Amplify.DataStore.observe(Collection.classType);
     eventStream.listen((_) => _getGroupDropdownItems());
   }
 
@@ -69,10 +69,11 @@ class _GroupsPageState extends State<GroupsPage> {
   Future<void> _initGroups() async {
     entries.clear();
     try {
-      final result = await Amplify.DataStore.query(Group.classType);
+      final result = await Amplify.DataStore.query(Collection.classType);
       setState(() {
         entries = result;
-        List<Group> s = result.where((group) => group.name == 'ALL').toList();
+        List<Collection> s =
+            result.where((group) => group.name == 'ALL').toList();
         selectedGroup = s[0];
         print("Selected Group: " + selectedGroup.toString());
       });
@@ -112,21 +113,22 @@ class _GroupsPageState extends State<GroupsPage> {
     }
   }
 
-  Future<List<DropdownMenuItem<Group>>> _getGroupList() async {
-    List<Group> result = await Amplify.DataStore.query(Group.classType);
+  Future<List<DropdownMenuItem<Collection>>> _getGroupList() async {
+    List<Collection> result =
+        await Amplify.DataStore.query(Collection.classType);
     return (result
-        .map((item) =>
-            new DropdownMenuItem<Group>(value: item, child: Text(item.name)))
+        .map((item) => new DropdownMenuItem<Collection>(
+            value: item, child: Text(item.name)))
         .toList());
   }
 
   Widget _getGroupDropdownItems() {
     return new FutureBuilder(
         future: _getGroupList(),
-        builder:
-            (context, AsyncSnapshot<List<DropdownMenuItem<Group>>> snapshot) {
+        builder: (context,
+            AsyncSnapshot<List<DropdownMenuItem<Collection>>> snapshot) {
           if (snapshot.hasData) {
-            return DropdownButtonFormField<Group>(
+            return DropdownButtonFormField<Collection>(
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -140,7 +142,7 @@ class _GroupsPageState extends State<GroupsPage> {
                   filled: true,
                   labelText: 'Select Group',
                 ),
-                onChanged: (Group? newValue) {
+                onChanged: (Collection? newValue) {
                   if (newValue != null) {
                     selectedGroup = newValue;
                     _getSelectedContacts(selectedGroup.id);
@@ -156,11 +158,11 @@ class _GroupsPageState extends State<GroupsPage> {
     if (selectedGroup.name != 'ALL') {
       if (selectedContactSet.contains(selectedContact)) {
         final List<ContactGroup> result =
-        await Amplify.DataStore.query(ContactGroup.classType);
+            await Amplify.DataStore.query(ContactGroup.classType);
         final filteredResult = result
             .where((item) =>
-        (item.group.id == selectedGroup.id) &&
-            (item.contact.id == selectedContact.id))
+                (item.group.id == selectedGroup.id) &&
+                (item.contact.id == selectedContact.id))
             .toList();
 
         print(filteredResult[0].toString());
