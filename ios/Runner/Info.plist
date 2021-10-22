@@ -41,5 +41,11 @@
 	</array>
  	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To select images</string>
+	<key>NSCameraUsageDescription</key>
+  <string>To create hot button video</string>
+	<key>NSMicrophoneUsageDescription</key>
+  <string>To create hot button audio</string>
 </dict>
 </plist>

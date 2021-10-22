@@ -114,6 +114,20 @@ class _MainPageState extends State<MainPage> {
                       applicationVersion: '0.2.0');
                 }),
             ListTile(
+              leading: Icon(Icons.phone_enabled_sharp,
+                  color: Colors.pink),
+              title: Text(
+                'Hot Button',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.pink),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/panic');
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.logout_sharp, color: Colors.blueAccent),
               title: Text(
                 'Logout',

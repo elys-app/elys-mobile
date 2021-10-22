@@ -41,8 +41,7 @@ class _LoadingPageState extends State<LoadingPage> {
           if (event.eventName == 'ready') {
             if (widget.destination == 'main') {
               Navigator.pushNamed(context, '/main');
-            }
-            else {
+            } else {
               Navigator.pushNamed(context, '/panic');
             }
           }
@@ -62,33 +61,37 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Loading ELYS',
-          style: TextStyle(color: Colors.white),
+        appBar: AppBar(
+          title: Text(
+            'Loading ELYS',
+            style: TextStyle(color: Colors.white),
+          ),
+          automaticallyImplyLeading: false,
         ),
-        automaticallyImplyLeading: false,
-      ),
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SpinKitThreeBounce(
-              color: Colors.lightBlue,
-              size: 50.0,
-            ),
-            Padding(
-                padding: EdgeInsets.all(10),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _exit();
-                  },
-                  child: Text(
-                    'Stuck?',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ))
-          ]),
+        body: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  child: CircularProgressIndicator(),
+                  width: 100,
+                  height: 100,
+                ),
+                Padding(
+                    padding: EdgeInsets.all(10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _exit();
+                      },
+                      child: Text(
+                        'Stuck?',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ))
+              ],
+          ),
+        ),
     );
   }
 }

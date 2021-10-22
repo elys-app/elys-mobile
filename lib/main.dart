@@ -1,5 +1,6 @@
 import 'package:elys_mobile/dashboard/dashboard.dart';
 import 'package:elys_mobile/dashboard/panic.dart';
+import 'package:elys_mobile/dashboard/pending.dart';
 import 'package:elys_mobile/dashboard/undefined.dart';
 
 import 'package:elys_mobile/dashboard/create/newcontent.dart';
@@ -9,6 +10,7 @@ import 'package:elys_mobile/dashboard/create/newschedule.dart';
 
 import 'package:elys_mobile/login/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'login/login.dart';
 
 void main() {
@@ -44,6 +46,10 @@ class ElysApp extends StatelessWidget {
         return MaterialPageRoute(builder: (context) => NewSchedulePage());
       case '/panic':
         return MaterialPageRoute(builder: (context) => PanicPage());
+      case '/pending':
+        XFile _content = settings.arguments as XFile;
+        return MaterialPageRoute(
+            builder: (context) => PendingPage(content: _content));
 
       case '/loading':
         String _destination = settings.arguments as String;

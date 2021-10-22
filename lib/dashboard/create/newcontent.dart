@@ -29,7 +29,7 @@ class _NewContentPageState extends State<NewContentPage> {
   final imagePicker = ImagePicker();
   final descriptionController = TextEditingController();
   final ButtonStyle style = ElevatedButton.styleFrom(
-      textStyle: const TextStyle(fontSize: 20), primary: Colors.lightBlue);
+      textStyle: const TextStyle(fontSize: 20), primary: Colors.pink);
 
   @override
   void initState() {
@@ -38,7 +38,8 @@ class _NewContentPageState extends State<NewContentPage> {
   }
 
   void _getS3Config() {
-    final s3config = jsonDecode(amplifyconfig)['storage']['plugins']['awsS3StoragePlugin'];
+    final s3config =
+        jsonDecode(amplifyconfig)['storage']['plugins']['awsS3StoragePlugin'];
     _bucket = s3config['bucket'];
     _region = s3config['region'];
   }
@@ -54,8 +55,6 @@ class _NewContentPageState extends State<NewContentPage> {
       if (image != null) {
         _image = File(image.path);
         _imageSelected = true;
-        print(image.path);
-        print(_imageSelected.toString());
       }
     });
   }
@@ -67,39 +66,16 @@ class _NewContentPageState extends State<NewContentPage> {
     try {
       await Amplify.Storage.uploadFile(local: File(_image.path), key: key);
       await Amplify.DataStore.save(new Content(
-        name: key,
-        description: descriptionController.text,
-        region: _region,
-        bucket: _bucket,
-        key: filename,
-        type: key.split('.').last
-      ));
+          name: key,
+          description: descriptionController.text,
+          region: _region,
+          bucket: _bucket,
+          key: filename,
+          type: key.split('.').last));
       Navigator.pop(context);
     } on StorageException catch (e) {
       print('Error uploading image: $e');
     }
-  }
-
-  void _continue() {
-    if (_currentStep < 1) {
-      if (formKey.currentState!.validate()) {
-        setState(() => _currentStep += 1);
-      }
-      return;
-    } else if (_currentStep == 1) {
-      onAddNewContentPressed();
-      return;
-    }
-  }
-
-  void _cancel() {
-    if (_currentStep == 0) {
-      Navigator.pop(context);
-      return;
-    } else if (_currentStep > 0) {
-      setState(() => _currentStep -= 1);
-    }
-    return;
   }
 
   @override
@@ -117,14 +93,46 @@ class _NewContentPageState extends State<NewContentPage> {
           key: formKey,
           child: Column(
             children: [
-              Expanded(
+              Flexible(
                 child: Stepper(
                   type: StepperType.vertical,
                   physics: ScrollPhysics(),
                   currentStep: _currentStep,
+                  controlsBuilder: (BuildContext context,
+                      {VoidCallback? onStepContinue,
+                      VoidCallback? onStepCancel}) {
+                    return Row(
+                      children: [
+                        Container(
+                          color: Colors.pink,
+                          child: TextButton(
+                            child: Text('Go',
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () {
+                              if (_currentStep < 1) {
+                                if (formKey.currentState!.validate()) {
+                                  setState(() => _currentStep += 1);
+                                }
+                              } else if (_currentStep == 1) {
+                                onAddNewContentPressed();
+                              }
+                            },
+                          ),
+                        ),
+                        TextButton(
+                            child: Text('Back',
+                                style: TextStyle(color: Colors.pink)),
+                            onPressed: () {
+                              if (_currentStep == 0) {
+                                Navigator.pop(context);
+                              } else if (_currentStep > 0) {
+                                setState(() => _currentStep -= 1);
+                              }
+                            }),
+                      ],
+                    );
+                  },
                   onStepTapped: (step) => setState(() => _currentStep = step),
-                  onStepContinue: _continue,
-                  onStepCancel: _cancel,
                   steps: <Step>[
                     Step(
                       title: new Text('Select'),
@@ -148,42 +156,37 @@ class _NewContentPageState extends State<NewContentPage> {
                             ),
                           ),
                           Padding(
-                              padding: EdgeInsets.only(
-                                  left: 30.0,
-                                  top: 5.0,
-                                  right: 30.0,
-                                  bottom: 5.0),
-                              child: new ElevatedButton.icon(
-                                  icon: Icon(Icons.photo_camera),
-                                  label: Text('Select a Photo or Video'),
-                                  onPressed: () {
-                                    _getImage();
-                                  })),
+                            padding: EdgeInsets.only(
+                                left: 30.0, top: 5.0, right: 30.0, bottom: 5.0),
+                            child: new ElevatedButton.icon(
+                              icon: Icon(Icons.photo_camera),
+                              label: Text('Select a Photo or Video'),
+                              onPressed: () {
+                                _getImage();
+                              },
+                            ),
+                          ),
                           Padding(
-                              padding: EdgeInsets.only(
-                                  left: 30.0,
-                                  top: 5.0,
-                                  right: 30.0,
-                                  bottom: 5.0),
-                              child: !_imageSelected
-                                  ? Text('No Image Selected')
-                                  : Container(
-                                      child: Image.file(_image),
-                                      height: 120,
-                                      width: 120)),
-                          SizedBox(height: 64),
-                          const SizedBox(height: 30),
+                            padding: EdgeInsets.only(
+                                left: 30.0, top: 5.0, right: 30.0, bottom: 5.0),
+                            child: !_imageSelected
+                                ? Text('No Image Selected')
+                                : Container(
+                                    child: Image.file(_image),
+                                    height: 120,
+                                    width: 120),
+                          ),
                         ],
                       ),
-                      isActive: _currentStep >= 0,
+                      isActive: true,
                       state: _currentStep >= 0
                           ? StepState.complete
                           : StepState.disabled,
                     ),
                     Step(
-                      title: new Text('Upload'),
-                      content: Spacer(),
-                      isActive: _currentStep >= 0,
+                      title: new Text('Confirm'),
+                      content: SizedBox(height: 15),
+                      isActive: true,
                       state: _currentStep >= 1
                           ? StepState.complete
                           : StepState.disabled,
