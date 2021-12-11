@@ -100,7 +100,7 @@ class _GroupsPageState extends State<GroupsPage> {
     try {
       final result = await Amplify.DataStore.query(ContactGroup.classType);
       final filteredResult =
-          result.where((item) => item.group.id == selectedGroup.id);
+          result.where((item) => item.collection.id == selectedGroup.id);
 
       setState(() {
         filteredResult.forEach((item) => selectedContactSet.add(item.contact));
@@ -161,7 +161,7 @@ class _GroupsPageState extends State<GroupsPage> {
             await Amplify.DataStore.query(ContactGroup.classType);
         final filteredResult = result
             .where((item) =>
-                (item.group.id == selectedGroup.id) &&
+                (item.collection.id == selectedGroup.id) &&
                 (item.contact.id == selectedContact.id))
             .toList();
 
@@ -169,8 +169,8 @@ class _GroupsPageState extends State<GroupsPage> {
         await Amplify.DataStore.delete(filteredResult[0]);
         _getSelectedContacts(selectedGroup.id);
       } else {
-        await Amplify.DataStore.save(
-            new ContactGroup(group: selectedGroup, contact: selectedContact));
+        await Amplify.DataStore.save(new ContactGroup(
+            collection: selectedGroup, contact: selectedContact));
         _getSelectedContacts(selectedGroup.id);
       }
     }

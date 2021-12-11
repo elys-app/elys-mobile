@@ -51,7 +51,7 @@ class _SchedulePageState extends State<SchedulePage> {
     List<Collection> result =
         await Amplify.DataStore.query(Collection.classType);
     List<Collection> group = result.where((item) => item.id == id).toList();
-    if (group != null) {
+    if (group.length > 0) {
       return group[0].name;
     } else {
       return 'Error';

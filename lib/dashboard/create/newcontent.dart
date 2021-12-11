@@ -60,9 +60,14 @@ class _NewContentPageState extends State<NewContentPage> {
   }
 
   Future<void> onAddNewContentPressed() async {
+    String _type;
+
     final username = (await Amplify.Auth.getCurrentUser()).username;
     final filename = _image.path.split('/').last;
     final key = username + '-' + filename;
+
+    _type = (key.split('.').last == 'jpg') ? 'image' : 'video';
+
     try {
       await Amplify.Storage.uploadFile(local: File(_image.path), key: key);
       await Amplify.DataStore.save(new Content(
@@ -71,7 +76,7 @@ class _NewContentPageState extends State<NewContentPage> {
           region: _region,
           bucket: _bucket,
           key: filename,
-          type: key.split('.').last));
+          type: _type));
       Navigator.pop(context);
     } on StorageException catch (e) {
       print('Error uploading image: $e');
@@ -197,6 +202,22 @@ class _NewContentPageState extends State<NewContentPage> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.arrow_back_ios_sharp),
+              backgroundColor: Colors.lightBlue,
+            ),
+          ),
+        ],
       ),
     );
   }

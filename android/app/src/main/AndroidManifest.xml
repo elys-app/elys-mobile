@@ -3,7 +3,7 @@
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
   <uses-permission android:name="andriod.permission.READ_EXTERNAL_STORAGE"/>
    <application
-        android:label="elys_mobile"
+        android:label="Elys Mobile"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

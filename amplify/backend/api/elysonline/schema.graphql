@@ -4,6 +4,7 @@ type Account @model @auth(rules: [{allow: owner}]) @key(name: "byUserName", fiel
   executorId: ID!
   customerId: String!
   subscriptionId: String
+  transition: Boolean
   executor: Contact @connection(fields: ["executorId"])
 }
 
@@ -61,7 +62,7 @@ type ContactGroup @model @auth(rules: [{allow: owner}])
   contactId: ID!
   collectionId: ID!
   contact: Contact! @connection(fields: ["contactId"])
-  group: Collection! @connection(fields: ["collectionId"])
+  collection: Collection! @connection(fields: ["collectionId"])
 }
 
 type StripeSubscription {

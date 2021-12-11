@@ -53,7 +53,7 @@ class _NewContactPageState extends State<NewContactPage> {
       await Amplify.DataStore.save(newContact);
       print('Saved: ${newContact.toString()}');
       final newContactGroupItem = new ContactGroup(
-          contact: newContact, group: groupWithEveryContact[0]);
+          contact: newContact, collection: groupWithEveryContact[0]);
       await Amplify.DataStore.save(newContactGroupItem);
       print('Saved: ${newContactGroupItem.toString()}');
 

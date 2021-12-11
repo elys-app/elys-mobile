@@ -37,7 +37,11 @@ class _ContentPageState extends State<ContentPage> {
         entries = result;
       });
     } catch (e) {
-      print(e);
+      SnackBar snackBar = SnackBar(
+        content: Text('${e}'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
       setState(() {});
     }
   }
@@ -96,7 +100,11 @@ class _ContentPageState extends State<ContentPage> {
     try {
       await Amplify.Storage.remove(key: item.key);
     } on StorageException catch (e) {
-      print('Error deleting file: $e');
+      SnackBar snackBar = SnackBar(
+        content: Text('${e.message}'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
     }
     await Amplify.DataStore.delete(item);
   }

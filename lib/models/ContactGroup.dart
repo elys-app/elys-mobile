@@ -30,7 +30,7 @@ class ContactGroup extends Model {
   static const classType = const _ContactGroupModelType();
   final String id;
   final Contact? _contact;
-  final Collection? _group;
+  final Collection? _collection;
 
   @override
   getInstanceType() => classType;
@@ -48,21 +48,21 @@ class ContactGroup extends Model {
     }
   }
   
-  Collection get group {
+  Collection get collection {
     try {
-      return _group!;
+      return _collection!;
     } catch(e) {
       throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
     }
   }
   
-  const ContactGroup._internal({required this.id, required contact, required group}): _contact = contact, _group = group;
+  const ContactGroup._internal({required this.id, required contact, required collection}): _contact = contact, _collection = collection;
   
-  factory ContactGroup({String? id, required Contact contact, required Collection group}) {
+  factory ContactGroup({String? id, required Contact contact, required Collection collection}) {
     return ContactGroup._internal(
       id: id == null ? UUID.getUUID() : id,
       contact: contact,
-      group: group);
+      collection: collection);
   }
   
   bool equals(Object other) {
@@ -75,7 +75,7 @@ class ContactGroup extends Model {
     return other is ContactGroup &&
       id == other.id &&
       _contact == other._contact &&
-      _group == other._group;
+      _collection == other._collection;
   }
   
   @override
@@ -88,17 +88,17 @@ class ContactGroup extends Model {
     buffer.write("ContactGroup {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("contact=" + (_contact != null ? _contact!.toString() : "null") + ", ");
-    buffer.write("group=" + (_group != null ? _group!.toString() : "null"));
+    buffer.write("collection=" + (_collection != null ? _collection!.toString() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  ContactGroup copyWith({String? id, Contact? contact, Collection? group}) {
+  ContactGroup copyWith({String? id, Contact? contact, Collection? collection}) {
     return ContactGroup(
       id: id ?? this.id,
       contact: contact ?? this.contact,
-      group: group ?? this.group);
+      collection: collection ?? this.collection);
   }
   
   ContactGroup.fromJson(Map<String, dynamic> json)  
@@ -106,20 +106,20 @@ class ContactGroup extends Model {
       _contact = json['contact']?['serializedData'] != null
         ? Contact.fromJson(new Map<String, dynamic>.from(json['contact']['serializedData']))
         : null,
-      _group = json['group']?['serializedData'] != null
-        ? Collection.fromJson(new Map<String, dynamic>.from(json['group']['serializedData']))
+      _collection = json['collection']?['serializedData'] != null
+        ? Collection.fromJson(new Map<String, dynamic>.from(json['collection']['serializedData']))
         : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'contact': _contact?.toJson(), 'group': _group?.toJson()
+    'id': id, 'contact': _contact?.toJson(), 'collection': _collection?.toJson()
   };
 
   static final QueryField ID = QueryField(fieldName: "contactGroup.id");
   static final QueryField CONTACT = QueryField(
     fieldName: "contact",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Contact).toString()));
-  static final QueryField GROUP = QueryField(
-    fieldName: "group",
+  static final QueryField COLLECTION = QueryField(
+    fieldName: "collection",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Collection).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "ContactGroup";
@@ -148,7 +148,7 @@ class ContactGroup extends Model {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-      key: ContactGroup.GROUP,
+      key: ContactGroup.COLLECTION,
       isRequired: true,
       targetName: "collectionId",
       ofModelName: (Collection).toString()

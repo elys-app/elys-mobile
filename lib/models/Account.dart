@@ -32,6 +32,7 @@ class Account extends Model {
   final String? _userName;
   final String? _customerId;
   final String? _subscriptionId;
+  final bool? _transition;
   final Contact? _executor;
 
   @override
@@ -62,18 +63,23 @@ class Account extends Model {
     return _subscriptionId;
   }
   
+  bool? get transition {
+    return _transition;
+  }
+  
   Contact? get executor {
     return _executor;
   }
   
-  const Account._internal({required this.id, required userName, required customerId, subscriptionId, executor}): _userName = userName, _customerId = customerId, _subscriptionId = subscriptionId, _executor = executor;
+  const Account._internal({required this.id, required userName, required customerId, subscriptionId, transition, executor}): _userName = userName, _customerId = customerId, _subscriptionId = subscriptionId, _transition = transition, _executor = executor;
   
-  factory Account({String? id, required String userName, required String customerId, String? subscriptionId, Contact? executor}) {
+  factory Account({String? id, required String userName, required String customerId, String? subscriptionId, bool? transition, Contact? executor}) {
     return Account._internal(
       id: id == null ? UUID.getUUID() : id,
       userName: userName,
       customerId: customerId,
       subscriptionId: subscriptionId,
+      transition: transition,
       executor: executor);
   }
   
@@ -89,6 +95,7 @@ class Account extends Model {
       _userName == other._userName &&
       _customerId == other._customerId &&
       _subscriptionId == other._subscriptionId &&
+      _transition == other._transition &&
       _executor == other._executor;
   }
   
@@ -104,18 +111,20 @@ class Account extends Model {
     buffer.write("userName=" + "$_userName" + ", ");
     buffer.write("customerId=" + "$_customerId" + ", ");
     buffer.write("subscriptionId=" + "$_subscriptionId" + ", ");
+    buffer.write("transition=" + (_transition != null ? _transition!.toString() : "null") + ", ");
     buffer.write("executor=" + (_executor != null ? _executor!.toString() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Account copyWith({String? id, String? userName, String? customerId, String? subscriptionId, Contact? executor}) {
+  Account copyWith({String? id, String? userName, String? customerId, String? subscriptionId, bool? transition, Contact? executor}) {
     return Account(
       id: id ?? this.id,
       userName: userName ?? this.userName,
       customerId: customerId ?? this.customerId,
       subscriptionId: subscriptionId ?? this.subscriptionId,
+      transition: transition ?? this.transition,
       executor: executor ?? this.executor);
   }
   
@@ -124,18 +133,20 @@ class Account extends Model {
       _userName = json['userName'],
       _customerId = json['customerId'],
       _subscriptionId = json['subscriptionId'],
+      _transition = json['transition'],
       _executor = json['executor']?['serializedData'] != null
         ? Contact.fromJson(new Map<String, dynamic>.from(json['executor']['serializedData']))
         : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'userName': _userName, 'customerId': _customerId, 'subscriptionId': _subscriptionId, 'executor': _executor?.toJson()
+    'id': id, 'userName': _userName, 'customerId': _customerId, 'subscriptionId': _subscriptionId, 'transition': _transition, 'executor': _executor?.toJson()
   };
 
   static final QueryField ID = QueryField(fieldName: "account.id");
   static final QueryField USERNAME = QueryField(fieldName: "userName");
   static final QueryField CUSTOMERID = QueryField(fieldName: "customerId");
   static final QueryField SUBSCRIPTIONID = QueryField(fieldName: "subscriptionId");
+  static final QueryField TRANSITION = QueryField(fieldName: "transition");
   static final QueryField EXECUTOR = QueryField(
     fieldName: "executor",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Contact).toString()));
@@ -174,6 +185,12 @@ class Account extends Model {
       key: Account.SUBSCRIPTIONID,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Account.TRANSITION,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.bool)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(

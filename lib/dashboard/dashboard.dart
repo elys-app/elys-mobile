@@ -99,32 +99,19 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             ListTile(
-                leading: Icon(Icons.info_outline, color: Colors.blueAccent),
-                title: Text(
-                  'About',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.blue[900]),
-                ),
-                onTap: () {
-                  showAboutDialog(
-                      context: context,
-                      applicationName: 'ELYS Legacy Management',
-                      applicationVersion: '0.2.0');
-                }),
-            ListTile(
-              leading: Icon(Icons.phone_enabled_sharp,
-                  color: Colors.pink),
+              leading: Icon(Icons.info_outline, color: Colors.blueAccent),
               title: Text(
-                'Hot Button',
+                'About',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.normal,
-                    color: Colors.pink),
+                    color: Colors.blue[900]),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/panic');
+                showAboutDialog(
+                    context: context,
+                    applicationName: 'ELYS Legacy Management',
+                    applicationVersion: '0.3.0+4');
               },
             ),
             ListTile(
@@ -171,33 +158,52 @@ class _MainPageState extends State<MainPage> {
           });
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          switch (_selectedIndex) {
-            case 0:
-              {
-                Navigator.pushNamed(context, '/newcontent');
-                break;
-              }
-            case 1:
-              {
-                Navigator.pushNamed(context, '/newcontact');
-                break;
-              }
-            case 2:
-              {
-                Navigator.pushNamed(context, '/newgroup');
-                break;
-              }
-            case 3:
-              {
-                Navigator.pushNamed(context, '/newschedule');
-                break;
-              }
-          }
-        },
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.lightBlue,
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/panic');
+                },
+                heroTag: null,
+                child: const Icon(Icons.local_fire_department_sharp),
+                backgroundColor: Colors.pink),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: FloatingActionButton(
+              onPressed: () {
+                switch (_selectedIndex) {
+                  case 0:
+                    {
+                      Navigator.pushNamed(context, '/newcontent');
+                      break;
+                    }
+                  case 1:
+                    {
+                      Navigator.pushNamed(context, '/newcontact');
+                      break;
+                    }
+                  case 2:
+                    {
+                      Navigator.pushNamed(context, '/newgroup');
+                      break;
+                    }
+                  case 3:
+                    {
+                      Navigator.pushNamed(context, '/newschedule');
+                      break;
+                    }
+                }
+              },
+              child: const Icon(Icons.add),
+              backgroundColor: Colors.lightBlue,
+            ),
+          ),
+        ],
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
     );

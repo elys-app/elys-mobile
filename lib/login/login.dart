@@ -6,6 +6,7 @@ import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+import 'package:flutter/services.dart';
 import '../amplifyconfiguration.dart';
 
 import '../models/ModelProvider.dart';
@@ -60,7 +61,11 @@ class _LoginPageState extends State<LoginPage> {
         await Amplify.configure(amplifyconfig);
       }
     } catch (e) {
-      print(e);
+      SnackBar snackBar = SnackBar(
+        content: Text('${e}'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
     }
   }
 
@@ -71,9 +76,10 @@ class _LoginPageState extends State<LoginPage> {
         password = passwordController.text;
       });
       try {
+        await Amplify.Auth.signOut();
         await Amplify.Auth.signIn(username: userName, password: password);
         Navigator.pushNamed(context, '/loading', arguments: destination);
-      } on InvalidStateException catch (e) {
+      } on UserNotFoundException catch (e) {
         Amplify.Auth.signOut();
         SnackBar snackBar = SnackBar(
           content: Text('${e.message}'),
@@ -83,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } on NotAuthorizedException catch (e) {
         SnackBar snackBar = SnackBar(
-          content: Text('${e.message}'),
+          content: Text('Wrong User ID or Password'),
           duration: Duration(seconds: 3),
           action: SnackBarAction(label: 'OK', onPressed: () {}),
         );

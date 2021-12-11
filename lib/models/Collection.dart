@@ -149,7 +149,7 @@ class Collection extends Model {
       key: Collection.CONTACTS,
       isRequired: false,
       ofModelName: (ContactGroup).toString(),
-      associatedKey: ContactGroup.GROUP
+      associatedKey: ContactGroup.COLLECTION
     ));
   });
 }

@@ -26,7 +26,6 @@ class _ContactsPageState extends State<ContactsPage> {
       onPageChanged: (int value) {
         setState(() {
           currentPageIndex = value;
-          print('Index: ' + currentPageIndex.toString());
         });
       },
       children: <Widget>[

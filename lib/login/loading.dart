@@ -17,6 +17,7 @@ class LoadingPage extends StatefulWidget {
 
 class _LoadingPageState extends State<LoadingPage> {
   late StreamSubscription hubSubscription;
+  double completed = 0.02;
 
   @override
   initState() {
@@ -33,11 +34,12 @@ class _LoadingPageState extends State<LoadingPage> {
   Future<void> _startAmplify() async {
     try {
       if (Amplify.isConfigured) {
-        await Amplify.DataStore.clear();
-        await Amplify.DataStore.stop();
         await Amplify.DataStore.start();
         hubSubscription = Amplify.Hub.listen([HubChannel.DataStore], (event) {
           print('Event: ${event.eventName}');
+          setState(() {
+            completed += (0.98 / 12.0);
+          });
           if (event.eventName == 'ready') {
             if (widget.destination == 'main') {
               Navigator.pushNamed(context, '/main');
@@ -53,45 +55,46 @@ class _LoadingPageState extends State<LoadingPage> {
   }
 
   Future<void> _exit() async {
-    await Amplify.DataStore.clear();
-    await Amplify.Auth.signOut();
-    Navigator.pushNamed(context, '/');
+    Amplify.Auth.signOut();
+    Navigator.pushNamed(context, '/main');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Loading ELYS',
-            style: TextStyle(color: Colors.white),
-          ),
-          automaticallyImplyLeading: false,
+      appBar: AppBar(
+        title: Text(
+          'Loading ELYS',
+          style: TextStyle(color: Colors.white),
         ),
-        body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  child: CircularProgressIndicator(),
-                  width: 100,
-                  height: 100,
-                ),
-                Padding(
-                    padding: EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _exit();
-                      },
-                      child: Text(
-                        'Stuck?',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ))
-              ],
-          ),
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              child: CircularProgressIndicator(
+                value: completed
+              ),
+              width: 100,
+              height: 100,
+            ),
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _exit();
+                  },
+                  child: Text(
+                    'Work Offline',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ))
+          ],
         ),
+      ),
     );
   }
 }
