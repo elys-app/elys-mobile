@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "api": {
+      "elysonline": [
+        "read"
+      ]
+    },
+    "storage": {
+      "s3elyscontent": [
+        "read"
+      ],
+      "Event:@model(appsync)": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

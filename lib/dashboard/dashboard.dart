@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 import 'content.dart';
 import 'detail.dart';
-import 'groups.dart';
 import 'schedule.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key? key}) : super(key: key);
+  MainPage({Key? key, required this.page}) : super(key: key);
+
+  final String page;
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -22,13 +23,27 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
   List<Widget> _widgetOptions = <Widget>[
-    ContentPage(),
     DetailsPage(),
-    GroupsPage(),
+    ContentPage(),
     SchedulePage()
   ];
 
   void initState() {
+    if (widget.page == 'contact') {
+      setState(() {
+        _selectedIndex = 0;
+      });
+    }
+    else if (widget.page == 'content') {
+      setState(() {
+        _selectedIndex = 1;
+      });
+    }
+    else {
+      setState(() {
+        _selectedIndex = 2;
+      });
+    }
     super.initState();
   }
 
@@ -133,19 +148,15 @@ class _MainPageState extends State<MainPage> {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[900],
+        selectedItemColor: Colors.blue[800],
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.video_camera_front_rounded),
-              label: 'Content',
-              backgroundColor: Colors.lightBlue),
-          BottomNavigationBarItem(
               icon: Icon(Icons.email_sharp),
-              label: 'Contacts',
+              label: 'Connections',
               backgroundColor: Colors.lightBlue),
           BottomNavigationBarItem(
-              icon: Icon(Icons.group_sharp),
-              label: 'Groups',
+              icon: Icon(Icons.video_camera_front_rounded),
+              label: 'Media',
               backgroundColor: Colors.lightBlue),
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today_sharp),
@@ -179,20 +190,15 @@ class _MainPageState extends State<MainPage> {
                 switch (_selectedIndex) {
                   case 0:
                     {
-                      Navigator.pushNamed(context, '/newcontent');
+                      Navigator.pushNamed(context, '/newcontact');
                       break;
                     }
                   case 1:
                     {
-                      Navigator.pushNamed(context, '/newcontact');
+                      Navigator.pushNamed(context, '/newcontent');
                       break;
                     }
                   case 2:
-                    {
-                      Navigator.pushNamed(context, '/newgroup');
-                      break;
-                    }
-                  case 3:
                     {
                       Navigator.pushNamed(context, '/newschedule');
                       break;

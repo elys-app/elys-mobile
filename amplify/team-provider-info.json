@@ -18,19 +18,19 @@
       "function": {
         "createCustomer": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-          "s3Key": "amplify-builds/createCustomer-64537557493549583137-build.zip"
+          "s3Key": "amplify-builds/createCustomer-3048424b7453764a546d-build.zip"
         },
         "createSubscription": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-          "s3Key": "amplify-builds/createSubscription-664b465a64356233306b-build.zip"
+          "s3Key": "amplify-builds/createSubscription-385356632f4a48376764-build.zip"
         },
         "emailGroup": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-          "s3Key": "amplify-builds/emailGroup-47514b514d466c6a5233-build.zip"
+          "s3Key": "amplify-builds/emailGroup-6f2b7371354155326639-build.zip"
         },
         "getInvoices": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-          "s3Key": "amplify-builds/getInvoices-3061327751715a516c39-build.zip"
+          "s3Key": "amplify-builds/getInvoices-7234696d463546333065-build.zip"
         },
         "newCard": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
@@ -39,6 +39,30 @@
         "checkSpecialEvents": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
           "s3Key": "amplify-builds/checkSpecialEvents-4e59456b767259763739-build.zip"
+        },
+        "cancelSubscription": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/cancelSubscription-4d315573686f30595275-build.zip"
+        },
+        "getSubscriptionStatus": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/getSubscriptionStatus-2f4a596e33584c465271-build.zip"
+        },
+        "deleteCustomer": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/deleteCustomer-414c366e523470377178-build.zip"
+        },
+        "checkEvents": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/checkEvents-424b576b655233326578-build.zip"
+        },
+        "sendEventEmail": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/sendEventEmail-4d7a4b795a692b4a3137-build.zip"
+        },
+        "sendDesigneeEmail": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/sendDesigneeEmail-627338694b324d572f76-build.zip"
         }
       }
     }

@@ -1,38 +1,28 @@
-type Account @model 
-@auth(rules: [{allow: owner}])
-@key(name: "byUserName", fields:["userName"], queryField: "accountByUserName")
-{
+type Account @model @auth(rules: [{allow: owner}]) @key(name: "byUserName", fields: ["userName"], queryField: "accountByUserName") {
   id: ID!
   userName: String!
-  executorId: ID!
-  customerId: String! 
+  userFullName: String
+  executorName: String! 
+  executorEmail: String
+  customerId: String!
   subscriptionId: String
-  executor: Contact @connection (fields: ["executorId"])
+  transition: Boolean
+  customerStatus: String
 }
 
-type Content @model
-@auth(rules: [{allow: owner}])
-{
+type Content @model @auth(rules: [{allow: owner}]) {
   id: ID!
-  dateSubmitted: String!
   description: String!
   name: String!
   type: String!
-  file: S3Object!
-}
-
-type S3Object 
-{
   bucket: String!
-  region: String! 
+  region: String!
   key: String!
 }
 
-type Event @model 
-@auth(rules: [{allow: owner}])
-@key(name: "byGroup", fields:["groupId"], queryField: "eventsByGroup")
-{
+type Event @model @auth(rules: [{allow: owner}]) {
   id: ID!
+  contactEmail: String!
   groupId: ID!
   contentId: ID!
   name: String!
@@ -40,42 +30,34 @@ type Event @model
   eventMonth: String!
   eventYear: String!
   description: String
-  content: Content @connection (fields: ["contentId"])
-  group: Group @connection(fields: ["groupId"])
 }
 
-type Contact @model 
-@auth(rules: [{allow: owner}])
-@key (fields: ["email"], name: "contactByEmail",  queryField: "contactByEmail")
-{
+type SpecialEvent @model @auth(rules: [{allow: owner}]) {
   id: ID!
-  name: String
-  email: String!
-  relationship: String
-  group: [ContactGroup] @connection(name: "byContact" fields: ["id"])
+  bucket: String!
+  region: String!
+  key: String! 
+  executorEmail: String!
+  timeSubmitted: AWSDateTime!
+  warned: Boolean
+  sent: Boolean
 }
 
-type Group @model 
-@auth(rules: [{allow: owner}])
-@key (fields: ["name"], name: "groupByName", queryField: "groupByName") 
-{
+enum GroupNames {
+  Family, 
+  Friends, 
+  Other
+}
+
+type Contact @model @auth(rules: [{allow: owner}]) @key(fields: ["email"], name: "contactByEmail", queryField: "contactByEmail") {
   id: ID!
   name: String!
-  contact: [ContactGroup]! @connection(name: "byGroup" fields: ["id"])
+  email: String!
+  relationship: String
+  community: String
 }
 
-type ContactGroup @model 
-@key(name: "byContact", fields: ["contactId", "groupId"], queryField: "groupsByContact")
-@key(name: "byGroup", fields: ["groupId", "contactId"], queryField: "contactsByGroup") {
-  id: ID!
-  contactId: ID!
-  groupId: ID!
-  contact: Contact @connection(fields: ["contactId"])
-  group: Group @connection(fields: ["groupId"])
-}
-
-type StripeSubscription
-{
+type StripeSubscription {
   subscriptionId: String
   clientSecret: String
 }
@@ -87,9 +69,14 @@ type StripeInvoices {
 }
 
 type Mutation {
+  cancelSubscription(subscriptionId: String!): String @function(name: "cancelSubscription-${env}")
+  checkSpecialEvents(startTime: String!): String @function(name: "checkSpecialEvents-${env}")
   createCustomer(email: String!): String @function(name: "createCustomer-${env}")
-  createSubscription(customerId: String!, priceId: String!): StripeSubscription @function(name: "createSubscription-${env}")
-  getInvoices(customerId: String): [StripeInvoices]! @function(name: "getInvoices-${env}")
+  createSubscription(customerId: String!, paymentMethodId: String!, priceId: String!): StripeSubscription @function(name: "createSubscription-${env}")
+  deleteCustomer(customerId: String!): String @function(name: "deleteCustomer-${env}")
   emailGroup(toAddresses: [String]!, eventText: String!): String @function(name: "emailGroup-${env}")
+  getInvoices(customerId: String): [StripeInvoices]! @function(name: "getInvoices-${env}")
+  getSubscriptionStatus(customerId: String!): String @function(name: "getSubscriptionStatus-${env}")
   newCard(customerId: String!, paymentMethodId: String!): String @function(name: "newCard-${env}")
+  sendDesigneeEmail(toAddresses: [String]!, designeeName: String!, clientName: String!): String @function(name: "sendDesigneeEmail-${env}")
 }

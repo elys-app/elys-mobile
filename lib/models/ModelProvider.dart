@@ -19,65 +19,49 @@
 
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:amplify_core/amplify_core.dart';
 import 'Account.dart';
-import 'Collection.dart';
 import 'Contact.dart';
-import 'ContactGroup.dart';
 import 'Content.dart';
 import 'Event.dart';
 import 'SpecialEvent.dart';
+import 'StripeInvoices.dart';
+import 'StripeSubscription.dart';
 
 export 'Account.dart';
-export 'Collection.dart';
 export 'Contact.dart';
-export 'ContactGroup.dart';
 export 'Content.dart';
 export 'Event.dart';
+export 'GroupNames.dart';
 export 'SpecialEvent.dart';
+export 'StripeInvoices.dart';
+export 'StripeSubscription.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "83ec66b0b4a7cb4cfa42ea9399d2f242";
+  String version = "3579d6ff9e7a9019656f3d4973624adb";
   @override
-  List<ModelSchema> modelSchemas = [Account.schema, Collection.schema, Contact.schema, ContactGroup.schema, Content.schema, Event.schema, SpecialEvent.schema];
+  List<ModelSchema> modelSchemas = [Account.schema, Contact.schema, Content.schema, Event.schema, SpecialEvent.schema];
   static final ModelProvider _instance = ModelProvider();
+  @override
+  List<ModelSchema> customTypeSchemas = [StripeInvoices.schema, StripeSubscription.schema];
 
   static ModelProvider get instance => _instance;
   
   ModelType getModelTypeByModelName(String modelName) {
     switch(modelName) {
-    case "Account": {
-    return Account.classType;
-    }
-    break;
-    case "Collection": {
-    return Collection.classType;
-    }
-    break;
-    case "Contact": {
-    return Contact.classType;
-    }
-    break;
-    case "ContactGroup": {
-    return ContactGroup.classType;
-    }
-    break;
-    case "Content": {
-    return Content.classType;
-    }
-    break;
-    case "Event": {
-    return Event.classType;
-    }
-    break;
-    case "SpecialEvent": {
-    return SpecialEvent.classType;
-    }
-    break;
-    default: {
-    throw Exception("Failed to find model in model provider for model name: " + modelName);
-    }
+      case "Account":
+        return Account.classType;
+      case "Contact":
+        return Contact.classType;
+      case "Content":
+        return Content.classType;
+      case "Event":
+        return Event.classType;
+      case "SpecialEvent":
+        return SpecialEvent.classType;
+      default:
+        throw Exception("Failed to find model in model provider for model name: " + modelName);
     }
   }
 }

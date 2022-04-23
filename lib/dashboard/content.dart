@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
 import '../models/Content.dart';
@@ -38,16 +38,17 @@ class _ContentPageState extends State<ContentPage> {
       });
     } catch (e) {
       SnackBar snackBar = SnackBar(
-        content: Text('${e}'),
+        content: Text(e.toString()),
         duration: Duration(seconds: 3),
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       setState(() {});
     }
   }
 
   void _observeContent() async {
-    final contentStream = await Amplify.DataStore.observe(Content.classType);
+    final contentStream = Amplify.DataStore.observe(Content.classType);
     contentStream.listen((_) => _getContent());
   }
 
@@ -105,6 +106,7 @@ class _ContentPageState extends State<ContentPage> {
         duration: Duration(seconds: 3),
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     await Amplify.DataStore.delete(item);
   }

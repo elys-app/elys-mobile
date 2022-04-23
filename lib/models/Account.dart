@@ -19,8 +19,7 @@
 
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
-import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -30,10 +29,15 @@ class Account extends Model {
   static const classType = const _AccountModelType();
   final String id;
   final String? _userName;
+  final String? _userFullName;
+  final String? _executorName;
+  final String? _executorEmail;
   final String? _customerId;
   final String? _subscriptionId;
   final bool? _transition;
-  final Contact? _executor;
+  final String? _customerStatus;
+  final TemporalDateTime? _createdAt;
+  final TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -47,15 +51,46 @@ class Account extends Model {
     try {
       return _userName!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
+  }
+  
+  String? get userFullName {
+    return _userFullName;
+  }
+  
+  String get executorName {
+    try {
+      return _executorName!;
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
+  String? get executorEmail {
+    return _executorEmail;
   }
   
   String get customerId {
     try {
       return _customerId!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -67,20 +102,31 @@ class Account extends Model {
     return _transition;
   }
   
-  Contact? get executor {
-    return _executor;
+  String? get customerStatus {
+    return _customerStatus;
   }
   
-  const Account._internal({required this.id, required userName, required customerId, subscriptionId, transition, executor}): _userName = userName, _customerId = customerId, _subscriptionId = subscriptionId, _transition = transition, _executor = executor;
+  TemporalDateTime? get createdAt {
+    return _createdAt;
+  }
   
-  factory Account({String? id, required String userName, required String customerId, String? subscriptionId, bool? transition, Contact? executor}) {
+  TemporalDateTime? get updatedAt {
+    return _updatedAt;
+  }
+  
+  const Account._internal({required this.id, required userName, userFullName, required executorName, executorEmail, required customerId, subscriptionId, transition, customerStatus, createdAt, updatedAt}): _userName = userName, _userFullName = userFullName, _executorName = executorName, _executorEmail = executorEmail, _customerId = customerId, _subscriptionId = subscriptionId, _transition = transition, _customerStatus = customerStatus, _createdAt = createdAt, _updatedAt = updatedAt;
+  
+  factory Account({String? id, required String userName, String? userFullName, required String executorName, String? executorEmail, required String customerId, String? subscriptionId, bool? transition, String? customerStatus}) {
     return Account._internal(
       id: id == null ? UUID.getUUID() : id,
       userName: userName,
+      userFullName: userFullName,
+      executorName: executorName,
+      executorEmail: executorEmail,
       customerId: customerId,
       subscriptionId: subscriptionId,
       transition: transition,
-      executor: executor);
+      customerStatus: customerStatus);
   }
   
   bool equals(Object other) {
@@ -93,10 +139,13 @@ class Account extends Model {
     return other is Account &&
       id == other.id &&
       _userName == other._userName &&
+      _userFullName == other._userFullName &&
+      _executorName == other._executorName &&
+      _executorEmail == other._executorEmail &&
       _customerId == other._customerId &&
       _subscriptionId == other._subscriptionId &&
       _transition == other._transition &&
-      _executor == other._executor;
+      _customerStatus == other._customerStatus;
   }
   
   @override
@@ -109,47 +158,59 @@ class Account extends Model {
     buffer.write("Account {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("userName=" + "$_userName" + ", ");
+    buffer.write("userFullName=" + "$_userFullName" + ", ");
+    buffer.write("executorName=" + "$_executorName" + ", ");
+    buffer.write("executorEmail=" + "$_executorEmail" + ", ");
     buffer.write("customerId=" + "$_customerId" + ", ");
     buffer.write("subscriptionId=" + "$_subscriptionId" + ", ");
     buffer.write("transition=" + (_transition != null ? _transition!.toString() : "null") + ", ");
-    buffer.write("executor=" + (_executor != null ? _executor!.toString() : "null"));
+    buffer.write("customerStatus=" + "$_customerStatus" + ", ");
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Account copyWith({String? id, String? userName, String? customerId, String? subscriptionId, bool? transition, Contact? executor}) {
-    return Account(
+  Account copyWith({String? id, String? userName, String? userFullName, String? executorName, String? executorEmail, String? customerId, String? subscriptionId, bool? transition, String? customerStatus}) {
+    return Account._internal(
       id: id ?? this.id,
       userName: userName ?? this.userName,
+      userFullName: userFullName ?? this.userFullName,
+      executorName: executorName ?? this.executorName,
+      executorEmail: executorEmail ?? this.executorEmail,
       customerId: customerId ?? this.customerId,
       subscriptionId: subscriptionId ?? this.subscriptionId,
       transition: transition ?? this.transition,
-      executor: executor ?? this.executor);
+      customerStatus: customerStatus ?? this.customerStatus);
   }
   
   Account.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _userName = json['userName'],
+      _userFullName = json['userFullName'],
+      _executorName = json['executorName'],
+      _executorEmail = json['executorEmail'],
       _customerId = json['customerId'],
       _subscriptionId = json['subscriptionId'],
       _transition = json['transition'],
-      _executor = json['executor']?['serializedData'] != null
-        ? Contact.fromJson(new Map<String, dynamic>.from(json['executor']['serializedData']))
-        : null;
+      _customerStatus = json['customerStatus'],
+      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'userName': _userName, 'customerId': _customerId, 'subscriptionId': _subscriptionId, 'transition': _transition, 'executor': _executor?.toJson()
+    'id': id, 'userName': _userName, 'userFullName': _userFullName, 'executorName': _executorName, 'executorEmail': _executorEmail, 'customerId': _customerId, 'subscriptionId': _subscriptionId, 'transition': _transition, 'customerStatus': _customerStatus, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "account.id");
   static final QueryField USERNAME = QueryField(fieldName: "userName");
+  static final QueryField USERFULLNAME = QueryField(fieldName: "userFullName");
+  static final QueryField EXECUTORNAME = QueryField(fieldName: "executorName");
+  static final QueryField EXECUTOREMAIL = QueryField(fieldName: "executorEmail");
   static final QueryField CUSTOMERID = QueryField(fieldName: "customerId");
   static final QueryField SUBSCRIPTIONID = QueryField(fieldName: "subscriptionId");
   static final QueryField TRANSITION = QueryField(fieldName: "transition");
-  static final QueryField EXECUTOR = QueryField(
-    fieldName: "executor",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Contact).toString()));
+  static final QueryField CUSTOMERSTATUS = QueryField(fieldName: "customerStatus");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Account";
     modelSchemaDefinition.pluralName = "Accounts";
@@ -159,6 +220,7 @@ class Account extends Model {
         authStrategy: AuthStrategy.OWNER,
         ownerField: "owner",
         identityClaim: "cognito:username",
+        provider: AuthRuleProvider.USERPOOLS,
         operations: [
           ModelOperation.CREATE,
           ModelOperation.UPDATE,
@@ -172,6 +234,24 @@ class Account extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Account.USERNAME,
       isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Account.USERFULLNAME,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Account.EXECUTORNAME,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Account.EXECUTOREMAIL,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
@@ -193,11 +273,24 @@ class Account extends Model {
       ofType: ModelFieldType(ModelFieldTypeEnum.bool)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-      key: Account.EXECUTOR,
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Account.CUSTOMERSTATUS,
       isRequired: false,
-      targetName: "executorId",
-      ofModelName: (Contact).toString()
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'createdAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'updatedAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
   });
 }

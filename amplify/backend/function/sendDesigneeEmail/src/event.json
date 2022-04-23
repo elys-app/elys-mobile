@@ -1,0 +1,8 @@
+{
+  "arguments": {
+      "designeeName": "Dude's Best Friend",
+      "clientName": "Some Dude",
+      "toAddresses": ["admin@elys-app.net"],
+      "ccAddress": "danitza.r.borges@gmail.com"
+  }
+}

@@ -2,7 +2,7 @@ import 'dart:core';
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:elys_mobile/amplifyconfiguration.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +77,7 @@ class _NewContentPageState extends State<NewContentPage> {
           bucket: _bucket,
           key: filename,
           type: _type));
-      Navigator.pop(context);
+      Navigator.pushNamed(context, '/main', arguments: 'content');
     } on StorageException catch (e) {
       print('Error uploading image: $e');
     }
@@ -103,11 +103,10 @@ class _NewContentPageState extends State<NewContentPage> {
                   type: StepperType.vertical,
                   physics: ScrollPhysics(),
                   currentStep: _currentStep,
-                  controlsBuilder: (BuildContext context,
-                      {VoidCallback? onStepContinue,
-                      VoidCallback? onStepCancel}) {
+                  controlsBuilder:
+                      (BuildContext context, ControlsDetails details) {
                     return Row(
-                      children: [
+                      children: <Widget>[
                         Container(
                           color: Colors.pink,
                           child: TextButton(
@@ -133,9 +132,23 @@ class _NewContentPageState extends State<NewContentPage> {
                               } else if (_currentStep > 0) {
                                 setState(() => _currentStep -= 1);
                               }
-                            }),
+                            })
                       ],
                     );
+                  },
+                  onStepContinue: () {
+                    if (_currentStep <= 0) {
+                      setState(() {
+                        _currentStep += 1;
+                      });
+                    }
+                  },
+                  onStepCancel: () {
+                    if (_currentStep > 0) {
+                      setState(() {
+                        _currentStep -= 1;
+                      });
+                    }
                   },
                   onStepTapped: (step) => setState(() => _currentStep = step),
                   steps: <Step>[
@@ -211,7 +224,7 @@ class _NewContentPageState extends State<NewContentPage> {
             padding: EdgeInsets.only(bottom: 20),
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/main', arguments: 'content');
               },
               child: const Icon(Icons.arrow_back_ios_sharp),
               backgroundColor: Colors.lightBlue,

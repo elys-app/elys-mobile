@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+
 import 'detail.dart';
-import 'groups.dart';
 
 class ContactsPage extends StatefulWidget {
   ContactsPage({Key? key}) : super(key: key);
@@ -53,7 +53,6 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
           ),
           Divider(thickness: 5),
-          GroupsPage()
         ])
       ],
     );

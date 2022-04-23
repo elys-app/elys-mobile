@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:amplify_flutter/amplify.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'package:amplify_flutter/amplify_flutter.dart';
 
 import '../models/Event.dart';
-import '../models/Collection.dart';
 
 class SchedulePage extends StatefulWidget {
   SchedulePage({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   void _observeEvents() async {
-    final eventStream = await Amplify.DataStore.observe(Event.classType);
+    final eventStream = Amplify.DataStore.observe(Event.classType);
     eventStream.listen((_) => _getEvents());
   }
 
@@ -38,39 +39,13 @@ class _SchedulePageState extends State<SchedulePage> {
     entries.clear();
     try {
       final result = await Amplify.DataStore.query(Event.classType,
-          sortBy: [Event.EVENTMONTH.ascending()]);
+          sortBy: [Event.NAME.ascending()]);
       setState(() {
         entries = result;
       });
     } catch (e) {
       setState(() {});
     }
-  }
-
-  Future<String> _getGroupNameFromId(String id) async {
-    List<Collection> result =
-        await Amplify.DataStore.query(Collection.classType);
-    List<Collection> group = result.where((item) => item.id == id).toList();
-    if (group.length > 0) {
-      return group[0].name;
-    } else {
-      return 'Error';
-    }
-  }
-
-  Widget _getGroupName(String id, String date, String month) {
-    return new FutureBuilder(
-      builder: (context, AsyncSnapshot<String> snapshot) {
-        if (snapshot.hasData) {
-          String subtitle =
-              'Group to Send: ${snapshot.data.toString()} \nOn: ${date} ${month}';
-          return Text(subtitle);
-        } else {
-          return Text('Loading');
-        }
-      },
-      future: _getGroupNameFromId(id),
-    );
   }
 
   Future<List<ListTile>> _getEventList() async {
@@ -84,8 +59,8 @@ class _SchedulePageState extends State<SchedulePage> {
               item.name,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            subtitle:
-                _getGroupName(item.groupId, item.eventDate, item.eventMonth),
+            subtitle: Text(
+                'Send Email to: ${item.contactEmail} \nOn: ${item.eventMonth} ${item.eventDate} '),
             isThreeLine: true,
             onLongPress: () {
               _removeScheduleItem(item);
@@ -109,7 +84,12 @@ class _SchedulePageState extends State<SchedulePage> {
             },
           );
         } else {
-          return Text('Loading');
+          return Container(
+            child: SpinKitThreeBounce(
+              color: Colors.lightBlue,
+              size: 50.0,
+            ),
+          );
         }
       },
     );

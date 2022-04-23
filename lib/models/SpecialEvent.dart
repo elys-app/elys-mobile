@@ -19,7 +19,7 @@
 
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -35,6 +35,8 @@ class SpecialEvent extends Model {
   final TemporalDateTime? _timeSubmitted;
   final bool? _warned;
   final bool? _sent;
+  final TemporalDateTime? _createdAt;
+  final TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -48,7 +50,12 @@ class SpecialEvent extends Model {
     try {
       return _bucket!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -56,7 +63,12 @@ class SpecialEvent extends Model {
     try {
       return _region!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -64,7 +76,12 @@ class SpecialEvent extends Model {
     try {
       return _key!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -72,7 +89,12 @@ class SpecialEvent extends Model {
     try {
       return _executorEmail!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -80,7 +102,12 @@ class SpecialEvent extends Model {
     try {
       return _timeSubmitted!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -92,7 +119,15 @@ class SpecialEvent extends Model {
     return _sent;
   }
   
-  const SpecialEvent._internal({required this.id, required bucket, required region, required key, required executorEmail, required timeSubmitted, warned, sent}): _bucket = bucket, _region = region, _key = key, _executorEmail = executorEmail, _timeSubmitted = timeSubmitted, _warned = warned, _sent = sent;
+  TemporalDateTime? get createdAt {
+    return _createdAt;
+  }
+  
+  TemporalDateTime? get updatedAt {
+    return _updatedAt;
+  }
+  
+  const SpecialEvent._internal({required this.id, required bucket, required region, required key, required executorEmail, required timeSubmitted, warned, sent, createdAt, updatedAt}): _bucket = bucket, _region = region, _key = key, _executorEmail = executorEmail, _timeSubmitted = timeSubmitted, _warned = warned, _sent = sent, _createdAt = createdAt, _updatedAt = updatedAt;
   
   factory SpecialEvent({String? id, required String bucket, required String region, required String key, required String executorEmail, required TemporalDateTime timeSubmitted, bool? warned, bool? sent}) {
     return SpecialEvent._internal(
@@ -139,14 +174,16 @@ class SpecialEvent extends Model {
     buffer.write("executorEmail=" + "$_executorEmail" + ", ");
     buffer.write("timeSubmitted=" + (_timeSubmitted != null ? _timeSubmitted!.format() : "null") + ", ");
     buffer.write("warned=" + (_warned != null ? _warned!.toString() : "null") + ", ");
-    buffer.write("sent=" + (_sent != null ? _sent!.toString() : "null"));
+    buffer.write("sent=" + (_sent != null ? _sent!.toString() : "null") + ", ");
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
   SpecialEvent copyWith({String? id, String? bucket, String? region, String? key, String? executorEmail, TemporalDateTime? timeSubmitted, bool? warned, bool? sent}) {
-    return SpecialEvent(
+    return SpecialEvent._internal(
       id: id ?? this.id,
       bucket: bucket ?? this.bucket,
       region: region ?? this.region,
@@ -165,10 +202,12 @@ class SpecialEvent extends Model {
       _executorEmail = json['executorEmail'],
       _timeSubmitted = json['timeSubmitted'] != null ? TemporalDateTime.fromString(json['timeSubmitted']) : null,
       _warned = json['warned'],
-      _sent = json['sent'];
+      _sent = json['sent'],
+      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'bucket': _bucket, 'region': _region, 'key': _key, 'executorEmail': _executorEmail, 'timeSubmitted': _timeSubmitted?.format(), 'warned': _warned, 'sent': _sent
+    'id': id, 'bucket': _bucket, 'region': _region, 'key': _key, 'executorEmail': _executorEmail, 'timeSubmitted': _timeSubmitted?.format(), 'warned': _warned, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "specialEvent.id");
@@ -188,6 +227,7 @@ class SpecialEvent extends Model {
         authStrategy: AuthStrategy.OWNER,
         ownerField: "owner",
         identityClaim: "cognito:username",
+        provider: AuthRuleProvider.USERPOOLS,
         operations: [
           ModelOperation.CREATE,
           ModelOperation.UPDATE,
@@ -238,6 +278,20 @@ class SpecialEvent extends Model {
       key: SpecialEvent.SENT,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.bool)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'createdAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'updatedAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
   });
 }

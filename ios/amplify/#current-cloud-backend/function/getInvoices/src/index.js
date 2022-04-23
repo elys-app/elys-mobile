@@ -2,10 +2,10 @@ const stripe = require('stripe')('sk_test_51JG9pzFbE7WYTcrpDa1nRBtHDzQ9AkmkOZHTy
 
 exports.handler = async (event) => {
     const results = [];
-
+    
     const response = await stripe.invoices.list({
         customer: event.arguments.customerId,
-        limit: 5,
+        limit: 3,
       });
 
     for (let invoice of response.data) {

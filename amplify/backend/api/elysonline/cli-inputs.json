@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "elysonline",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/ianmccal/Development/Javascript/elyc/online/elyc-online/amplify/backend/api/elysonline/schema.graphql",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authelysonline01747ffd"
+    },
+    "conflictResolution": {
+      "defaultResolutionStrategy": {
+        "type": "AUTOMERGE"
+      }
+    }
+  }
+}

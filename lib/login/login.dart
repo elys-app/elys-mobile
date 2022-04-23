@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
-import 'package:flutter/services.dart';
 import '../amplifyconfiguration.dart';
 
 import '../models/ModelProvider.dart';
@@ -66,6 +65,7 @@ class _LoginPageState extends State<LoginPage> {
         duration: Duration(seconds: 3),
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -94,6 +94,7 @@ class _LoginPageState extends State<LoginPage> {
           action: SnackBarAction(label: 'OK', onPressed: () {}),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        print(e);
       }
     }
   }

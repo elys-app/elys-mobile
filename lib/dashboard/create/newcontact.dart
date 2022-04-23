@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 
-import '../../models/Collection.dart';
 import '../../models/Contact.dart';
-import '../../models/ContactGroup.dart';
 
 class NewContactPage extends StatefulWidget {
   NewContactPage({Key? key}) : super(key: key);
@@ -41,23 +39,17 @@ class _NewContactPageState extends State<NewContactPage> {
   }
 
   void onAddNewContactPressed() async {
-    final groupWithEveryContact = await Amplify.DataStore.query(
-        Collection.classType,
-        where: Collection.NAME.eq('ALL'));
+    // final groupWithEveryContact = await Amplify.DataStore.query(
+    //     Collection.classType,
+    //     where: Collection.NAME.eq('ALL'));
 
     try {
-      Contact newContact = new Contact(
-          name: nameController.text,
-          email: emailController.text,
-          groups: List<ContactGroup>.empty(growable: false));
+      Contact newContact =
+          new Contact(name: nameController.text, email: emailController.text);
       await Amplify.DataStore.save(newContact);
       print('Saved: ${newContact.toString()}');
-      final newContactGroupItem = new ContactGroup(
-          contact: newContact, collection: groupWithEveryContact[0]);
-      await Amplify.DataStore.save(newContactGroupItem);
-      print('Saved: ${newContactGroupItem.toString()}');
 
-      Navigator.pop(context);
+      Navigator.pushNamed(context, '/main', arguments: 'contact');
     } catch (e) {
       print(e);
     }
@@ -75,51 +67,54 @@ class _NewContactPageState extends State<NewContactPage> {
       ),
       body: Form(
         key: formKey,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter a Contact Name';
-                    }
-                    return null;
-                  },
-                  controller: nameController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
-                    border: OutlineInputBorder(),
-                    labelText: 'Contact Name',
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 50),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter a Contact Name';
+                      }
+                      return null;
+                    },
+                    controller: nameController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person),
+                      border: OutlineInputBorder(),
+                      labelText: 'Contact Name',
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter an Email';
-                    }
-                    return null;
-                  },
-                  controller: emailController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(),
-                    labelText: 'Email Address',
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter an Email';
+                      }
+                      return null;
+                    },
+                    controller: emailController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.email),
+                      border: OutlineInputBorder(),
+                      labelText: 'Email Address',
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 200),
-              const SizedBox(height: 30)
-            ],
+                SizedBox(height: 200),
+                const SizedBox(height: 30)
+              ],
+            ),
           ),
         ),
       ),
@@ -144,7 +139,7 @@ class _NewContactPageState extends State<NewContactPage> {
             padding: EdgeInsets.only(bottom: 20),
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/main', arguments: 'contact');
               },
               child: const Icon(Icons.arrow_back_ios_sharp),
               backgroundColor: Colors.lightBlue,

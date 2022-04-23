@@ -1,6 +1,10 @@
 const AWS = require('aws-sdk');
-const {getMaxListeners} = require('process');
-const SES = new AWS.SES({region: 'us-east-1'});
+const {
+  getMaxListeners
+} = require('process');
+const SES = new AWS.SES({
+  region: 'us-east-1'
+});
 
 exports.handler = async (event) => {
   var params = {
@@ -10,11 +14,11 @@ exports.handler = async (event) => {
     Message: {
       Body: {
         Text: {
-          Data: event.arguments.eventText
+          Data: 'Some text in the email'
         },
       },
       Subject: {
-        Data: "Check Email"
+        Data: event.arguments.eventText
       },
     },
     Source: "admin@elys-app.net",

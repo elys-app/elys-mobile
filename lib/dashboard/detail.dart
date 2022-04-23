@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../models/Contact.dart';
 
@@ -40,7 +42,7 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   void _observeContacts() async {
-    final contactStream = await Amplify.DataStore.observe(Contact.classType);
+    final contactStream = Amplify.DataStore.observe(Contact.classType);
     contactStream.listen((_) => _getContacts());
   }
 
@@ -74,7 +76,12 @@ class _DetailsPageState extends State<DetailsPage> {
                 return snapshot.data![item];
               });
         } else {
-          return Text('Loading');
+          return Container(
+            child: SpinKitThreeBounce(
+              color: Colors.lightBlue,
+              size: 50.0,
+            ),
+          );
         }
       },
     );

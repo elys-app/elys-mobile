@@ -4,7 +4,6 @@ import 'package:elys_mobile/dashboard/pending.dart';
 import 'package:elys_mobile/dashboard/undefined.dart';
 
 import 'package:elys_mobile/dashboard/create/newcontent.dart';
-import 'package:elys_mobile/dashboard/create/newgroup.dart';
 import 'package:elys_mobile/dashboard/create/newcontact.dart';
 import 'package:elys_mobile/dashboard/create/newschedule.dart';
 
@@ -35,13 +34,17 @@ class ElysApp extends StatelessWidget {
         return MaterialPageRoute(
             builder: (context) => LoginPage(title: 'Welcome to ELYS'));
       case '/main':
-        return MaterialPageRoute(builder: (context) => MainPage());
+        if (settings.arguments != null) {
+          String _page = settings.arguments as String;
+          return MaterialPageRoute(builder: (context) => MainPage(page: _page));
+        }
+        else {
+          return MaterialPageRoute(builder: (context) => MainPage(page: ''));
+        }
       case '/newcontent':
         return MaterialPageRoute(builder: (context) => NewContentPage());
       case '/newcontact':
         return MaterialPageRoute(builder: (context) => NewContactPage());
-      case '/newgroup':
-        return MaterialPageRoute(builder: (context) => NewGroupPage());
       case '/newschedule':
         return MaterialPageRoute(builder: (context) => NewSchedulePage());
       case '/panic':

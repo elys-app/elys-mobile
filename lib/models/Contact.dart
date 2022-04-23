@@ -19,9 +19,7 @@
 
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
-import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
-import 'package:collection/collection.dart';
+import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -33,7 +31,9 @@ class Contact extends Model {
   final String? _name;
   final String? _email;
   final String? _relationship;
-  final List<ContactGroup>? _groups;
+  final String? _community;
+  final TemporalDateTime? _createdAt;
+  final TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -47,7 +47,12 @@ class Contact extends Model {
     try {
       return _name!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -55,7 +60,12 @@ class Contact extends Model {
     try {
       return _email!;
     } catch(e) {
-      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -63,19 +73,27 @@ class Contact extends Model {
     return _relationship;
   }
   
-  List<ContactGroup>? get groups {
-    return _groups;
+  String? get community {
+    return _community;
   }
   
-  const Contact._internal({required this.id, required name, required email, relationship, groups}): _name = name, _email = email, _relationship = relationship, _groups = groups;
+  TemporalDateTime? get createdAt {
+    return _createdAt;
+  }
   
-  factory Contact({String? id, required String name, required String email, String? relationship, List<ContactGroup>? groups}) {
+  TemporalDateTime? get updatedAt {
+    return _updatedAt;
+  }
+  
+  const Contact._internal({required this.id, required name, required email, relationship, community, createdAt, updatedAt}): _name = name, _email = email, _relationship = relationship, _community = community, _createdAt = createdAt, _updatedAt = updatedAt;
+  
+  factory Contact({String? id, required String name, required String email, String? relationship, String? community}) {
     return Contact._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
       email: email,
       relationship: relationship,
-      groups: groups != null ? List<ContactGroup>.unmodifiable(groups) : groups);
+      community: community);
   }
   
   bool equals(Object other) {
@@ -90,7 +108,7 @@ class Contact extends Model {
       _name == other._name &&
       _email == other._email &&
       _relationship == other._relationship &&
-      DeepCollectionEquality().equals(_groups, other._groups);
+      _community == other._community;
   }
   
   @override
@@ -104,19 +122,22 @@ class Contact extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("email=" + "$_email" + ", ");
-    buffer.write("relationship=" + "$_relationship");
+    buffer.write("relationship=" + "$_relationship" + ", ");
+    buffer.write("community=" + "$_community" + ", ");
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Contact copyWith({String? id, String? name, String? email, String? relationship, List<ContactGroup>? groups}) {
-    return Contact(
+  Contact copyWith({String? id, String? name, String? email, String? relationship, String? community}) {
+    return Contact._internal(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
       relationship: relationship ?? this.relationship,
-      groups: groups ?? this.groups);
+      community: community ?? this.community);
   }
   
   Contact.fromJson(Map<String, dynamic> json)  
@@ -124,24 +145,19 @@ class Contact extends Model {
       _name = json['name'],
       _email = json['email'],
       _relationship = json['relationship'],
-      _groups = json['groups'] is List
-        ? (json['groups'] as List)
-          .where((e) => e?['serializedData'] != null)
-          .map((e) => ContactGroup.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
-        : null;
+      _community = json['community'],
+      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'email': _email, 'relationship': _relationship, 'groups': _groups?.map((ContactGroup? e) => e?.toJson()).toList()
+    'id': id, 'name': _name, 'email': _email, 'relationship': _relationship, 'community': _community, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "contact.id");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField EMAIL = QueryField(fieldName: "email");
   static final QueryField RELATIONSHIP = QueryField(fieldName: "relationship");
-  static final QueryField GROUPS = QueryField(
-    fieldName: "groups",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (ContactGroup).toString()));
+  static final QueryField COMMUNITY = QueryField(fieldName: "community");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Contact";
     modelSchemaDefinition.pluralName = "Contacts";
@@ -151,6 +167,7 @@ class Contact extends Model {
         authStrategy: AuthStrategy.OWNER,
         ownerField: "owner",
         identityClaim: "cognito:username",
+        provider: AuthRuleProvider.USERPOOLS,
         operations: [
           ModelOperation.CREATE,
           ModelOperation.UPDATE,
@@ -179,11 +196,24 @@ class Contact extends Model {
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-      key: Contact.GROUPS,
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Contact.COMMUNITY,
       isRequired: false,
-      ofModelName: (ContactGroup).toString(),
-      associatedKey: ContactGroup.CONTACT
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'createdAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'updatedAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
   });
 }

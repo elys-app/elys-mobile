@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key, required this.destination}) : super(key: key);
@@ -42,7 +39,7 @@ class _LoadingPageState extends State<LoadingPage> {
           });
           if (event.eventName == 'ready') {
             if (widget.destination == 'main') {
-              Navigator.pushNamed(context, '/main');
+              Navigator.pushNamed(context, '/main', arguments: 'contact');
             } else {
               Navigator.pushNamed(context, '/panic');
             }
@@ -74,10 +71,16 @@ class _LoadingPageState extends State<LoadingPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            Padding(
+                padding: EdgeInsets.fromLTRB(10.0, 40.0, 10.0, 40.0),
+                child: Text(
+                    'We are loading Content from Elys\nThis might take a couple second...',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue))),
             SizedBox(
-              child: CircularProgressIndicator(
-                value: completed
-              ),
+              child: CircularProgressIndicator(value: completed),
               width: 100,
               height: 100,
             ),
