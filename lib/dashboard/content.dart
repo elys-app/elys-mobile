@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
 import '../models/Content.dart';
 
@@ -66,7 +65,7 @@ class _ContentPageState extends State<ContentPage> {
             subtitle: Text(item.name),
             isThreeLine: false,
             onLongPress: () {
-              _removeContentItem(item);
+              Navigator.pushNamed(context, '/editcontent', arguments: item);
             },
           ),
         )
@@ -95,20 +94,6 @@ class _ContentPageState extends State<ContentPage> {
         }
       },
     );
-  }
-
-  void _removeContentItem(Content item) async {
-    try {
-      await Amplify.Storage.remove(key: item.key);
-    } on StorageException catch (e) {
-      SnackBar snackBar = SnackBar(
-        content: Text('${e.message}'),
-        duration: Duration(seconds: 3),
-        action: SnackBarAction(label: 'OK', onPressed: () {}),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-    await Amplify.DataStore.delete(item);
   }
 
   @override

@@ -1,16 +1,24 @@
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../models/Contact.dart';
+import '../models/Content.dart';
+
 import 'package:elys_mobile/dashboard/dashboard.dart';
 import 'package:elys_mobile/dashboard/panic.dart';
 import 'package:elys_mobile/dashboard/pending.dart';
 import 'package:elys_mobile/dashboard/undefined.dart';
 
 import 'package:elys_mobile/dashboard/create/newcontent.dart';
+import 'package:elys_mobile/dashboard/edit/editcontent.dart';
 import 'package:elys_mobile/dashboard/create/newcontact.dart';
+import 'package:elys_mobile/dashboard/edit/editcontact.dart';
 import 'package:elys_mobile/dashboard/create/newschedule.dart';
 
+import 'package:elys_mobile/login/login.dart';
 import 'package:elys_mobile/login/loading.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'login/login.dart';
+
+import 'models/Content.dart';
 
 void main() {
   runApp(ElysApp());
@@ -37,14 +45,21 @@ class ElysApp extends StatelessWidget {
         if (settings.arguments != null) {
           String _page = settings.arguments as String;
           return MaterialPageRoute(builder: (context) => MainPage(page: _page));
-        }
-        else {
+        } else {
           return MaterialPageRoute(builder: (context) => MainPage(page: ''));
         }
       case '/newcontent':
         return MaterialPageRoute(builder: (context) => NewContentPage());
+      case '/editcontent':
+        Content _content = settings.arguments as Content;
+        return MaterialPageRoute(
+            builder: (context) => EditContentPage(contentItem: _content));
       case '/newcontact':
         return MaterialPageRoute(builder: (context) => NewContactPage());
+      case '/editcontact':
+        Contact _contact = settings.arguments as Contact;
+        return MaterialPageRoute(
+            builder: (context) => EditContactPage(contactItem: _contact));
       case '/newschedule':
         return MaterialPageRoute(builder: (context) => NewSchedulePage());
       case '/panic':

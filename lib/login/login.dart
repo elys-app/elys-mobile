@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     } catch (e) {
       SnackBar snackBar = SnackBar(
-        content: Text('${e}'),
+        content: Text(e.toString()),
         duration: Duration(seconds: 3),
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );

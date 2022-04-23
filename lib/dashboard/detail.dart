@@ -57,7 +57,7 @@ class _DetailsPageState extends State<DetailsPage> {
               subtitle: Text(item.email),
               isThreeLine: false,
               onLongPress: () {
-                _removeContactItem(item);
+                Navigator.pushNamed(context, '/editcontact', arguments: item);
               },
             ))
         .toList());
@@ -85,13 +85,6 @@ class _DetailsPageState extends State<DetailsPage> {
         }
       },
     );
-  }
-
-  void _removeContactItem(Contact item) async {
-    final contact = (await Amplify.DataStore.query(Contact.classType,
-        where: Contact.ID.eq(item.id)))[0];
-
-    await Amplify.DataStore.delete(contact);
   }
 
   @override
