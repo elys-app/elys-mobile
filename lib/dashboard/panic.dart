@@ -131,7 +131,7 @@ class _PanicPageState extends State<PanicPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'ELYS Mobile',
+          'Elys Mobile',
           style: TextStyle(color: Colors.white),
         ),
         automaticallyImplyLeading: false,

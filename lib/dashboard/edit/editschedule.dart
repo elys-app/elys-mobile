@@ -6,14 +6,16 @@ import '../../models/Event.dart';
 import '../../models/Content.dart';
 import '../../models/Contact.dart';
 
-class NewSchedulePage extends StatefulWidget {
-  NewSchedulePage({Key? key}) : super(key: key);
+class EditSchedulePage extends StatefulWidget {
+  EditSchedulePage({Key? key, required this.eventItem}) : super(key: key);
+
+  final Event eventItem;
 
   @override
-  _NewSchedulePageState createState() => _NewSchedulePageState();
+  _EditSchedulePageState createState() => _EditSchedulePageState();
 }
 
-class _NewSchedulePageState extends State<NewSchedulePage> {
+class _EditSchedulePageState extends State<EditSchedulePage> {
   final formKey = GlobalKey<FormState>();
   final descriptionController = TextEditingController();
   final eventDateController = TextEditingController();
@@ -64,6 +66,7 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
   void initState() {
     super.initState();
     _setup();
+    descriptionController.text = widget.eventItem.name;
   }
 
   @override
@@ -220,7 +223,7 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
         });
   }
 
-  Future<void> _onAddEventPressed() async {
+  Future<void> onEditEventPressed() async {
     if (formKey.currentState!.validate()) {
       Amplify.DataStore.save(new Event(
           name: descriptionController.text,
@@ -234,12 +237,17 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
     }
   }
 
+  void onDeleteEventPressed() async {
+    await Amplify.DataStore.delete(widget.eventItem);
+    Navigator.pushNamed(context, '/main', arguments: 'schedule');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add New Event',
+          'Edit Event',
           style: TextStyle(color: Colors.white),
         ),
         automaticallyImplyLeading: false,
@@ -272,45 +280,45 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
                     padding: const EdgeInsets.only(
                         left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
                     child: DropdownButtonFormField<String>(
-                      icon: const Icon(Icons.arrow_downward),
-                      iconSize: 18,
-                      elevation: 36,
-                      isExpanded: true,
-                      style: const TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
-                        filled: true,
-                        labelText: 'Event Month',
-                      ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedMonth = newValue!;
-                        });
-                      },
-                      items: _getMonths(),
-                    ),
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: 18,
+                        elevation: 36,
+                        isExpanded: true,
+                        style: const TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          filled: true,
+                          labelText: 'Event Month',
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedMonth = newValue!;
+                          });
+                        },
+                        items: _getMonths(),
+                        value: widget.eventItem.eventMonth),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
                     child: DropdownButtonFormField<String>(
-                      icon: const Icon(Icons.arrow_downward),
-                      iconSize: 18,
-                      elevation: 36,
-                      isExpanded: true,
-                      style: const TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
-                        filled: true,
-                        labelText: 'Day of the Month',
-                      ),
-                      onChanged: (String? newValue) {
-                        if (newValue != null) {
-                          setState(() {
-                            selectedDay = newValue;
-                          });
-                        }
-                      },
-                      items: _getDays(selectedMonth),
-                    ),
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: 18,
+                        elevation: 36,
+                        isExpanded: true,
+                        style: const TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          filled: true,
+                          labelText: 'Day of the Month',
+                        ),
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            setState(() {
+                              selectedDay = newValue;
+                            });
+                          }
+                        },
+                        items: _getDays(selectedMonth),
+                        value: widget.eventItem.eventDate),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -335,8 +343,20 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
             padding: EdgeInsets.only(bottom: 20),
             child: FloatingActionButton(
               onPressed: () {
+                onDeleteEventPressed();
+              },
+              child: const Icon(Icons.delete_sharp),
+              heroTag: null,
+              backgroundColor: Colors.pink,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
+
+            child: FloatingActionButton(
+              onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  _onAddEventPressed();
+                  onEditEventPressed();
                   Navigator.pushNamed(context, '/main');
                 }
               },

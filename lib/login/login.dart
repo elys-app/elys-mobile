@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
@@ -115,7 +117,11 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: Text(
           widget.title,
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.bellefair(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500)),
         ),
         automaticallyImplyLeading: false,
       ),

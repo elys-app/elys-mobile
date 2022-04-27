@@ -71,6 +71,7 @@ class _DetailsPageState extends State<DetailsPage> {
           return new ListView.separated(
               separatorBuilder: (context, item) => Divider(thickness: 1),
               shrinkWrap: true,
+              physics: AlwaysScrollableScrollPhysics() ,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, item) {
                 return snapshot.data![item];
@@ -89,6 +90,29 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(padding: EdgeInsets.all(10), child: _getContactItems());
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              'Add, change, or delete any connections you want to send future messages',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          Divider(
+            height: 20,
+            thickness: 2,
+            indent: 0,
+            endIndent: 0,
+            color: Colors.black,
+          ),
+          Expanded(
+            child: _getContactItems()
+          )
+        ],
+      ),
+    );
   }
 }

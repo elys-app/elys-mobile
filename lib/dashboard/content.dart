@@ -98,6 +98,29 @@ class _ContentPageState extends State<ContentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(padding: EdgeInsets.all(10), child: _getContentItems());
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              'Upload any photo or video for future messages',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          Divider(
+            height: 20,
+            thickness: 2,
+            indent: 0,
+            endIndent: 0,
+            color: Colors.black,
+          ),
+          Expanded(
+              child: _getContentItems()
+          )
+        ],
+      ),
+    );
   }
 }

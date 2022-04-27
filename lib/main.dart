@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 import '../models/Contact.dart';
 import '../models/Content.dart';
+import '../models/Event.dart';
 
 import 'package:elys_mobile/dashboard/dashboard.dart';
 import 'package:elys_mobile/dashboard/panic.dart';
@@ -14,9 +17,12 @@ import 'package:elys_mobile/dashboard/edit/editcontent.dart';
 import 'package:elys_mobile/dashboard/create/newcontact.dart';
 import 'package:elys_mobile/dashboard/edit/editcontact.dart';
 import 'package:elys_mobile/dashboard/create/newschedule.dart';
+import 'package:elys_mobile/dashboard/edit/editschedule.dart';
 
 import 'package:elys_mobile/login/login.dart';
 import 'package:elys_mobile/login/loading.dart';
+
+import 'package:elys_mobile/settings/econtact.dart';
 
 import 'models/Content.dart';
 
@@ -30,6 +36,7 @@ class ElysApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Colors.lightBlue,
+        textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
       ),
       onGenerateRoute: _generateRoute,
       initialRoute: '/',
@@ -62,6 +69,10 @@ class ElysApp extends StatelessWidget {
             builder: (context) => EditContactPage(contactItem: _contact));
       case '/newschedule':
         return MaterialPageRoute(builder: (context) => NewSchedulePage());
+      case '/editschedule':
+        Event _event = settings.arguments as Event;
+        return MaterialPageRoute(
+            builder: (context) => EditSchedulePage(eventItem: _event));
       case '/panic':
         return MaterialPageRoute(builder: (context) => PanicPage());
       case '/pending':
@@ -73,6 +84,9 @@ class ElysApp extends StatelessWidget {
         String _destination = settings.arguments as String;
         return MaterialPageRoute(
             builder: (context) => LoadingPage(destination: _destination));
+      case '/settings':
+        return MaterialPageRoute(
+          builder: (context) => SettingsPage());
       default:
         String _name = settings.name!;
         return MaterialPageRoute(

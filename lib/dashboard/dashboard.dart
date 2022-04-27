@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
@@ -33,13 +35,11 @@ class _MainPageState extends State<MainPage> {
       setState(() {
         _selectedIndex = 0;
       });
-    }
-    else if (widget.page == 'content') {
+    } else if (widget.page == 'content') {
       setState(() {
         _selectedIndex = 1;
       });
-    }
-    else {
+    } else {
       setState(() {
         _selectedIndex = 2;
       });
@@ -51,9 +51,13 @@ class _MainPageState extends State<MainPage> {
     return new FutureBuilder(
       builder: (context, AsyncSnapshot<AuthUser> snapshot) {
         if (snapshot.hasData) {
-          String welcome = 'Welcome: ${snapshot.data!.username}';
+          String welcome = 'Welcome, ${snapshot.data!.username}';
           return Text(welcome,
-              style: TextStyle(color: Colors.white, fontSize: 24));
+              style: GoogleFonts.bellefair(
+                  textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w500)));
         } else {
           return Text('Loading');
         }
@@ -84,8 +88,12 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'ELYS Mobile',
-          style: TextStyle(color: Colors.white),
+          'Elys Mobile',
+          style: GoogleFonts.bellefair(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500)),
         ),
         automaticallyImplyLeading: false,
         iconTheme: IconThemeData(color: Colors.white),
@@ -112,6 +120,9 @@ class _MainPageState extends State<MainPage> {
                     fontWeight: FontWeight.normal,
                     color: Colors.blue[900]),
               ),
+              onTap: () {
+                Navigator.pushNamed(context, '/settings');
+              }
             ),
             ListTile(
               leading: Icon(Icons.info_outline, color: Colors.blueAccent),

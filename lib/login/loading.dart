@@ -74,7 +74,7 @@ class _LoadingPageState extends State<LoadingPage> {
             Padding(
                 padding: EdgeInsets.fromLTRB(10.0, 40.0, 10.0, 40.0),
                 child: Text(
-                    'We are loading Content from Elys\nThis might take a couple second...',
+                    'We are loading Content from Elys\nThis might take a couple seconds...',
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

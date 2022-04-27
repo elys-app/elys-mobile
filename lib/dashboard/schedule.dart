@@ -63,7 +63,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 'Send Email to: ${item.contactEmail} \nOn: ${item.eventMonth} ${item.eventDate} '),
             isThreeLine: true,
             onLongPress: () {
-              _removeScheduleItem(item);
+              _editScheduleItem(item);
             },
           ),
         )
@@ -95,12 +95,34 @@ class _SchedulePageState extends State<SchedulePage> {
     );
   }
 
-  void _removeScheduleItem(Event item) async {
-    await Amplify.DataStore.delete(item);
+  void _editScheduleItem(Event item) async {
+    Navigator.pushNamed(context, '/editschedule', arguments: item);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(padding: EdgeInsets.all(10), child: _getEventItems());
+    return Container(      padding: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              'Schedule the messages you want to send',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          Divider(
+            height: 20,
+            thickness: 2,
+            indent: 0,
+            endIndent: 0,
+            color: Colors.black,
+          ),
+          Expanded(
+              child: _getEventItems()
+          )
+        ],
+      ),
+    );
   }
 }
