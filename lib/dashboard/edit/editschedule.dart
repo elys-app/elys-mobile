@@ -22,11 +22,10 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
 
   String selectedMonth = '';
   String selectedDay = '';
-  List<Contact> contacts = new List<Contact>.empty(growable: true);
   List<Content> contentItems = new List<Content>.empty(growable: true);
   Contact selectedContact = new Contact(name: '', email: '');
-  Content selectedContent = new Content(
-      name: '', description: '', region: '', key: '', bucket: '', type: '');
+  Contact originalContact = new Contact(name: '', email: '');
+  Content selectedContent = new Content(description: '', name: '', type: '', bucket: '', region: '', key: '');
 
   List<String> daysOfTheMonth = [
     '1',
@@ -76,18 +75,23 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
 
   Future<void> _setup() async {
     try {
-      await _initContacts();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
+      // final contactItems = await Amplify.DataStore.query(Contact.classType);
+      // this.selectedContact = result.where((item) => item.email == widget.eventItem.contactEmail).first;
+      final contentItems = await Amplify.DataStore.query(Content.classType);
+      var currentContent = contentItems.where((item) => item.id == widget.eventItem.contentId).first;
 
-  Future<void> _initContacts() async {
-    try {
-      final result = await Amplify.DataStore.query(Contact.classType);
-      setState(() {
-        contacts = result;
-      });
+      currentContent =
+          contentItems.where((item) => item.id == widget.eventItem.contentId).first;
+      if (currentContent.id != "") {
+        setState(() {
+          selectedContent = currentContent;
+        });
+      } else {
+        setState(() {
+          selectedContent = contentItems[0];
+        });
+      }
+
     } catch (e) {
       setState(() {
         print(e);
@@ -161,7 +165,6 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
                     color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
-                // value: selectedGroup,
                 icon: const Icon(Icons.arrow_downward),
                 iconSize: 18,
                 elevation: 36,
@@ -177,6 +180,7 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
                   print(
                       'Selected Contact is now: ' + selectedContact.toString());
                 },
+                // value: originalContact,
                 items: snapshot.data);
           } else
             return Text('Loading');
@@ -217,6 +221,7 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
                     selectedContent = newValue;
                   }
                 },
+                value: selectedContent,
                 items: snapshot.data);
           } else
             return Text('Loading');
@@ -325,11 +330,11 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
                         left: 30, top: 0, right: 30.0, bottom: 8.0),
                     child: _getContentDropdownItems(),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 30, top: 0, right: 30.0, bottom: 8.0),
-                    child: _getContactDropdownItems(),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(
+                  //       left: 30, top: 0, right: 30.0, bottom: 8.0),
+                  //   child: _getContactDropdownItems(),
+                  // ),
                   SizedBox(height: 200),
                 ],
               ),

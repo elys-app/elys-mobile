@@ -8,7 +8,7 @@ exports.handler = async (event) => {
 
   if (subscription) {
     return {
-      'status': subscription.status
+      'customerStatus': subscription.customerStatus
     };
   } else {
     return {

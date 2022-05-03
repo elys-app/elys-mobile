@@ -30,6 +30,7 @@ class _MainPageState extends State<MainPage> {
     SchedulePage()
   ];
 
+  @override
   void initState() {
     if (widget.page == 'contact') {
       setState(() {
@@ -45,6 +46,12 @@ class _MainPageState extends State<MainPage> {
       });
     }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    hubSubscription.cancel();
   }
 
   Widget _getUserName() {

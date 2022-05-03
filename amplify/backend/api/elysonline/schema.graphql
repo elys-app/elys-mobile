@@ -4,6 +4,7 @@ type Account @model @auth(rules: [{allow: owner}]) @key(name: "byUserName", fiel
   userFullName: String
   executorName: String! 
   executorEmail: String
+  executorId: String 
   customerId: String!
   subscriptionId: String
   transition: Boolean
