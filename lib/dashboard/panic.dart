@@ -154,21 +154,6 @@ class _PanicPageState extends State<PanicPage> {
               ),
             ),
             ListTile(
-                leading: Icon(Icons.info_outline, color: Colors.blueAccent),
-                title: Text(
-                  'About',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.blue[900]),
-                ),
-                onTap: () {
-                  showAboutDialog(
-                      context: context,
-                      applicationName: 'ELYS Legacy Management',
-                      applicationVersion: '0.2.0');
-                }),
-            ListTile(
               leading: Icon(Icons.logout_sharp, color: Colors.blueAccent),
               title: Text(
                 'Logout',

@@ -46,7 +46,9 @@ class _SettingsState extends State<SettingsPage> {
           accounts.where((item) => item.userName == user.username).first;
       if (currentAccount.executorId != "") {
         setState(() {
-          selectedContact = contacts.where((item) => item.id == currentAccount.executorId).first;
+          selectedContact = contacts
+              .where((item) => item.id == currentAccount.executorId)
+              .first;
         });
       } else {
         setState(() {
@@ -133,6 +135,14 @@ class _SettingsState extends State<SettingsPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  SizedBox(height: 100),
+                  Padding(
+                      padding: const EdgeInsets.only(
+                          left: 30, top: 0, right: 30.0, bottom: 8.0),
+                      child: Text(
+                        'The Designee is the person you can count on to notify Elys of your passing.',
+                        style: TextStyle(fontSize: 20),
+                      )),
                   SizedBox(height: 100),
                   Padding(
                     padding: const EdgeInsets.only(

@@ -68,7 +68,7 @@ class _EditContactPageState extends State<EditContactPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Edit Contact',
+          'Edit My Connections',
           style: TextStyle(color: Colors.white),
         ),
         automaticallyImplyLeading: false,

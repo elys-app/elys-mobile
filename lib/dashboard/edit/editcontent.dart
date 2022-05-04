@@ -66,7 +66,7 @@ class _EditContentPageState extends State<EditContentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Edit Content Description',
+          'Edit My Media',
           style: TextStyle(color: Colors.white),
         ),
         automaticallyImplyLeading: false,

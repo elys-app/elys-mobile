@@ -75,19 +75,23 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
 
   Future<void> _setup() async {
     try {
-      // final contactItems = await Amplify.DataStore.query(Contact.classType);
-      // this.selectedContact = result.where((item) => item.email == widget.eventItem.contactEmail).first;
+      final contactItems = await Amplify.DataStore.query(Contact.classType);
       final contentItems = await Amplify.DataStore.query(Content.classType);
       var currentContent = contentItems.where((item) => item.id == widget.eventItem.contentId).first;
+
+      selectedMonth = widget.eventItem.eventMonth;
+      selectedDay = widget.eventItem.eventDate;
 
       currentContent =
           contentItems.where((item) => item.id == widget.eventItem.contentId).first;
       if (currentContent.id != "") {
         setState(() {
+          selectedContact = contactItems.where((item) => item.email == widget.eventItem.contactEmail).first;
           selectedContent = currentContent;
         });
       } else {
         setState(() {
+          selectedContact = contactItems[0];
           selectedContent = contentItems[0];
         });
       }
@@ -180,7 +184,7 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
                   print(
                       'Selected Contact is now: ' + selectedContact.toString());
                 },
-                // value: originalContact,
+                value: selectedContact,
                 items: snapshot.data);
           } else
             return Text('Loading');
@@ -230,14 +234,16 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
 
   Future<void> onEditEventPressed() async {
     if (formKey.currentState!.validate()) {
-      Amplify.DataStore.save(new Event(
+      Event updatedEvent = widget.eventItem.copyWith(
           name: descriptionController.text,
           contentId: selectedContent.id,
           contactEmail: selectedContact.email,
-          eventMonth: selectedMonth,
+          eventMonth: selectedMonth.toString(),
           eventDate: selectedDay.toString(),
-          groupId: '',
-          eventYear: '0'));
+          groupId: selectedContact.id,
+          eventYear: '0');
+      await Amplify.DataStore.save(updatedEvent);
+      print('Updated: ${updatedEvent.toString()}');
       Navigator.pushNamed(context, '/main', arguments: 'schedule');
     }
   }
@@ -252,7 +258,7 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Edit Event',
+          'Edit My Schedule',
           style: TextStyle(color: Colors.white),
         ),
         automaticallyImplyLeading: false,
@@ -300,7 +306,8 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
                           });
                         },
                         items: _getMonths(),
-                        value: widget.eventItem.eventMonth),
+                        value: selectedMonth
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -323,18 +330,18 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
                           }
                         },
                         items: _getDays(selectedMonth),
-                        value: widget.eventItem.eventDate),
+                        value: selectedDay),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 30, top: 0, right: 30.0, bottom: 8.0),
                     child: _getContentDropdownItems(),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(
-                  //       left: 30, top: 0, right: 30.0, bottom: 8.0),
-                  //   child: _getContactDropdownItems(),
-                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 30, top: 0, right: 30.0, bottom: 8.0),
+                    child: _getContactDropdownItems(),
+                  ),
                   SizedBox(height: 200),
                 ],
               ),
