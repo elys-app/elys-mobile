@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -20,7 +21,7 @@ class _PanicPageState extends State<PanicPage> {
   late XFile _video;
 
   String heroText = 'Tap the Button to Record';
-  String time = '72:00:00';
+  String time = '00:10:00';
 
   List<SpecialEvent> events = List<SpecialEvent>.empty(growable: true);
 
@@ -39,6 +40,25 @@ class _PanicPageState extends State<PanicPage> {
   void dispose() {
     timer.cancel();
     super.dispose();
+  }
+
+  Widget _getUserName() {
+    return new FutureBuilder(
+      builder: (context, AsyncSnapshot<AuthUser> snapshot) {
+        if (snapshot.hasData) {
+          String welcome = 'Welcome, ${snapshot.data!.username}';
+          return Text(welcome,
+              style: GoogleFonts.bellefair(
+                  textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w500)));
+        } else {
+          return Text('Loading');
+        }
+      },
+      future: Amplify.Auth.getCurrentUser(),
+    );
   }
 
   void _getSpecialEvents() async {
@@ -74,7 +94,7 @@ class _PanicPageState extends State<PanicPage> {
   Future<void> _startCountDown() async {
     String timeString = goTime.toString();
     DateTime dateTime = DateTime.parse(timeString);
-    DateTime futureTime = dateTime.add(Duration(hours: 72));
+    DateTime futureTime = dateTime.add(Duration(minutes: 10));
     time = futureTime.difference(DateTime.now()).toString().substring(0, 8);
 
     _updateTime();
@@ -85,7 +105,7 @@ class _PanicPageState extends State<PanicPage> {
   }
 
   void _cancelCountDown() {
-    time = '72:00:00';
+    time = '00:10:00';
 
     _deleteVideo();
 
@@ -132,7 +152,11 @@ class _PanicPageState extends State<PanicPage> {
       appBar: AppBar(
         title: Text(
           'Elys Mobile',
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.bellefair(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500)),
         ),
         automaticallyImplyLeading: false,
         iconTheme: IconThemeData(color: Colors.white),
@@ -147,10 +171,7 @@ class _PanicPageState extends State<PanicPage> {
                 decoration: BoxDecoration(
                   color: Colors.blue,
                 ),
-                child: Text(
-                  'Hello, user',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                ),
+                child: _getUserName(),
               ),
             ),
             ListTile(
