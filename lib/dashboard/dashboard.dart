@@ -6,9 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
-import 'content.dart';
-import 'detail.dart';
-import 'schedule.dart';
+import 'show/content.dart';
+import 'show/detail.dart';
+import 'show/schedule.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key, required this.page}) : super(key: key);

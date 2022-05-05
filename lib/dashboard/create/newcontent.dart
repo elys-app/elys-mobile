@@ -5,7 +5,11 @@ import 'dart:convert';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:elys_mobile/amplifyconfiguration.dart';
+
 import 'package:flutter/material.dart';
+
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 import '../../models/content.dart';
@@ -88,8 +92,12 @@ class _NewContentPageState extends State<NewContentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add New Content',
-          style: TextStyle(color: Colors.white),
+          'Elys Mobile',
+          style: GoogleFonts.bellefair(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500)),
         ),
         automaticallyImplyLeading: false,
       ),
@@ -98,6 +106,14 @@ class _NewContentPageState extends State<NewContentPage> {
           key: formKey,
           child: Column(
             children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text('Add a new Media Item',
+                  style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          fontSize: 18)),
+                ),
+              ),
               Flexible(
                 child: Stepper(
                   type: StepperType.vertical,

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 
-import '../models/Content.dart';
+import '../../models/Content.dart';
 
 class ContentPage extends StatefulWidget {
   ContentPage({Key? key}) : super(key: key);
@@ -77,13 +78,23 @@ class _ContentPageState extends State<ContentPage> {
       future: _getContentList(),
       builder: (BuildContext context, AsyncSnapshot<List<ListTile>> snapshot) {
         if (snapshot.hasData) {
-          return new ListView.separated(
-              separatorBuilder: (context, item) => Divider(thickness: 1),
-              shrinkWrap: true,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, item) {
-                return snapshot.data![item];
-              });
+          if (snapshot.data!.length > 0) {
+            return new ListView.separated(
+                separatorBuilder: (context, item) => Divider(thickness: 1),
+                shrinkWrap: true,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, item) {
+                  return snapshot.data![item];
+                });
+          }
+          else {
+            return Padding(
+              padding: const EdgeInsets.all(10),
+              child: new
+              Text('No Media Items found',
+              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18)),
+            );
+          }
         } else {
           return Container(
             child: SpinKitThreeBounce(
@@ -96,6 +107,8 @@ class _ContentPageState extends State<ContentPage> {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -104,9 +117,10 @@ class _ContentPageState extends State<ContentPage> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(10),
-            child: Text(
-              'Upload any photo or video for future messages',
-              style: TextStyle(fontSize: 20),
+            child: Text('Upload any photo or video for future messages',
+              style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                      fontSize: 18)),
             ),
           ),
           Divider(

@@ -3,7 +3,9 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../models/Contact.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../../models/Contact.dart';
 
 class DetailsPage extends StatefulWidget {
   DetailsPage({Key? key}) : super(key: key);
@@ -68,14 +70,24 @@ class _DetailsPageState extends State<DetailsPage> {
       future: _getContactList(),
       builder: (BuildContext context, AsyncSnapshot<List<ListTile>> snapshot) {
         if (snapshot.hasData) {
-          return new ListView.separated(
-              separatorBuilder: (context, item) => Divider(thickness: 1),
-              shrinkWrap: true,
-              physics: AlwaysScrollableScrollPhysics() ,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, item) {
-                return snapshot.data![item];
-              });
+          if (snapshot.data!.length > 0) {
+            return new ListView.separated(
+                separatorBuilder: (context, item) => Divider(thickness: 1),
+                shrinkWrap: true,
+                physics: AlwaysScrollableScrollPhysics(),
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, item) {
+                  return snapshot.data![item];
+                });
+          }
+          else {
+            return Padding(
+              padding: const EdgeInsets.all(10),
+              child: new
+              Text('No Connections found',
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18)),
+            );
+          }
         } else {
           return Container(
             child: SpinKitThreeBounce(
@@ -98,7 +110,9 @@ class _DetailsPageState extends State<DetailsPage> {
             padding: EdgeInsets.all(10),
             child: Text(
               'Add, change, or delete any connections you want to send future messages',
-              style: TextStyle(fontSize: 20),
+              style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                      fontSize: 18)),
             ),
           ),
           Divider(

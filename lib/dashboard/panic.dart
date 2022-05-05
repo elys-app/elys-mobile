@@ -47,12 +47,12 @@ class _PanicPageState extends State<PanicPage> {
       builder: (context, AsyncSnapshot<AuthUser> snapshot) {
         if (snapshot.hasData) {
           String welcome = 'Welcome, ${snapshot.data!.username}';
-          return Text(welcome,
-              style: GoogleFonts.bellefair(
-                  textStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w500)));
+          return Text(
+            welcome,
+            style: GoogleFonts.bellefair(
+              textStyle: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
+            ),
+          );
         } else {
           return Text('Loading');
         }
@@ -62,8 +62,7 @@ class _PanicPageState extends State<PanicPage> {
   }
 
   void _getSpecialEvents() async {
-    events = await Amplify.DataStore.query(
-        SpecialEvent.classType,
+    events = await Amplify.DataStore.query(SpecialEvent.classType,
         sortBy: [SpecialEvent.TIMESUBMITTED.descending()]);
     if (events.length > 0) {
       goTime = events[0].timeSubmitted;
@@ -82,6 +81,7 @@ class _PanicPageState extends State<PanicPage> {
       Navigator.pushNamed(context, '/pending', arguments: _video);
     }
   }
+
   Future<void> _deleteVideo() async {
     List<SpecialEvent> specialEvents = await Amplify.DataStore.query(
         SpecialEvent.classType,
@@ -123,7 +123,7 @@ class _PanicPageState extends State<PanicPage> {
         () {
           String timeString = goTime.toString();
           DateTime dateTime = DateTime.parse(timeString);
-          DateTime futureTime = dateTime.add(Duration(hours: 72));
+          DateTime futureTime = dateTime.add(Duration(minutes: 10));
           time =
               futureTime.difference(DateTime.now()).toString().substring(0, 8);
         },
@@ -198,7 +198,7 @@ class _PanicPageState extends State<PanicPage> {
               onPressed: () {
                 _getVideo();
               },
-              child: const Icon(Icons.volume_down_sharp),
+              child: const Icon(Icons.video_call_sharp),
               backgroundColor: Colors.lightBlue,
             ),
           ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 import '../../models/Event.dart';
 import '../../models/Content.dart';
 import '../../models/Contact.dart';
@@ -239,8 +241,12 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add New Event',
-          style: TextStyle(color: Colors.white),
+          'Elys Mobile',
+          style: GoogleFonts.bellefair(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500)),
         ),
         automaticallyImplyLeading: false,
       ),
@@ -251,6 +257,14 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text('Add a new Schedule Item',
+                      style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                              fontSize: 18)),
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.only(
                         left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),

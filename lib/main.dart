@@ -8,6 +8,7 @@ import '../models/Content.dart';
 import '../models/Event.dart';
 
 import 'package:elys_mobile/dashboard/dashboard.dart';
+import 'package:elys_mobile/dashboard/startup.dart';
 import 'package:elys_mobile/dashboard/panic.dart';
 import 'package:elys_mobile/dashboard/pending.dart';
 import 'package:elys_mobile/dashboard/undefined.dart';
@@ -67,6 +68,9 @@ class ElysApp extends StatelessWidget {
         Contact _contact = settings.arguments as Contact;
         return MaterialPageRoute(
             builder: (context) => EditContactPage(contactItem: _contact));
+      case '/startup':
+        String _variation = settings.arguments as String;
+        return MaterialPageRoute(builder: (context) => StartupPage(variation: _variation));
       case '/newschedule':
         return MaterialPageRoute(builder: (context) => NewSchedulePage());
       case '/editschedule':

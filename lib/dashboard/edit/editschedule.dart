@@ -25,7 +25,8 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
   List<Content> contentItems = new List<Content>.empty(growable: true);
   Contact selectedContact = new Contact(name: '', email: '');
   Contact originalContact = new Contact(name: '', email: '');
-  Content selectedContent = new Content(description: '', name: '', type: '', bucket: '', region: '', key: '');
+  Content selectedContent = new Content(
+      description: '', name: '', type: '', bucket: '', region: '', key: '');
 
   List<String> daysOfTheMonth = [
     '1',
@@ -69,6 +70,13 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
   }
 
   @override
+  void setState(fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }
@@ -77,16 +85,21 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
     try {
       final contactItems = await Amplify.DataStore.query(Contact.classType);
       final contentItems = await Amplify.DataStore.query(Content.classType);
-      var currentContent = contentItems.where((item) => item.id == widget.eventItem.contentId).first;
+      var currentContent = contentItems
+          .where((item) => item.id == widget.eventItem.contentId)
+          .first;
 
       selectedMonth = widget.eventItem.eventMonth;
       selectedDay = widget.eventItem.eventDate;
 
-      currentContent =
-          contentItems.where((item) => item.id == widget.eventItem.contentId).first;
+      currentContent = contentItems
+          .where((item) => item.id == widget.eventItem.contentId)
+          .first;
       if (currentContent.id != "") {
         setState(() {
-          selectedContact = contactItems.where((item) => item.email == widget.eventItem.contactEmail).first;
+          selectedContact = contactItems
+              .where((item) => item.email == widget.eventItem.contactEmail)
+              .first;
           selectedContent = currentContent;
         });
       } else {
@@ -95,7 +108,6 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
           selectedContent = contentItems[0];
         });
       }
-
     } catch (e) {
       setState(() {
         print(e);
@@ -306,8 +318,7 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
                           });
                         },
                         items: _getMonths(),
-                        value: selectedMonth
-                    ),
+                        value: selectedMonth),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -364,7 +375,6 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 20),
-
             child: FloatingActionButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
