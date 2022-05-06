@@ -1,12 +1,15 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:flutter/material.dart';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+
 import 'package:elys_mobile/models/ModelProvider.dart';
+
+import 'package:elys_mobile/models/PendingPage.dart';
 
 class PanicPage extends StatefulWidget {
   PanicPage({Key? key}) : super(key: key);
@@ -17,6 +20,10 @@ class PanicPage extends StatefulWidget {
 
 class _PanicPageState extends State<PanicPage> {
   bool _submitted = false;
+  final formKey = GlobalKey<FormState>();
+
+  final nameController = TextEditingController();
+  final numberController = TextEditingController();
 
   late XFile _video;
 
@@ -78,10 +85,12 @@ class _PanicPageState extends State<PanicPage> {
     final video = await imagePicker.pickVideo(
         source: ImageSource.camera, maxDuration: Duration(seconds: 10));
 
-    if (video != null) {
+    if (video?.length() != null) {
       _startCountDown();
       goTime = TemporalDateTime.now();
-      Navigator.pushNamed(context, '/pending', arguments: _video);
+      PendingPageArguments infoToPass = PendingPageArguments(
+          _video, nameController.text, numberController.text);
+      Navigator.pushNamed(context, '/pending', arguments: infoToPass);
     }
   }
 
@@ -193,38 +202,97 @@ class _PanicPageState extends State<PanicPage> {
           ],
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Center(
-            child: Text(
-              heroText,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: Form(
+        key: formKey,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 20),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'On this page, you can send an emergency message to a person you choose',
+                    style:
+                        GoogleFonts.poppins(textStyle: TextStyle(fontSize: 18)),
+                  ),
+                ),
+                SizedBox(height: 30),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter a Name';
+                      }
+                      return null;
+                    },
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person),
+                      border: OutlineInputBorder(),
+                      labelText: 'Emergency Contact Name',
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter an Phone Number';
+                      }
+                      return null;
+                    },
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.phone_sharp),
+                      border: OutlineInputBorder(),
+                      labelText: 'Emergency Contact Phone Number',
+                    ),
+                  ),
+                ),
+                SizedBox(height: 75),
+                Center(
+                  child: Text(
+                    heroText,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    'Time Until Release: ' + time,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: !_submitted
+                      ? Center(child: Text('No Video Recorded'))
+                      : Center(child: Text('Video Available')),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                      onPressed: !_submitted
+                          ? () {
+                              _getVideo();
+                            }
+                          : () {
+                              _cancelCountDown();
+                            },
+                      child: !_submitted
+                          ? Text('Record', style: TextStyle(fontSize: 18))
+                          : Text('Cancel', style: TextStyle(fontSize: 18))),
+                )
+              ],
             ),
           ),
-          Center(
-            child: Text(
-              'Time Until Release: ' + time,
-              style: TextStyle(fontSize: 14),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: !_submitted
-                ? Center(child: Text('No Video Recorded'))
-                : Center(child: Text('Video Available')),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ElevatedButton(
-                onPressed: !_submitted
-                  ? () {_getVideo();}
-                  : () {_cancelCountDown();},
-                child: !_submitted
-                    ? Text('Record', style: TextStyle(fontSize: 18))
-                    : Text('Cancel', style: TextStyle(fontSize: 18))),
-          )
-        ],
+        ),
       ),
     );
   }

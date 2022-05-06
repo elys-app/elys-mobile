@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,6 +23,7 @@ import 'package:elys_mobile/login/login.dart';
 import 'package:elys_mobile/login/loading.dart';
 
 import 'package:elys_mobile/settings/econtact.dart';
+import 'package:elys_mobile/models/PendingPage.dart';
 
 import 'models/Content.dart';
 
@@ -70,7 +70,8 @@ class ElysApp extends StatelessWidget {
             builder: (context) => EditContactPage(contactItem: _contact));
       case '/startup':
         String _variation = settings.arguments as String;
-        return MaterialPageRoute(builder: (context) => StartupPage(variation: _variation));
+        return MaterialPageRoute(
+            builder: (context) => StartupPage(variation: _variation));
       case '/newschedule':
         return MaterialPageRoute(builder: (context) => NewSchedulePage());
       case '/editschedule':
@@ -80,17 +81,18 @@ class ElysApp extends StatelessWidget {
       case '/panic':
         return MaterialPageRoute(builder: (context) => PanicPage());
       case '/pending':
-        XFile _content = settings.arguments as XFile;
+        PendingPageArguments info = settings.arguments as PendingPageArguments;
         return MaterialPageRoute(
-            builder: (context) => PendingPage(content: _content));
+          builder: (context) =>
+              PendingPage(content: info.content, name: info.name, number: info.number),
+        );
 
       case '/loading':
         String _destination = settings.arguments as String;
         return MaterialPageRoute(
             builder: (context) => LoadingPage(destination: _destination));
       case '/settings':
-        return MaterialPageRoute(
-          builder: (context) => SettingsPage());
+        return MaterialPageRoute(builder: (context) => SettingsPage());
       default:
         String _name = settings.name!;
         return MaterialPageRoute(

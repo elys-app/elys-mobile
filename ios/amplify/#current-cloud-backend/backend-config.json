@@ -21,7 +21,16 @@
           },
           "additionalAuthenticationProviders": []
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "elysonline01747ffd",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
     }
   },
   "storage": {

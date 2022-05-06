@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -9,9 +11,11 @@ import 'package:elys_mobile/models/ModelProvider.dart';
 import 'package:elys_mobile/amplifyconfiguration.dart';
 
 class PendingPage extends StatefulWidget {
-  PendingPage({Key? key, required this.content}) : super(key: key);
+  PendingPage({Key? key, required this.content, required this.name, required this.number}) : super(key: key);
 
   final content;
+  final name;
+  final number;
 
   @override
   _PendingPageState createState() => _PendingPageState();
@@ -53,7 +57,9 @@ class _PendingPageState extends State<PendingPage> {
           region: _region,
           bucket: _bucket,
           key: _key,
-          executorEmail: '', // account[0].executor!.email,
+          executorEmail: '',
+          emergencyName: '',
+          emergencyNumber: '',
           timeSubmitted: TemporalDateTime.now(),
           sent: false,
           warned: false));
@@ -79,7 +85,10 @@ class _PendingPageState extends State<PendingPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(
-              child: CircularProgressIndicator(),
+              child: SpinKitThreeBounce(
+                color: Colors.lightBlue,
+                size: 50.0,
+              ),
               width: 100,
               height: 100,
             ),

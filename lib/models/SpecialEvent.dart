@@ -17,7 +17,7 @@
 // Generated files can be excluded from analysis in analysis_options.yaml
 // For more info, see: https://dart.dev/guides/language/analysis-options#excluding-code-from-analysis
 
-// ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
+// ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
@@ -32,6 +32,8 @@ class SpecialEvent extends Model {
   final String? _region;
   final String? _key;
   final String? _executorEmail;
+  final String? _emergencyName;
+  final String? _emergencyNumber;
   final TemporalDateTime? _timeSubmitted;
   final bool? _warned;
   final bool? _sent;
@@ -85,17 +87,16 @@ class SpecialEvent extends Model {
     }
   }
   
-  String get executorEmail {
-    try {
-      return _executorEmail!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  String? get executorEmail {
+    return _executorEmail;
+  }
+  
+  String? get emergencyName {
+    return _emergencyName;
+  }
+  
+  String? get emergencyNumber {
+    return _emergencyNumber;
   }
   
   TemporalDateTime get timeSubmitted {
@@ -127,15 +128,17 @@ class SpecialEvent extends Model {
     return _updatedAt;
   }
   
-  const SpecialEvent._internal({required this.id, required bucket, required region, required key, required executorEmail, required timeSubmitted, warned, sent, createdAt, updatedAt}): _bucket = bucket, _region = region, _key = key, _executorEmail = executorEmail, _timeSubmitted = timeSubmitted, _warned = warned, _sent = sent, _createdAt = createdAt, _updatedAt = updatedAt;
+  const SpecialEvent._internal({required this.id, required bucket, required region, required key, executorEmail, emergencyName, emergencyNumber, required timeSubmitted, warned, sent, createdAt, updatedAt}): _bucket = bucket, _region = region, _key = key, _executorEmail = executorEmail, _emergencyName = emergencyName, _emergencyNumber = emergencyNumber, _timeSubmitted = timeSubmitted, _warned = warned, _sent = sent, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory SpecialEvent({String? id, required String bucket, required String region, required String key, required String executorEmail, required TemporalDateTime timeSubmitted, bool? warned, bool? sent}) {
+  factory SpecialEvent({String? id, required String bucket, required String region, required String key, String? executorEmail, String? emergencyName, String? emergencyNumber, required TemporalDateTime timeSubmitted, bool? warned, bool? sent}) {
     return SpecialEvent._internal(
       id: id == null ? UUID.getUUID() : id,
       bucket: bucket,
       region: region,
       key: key,
       executorEmail: executorEmail,
+      emergencyName: emergencyName,
+      emergencyNumber: emergencyNumber,
       timeSubmitted: timeSubmitted,
       warned: warned,
       sent: sent);
@@ -154,6 +157,8 @@ class SpecialEvent extends Model {
       _region == other._region &&
       _key == other._key &&
       _executorEmail == other._executorEmail &&
+      _emergencyName == other._emergencyName &&
+      _emergencyNumber == other._emergencyNumber &&
       _timeSubmitted == other._timeSubmitted &&
       _warned == other._warned &&
       _sent == other._sent;
@@ -172,6 +177,8 @@ class SpecialEvent extends Model {
     buffer.write("region=" + "$_region" + ", ");
     buffer.write("key=" + "$_key" + ", ");
     buffer.write("executorEmail=" + "$_executorEmail" + ", ");
+    buffer.write("emergencyName=" + "$_emergencyName" + ", ");
+    buffer.write("emergencyNumber=" + "$_emergencyNumber" + ", ");
     buffer.write("timeSubmitted=" + (_timeSubmitted != null ? _timeSubmitted!.format() : "null") + ", ");
     buffer.write("warned=" + (_warned != null ? _warned!.toString() : "null") + ", ");
     buffer.write("sent=" + (_sent != null ? _sent!.toString() : "null") + ", ");
@@ -182,13 +189,15 @@ class SpecialEvent extends Model {
     return buffer.toString();
   }
   
-  SpecialEvent copyWith({String? id, String? bucket, String? region, String? key, String? executorEmail, TemporalDateTime? timeSubmitted, bool? warned, bool? sent}) {
+  SpecialEvent copyWith({String? id, String? bucket, String? region, String? key, String? executorEmail, String? emergencyName, String? emergencyNumber, TemporalDateTime? timeSubmitted, bool? warned, bool? sent}) {
     return SpecialEvent._internal(
       id: id ?? this.id,
       bucket: bucket ?? this.bucket,
       region: region ?? this.region,
       key: key ?? this.key,
       executorEmail: executorEmail ?? this.executorEmail,
+      emergencyName: emergencyName ?? this.emergencyName,
+      emergencyNumber: emergencyNumber ?? this.emergencyNumber,
       timeSubmitted: timeSubmitted ?? this.timeSubmitted,
       warned: warned ?? this.warned,
       sent: sent ?? this.sent);
@@ -200,6 +209,8 @@ class SpecialEvent extends Model {
       _region = json['region'],
       _key = json['key'],
       _executorEmail = json['executorEmail'],
+      _emergencyName = json['emergencyName'],
+      _emergencyNumber = json['emergencyNumber'],
       _timeSubmitted = json['timeSubmitted'] != null ? TemporalDateTime.fromString(json['timeSubmitted']) : null,
       _warned = json['warned'],
       _sent = json['sent'],
@@ -207,7 +218,7 @@ class SpecialEvent extends Model {
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'bucket': _bucket, 'region': _region, 'key': _key, 'executorEmail': _executorEmail, 'timeSubmitted': _timeSubmitted?.format(), 'warned': _warned, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'bucket': _bucket, 'region': _region, 'key': _key, 'executorEmail': _executorEmail, 'emergencyName': _emergencyName, 'emergencyNumber': _emergencyNumber, 'timeSubmitted': _timeSubmitted?.format(), 'warned': _warned, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "specialEvent.id");
@@ -215,6 +226,8 @@ class SpecialEvent extends Model {
   static final QueryField REGION = QueryField(fieldName: "region");
   static final QueryField KEY = QueryField(fieldName: "key");
   static final QueryField EXECUTOREMAIL = QueryField(fieldName: "executorEmail");
+  static final QueryField EMERGENCYNAME = QueryField(fieldName: "emergencyName");
+  static final QueryField EMERGENCYNUMBER = QueryField(fieldName: "emergencyNumber");
   static final QueryField TIMESUBMITTED = QueryField(fieldName: "timeSubmitted");
   static final QueryField WARNED = QueryField(fieldName: "warned");
   static final QueryField SENT = QueryField(fieldName: "sent");
@@ -258,7 +271,19 @@ class SpecialEvent extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: SpecialEvent.EXECUTOREMAIL,
-      isRequired: true,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: SpecialEvent.EMERGENCYNAME,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: SpecialEvent.EMERGENCYNUMBER,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     

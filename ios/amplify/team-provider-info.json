@@ -52,7 +52,7 @@
         },
         "getSubscriptionStatus": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-          "s3Key": "amplify-builds/getSubscriptionStatus-2f4a596e33584c465271-build.zip"
+          "s3Key": "amplify-builds/getSubscriptionStatus-424333324c69556b4747-build.zip"
         },
         "deleteCustomer": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",

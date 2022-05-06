@@ -4,6 +4,7 @@ type Account @model @auth(rules: [{allow: owner}]) @key(name: "byUserName", fiel
   userFullName: String
   executorName: String! 
   executorEmail: String
+  executorId: String 
   customerId: String!
   subscriptionId: String
   transition: Boolean
@@ -37,7 +38,9 @@ type SpecialEvent @model @auth(rules: [{allow: owner}]) {
   bucket: String!
   region: String!
   key: String! 
-  executorEmail: String!
+  executorEmail: String
+  emergencyName: String
+  emergencyNumber: String
   timeSubmitted: AWSDateTime!
   warned: Boolean
   sent: Boolean

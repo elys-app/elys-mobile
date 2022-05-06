@@ -17,9 +17,9 @@
 // Generated files can be excluded from analysis in analysis_options.yaml
 // For more info, see: https://dart.dev/guides/language/analysis-options#excluding-code-from-analysis
 
-// ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
+// ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -32,10 +32,13 @@ class Account extends Model {
   final String? _userFullName;
   final String? _executorName;
   final String? _executorEmail;
+  final String? _executorId;
   final String? _customerId;
   final String? _subscriptionId;
   final bool? _transition;
   final String? _customerStatus;
+  final TemporalDateTime? _createdAt;
+  final TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -49,10 +52,10 @@ class Account extends Model {
     try {
       return _userName!;
     } catch(e) {
-      throw new DataStoreException(
-          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -66,10 +69,10 @@ class Account extends Model {
     try {
       return _executorName!;
     } catch(e) {
-      throw new DataStoreException(
-          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -79,14 +82,18 @@ class Account extends Model {
     return _executorEmail;
   }
   
+  String? get executorId {
+    return _executorId;
+  }
+  
   String get customerId {
     try {
       return _customerId!;
     } catch(e) {
-      throw new DataStoreException(
-          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -104,15 +111,24 @@ class Account extends Model {
     return _customerStatus;
   }
   
-  const Account._internal({required this.id, required userName, userFullName, required executorName, executorEmail, required customerId, subscriptionId, transition, customerStatus}): _userName = userName, _userFullName = userFullName, _executorName = executorName, _executorEmail = executorEmail, _customerId = customerId, _subscriptionId = subscriptionId, _transition = transition, _customerStatus = customerStatus;
+  TemporalDateTime? get createdAt {
+    return _createdAt;
+  }
   
-  factory Account({String? id, required String userName, String? userFullName, required String executorName, String? executorEmail, required String customerId, String? subscriptionId, bool? transition, String? customerStatus}) {
+  TemporalDateTime? get updatedAt {
+    return _updatedAt;
+  }
+  
+  const Account._internal({required this.id, required userName, userFullName, required executorName, executorEmail, executorId, required customerId, subscriptionId, transition, customerStatus, createdAt, updatedAt}): _userName = userName, _userFullName = userFullName, _executorName = executorName, _executorEmail = executorEmail, _executorId = executorId, _customerId = customerId, _subscriptionId = subscriptionId, _transition = transition, _customerStatus = customerStatus, _createdAt = createdAt, _updatedAt = updatedAt;
+  
+  factory Account({String? id, required String userName, String? userFullName, required String executorName, String? executorEmail, String? executorId, required String customerId, String? subscriptionId, bool? transition, String? customerStatus}) {
     return Account._internal(
       id: id == null ? UUID.getUUID() : id,
       userName: userName,
       userFullName: userFullName,
       executorName: executorName,
       executorEmail: executorEmail,
+      executorId: executorId,
       customerId: customerId,
       subscriptionId: subscriptionId,
       transition: transition,
@@ -132,6 +148,7 @@ class Account extends Model {
       _userFullName == other._userFullName &&
       _executorName == other._executorName &&
       _executorEmail == other._executorEmail &&
+      _executorId == other._executorId &&
       _customerId == other._customerId &&
       _subscriptionId == other._subscriptionId &&
       _transition == other._transition &&
@@ -151,22 +168,26 @@ class Account extends Model {
     buffer.write("userFullName=" + "$_userFullName" + ", ");
     buffer.write("executorName=" + "$_executorName" + ", ");
     buffer.write("executorEmail=" + "$_executorEmail" + ", ");
+    buffer.write("executorId=" + "$_executorId" + ", ");
     buffer.write("customerId=" + "$_customerId" + ", ");
     buffer.write("subscriptionId=" + "$_subscriptionId" + ", ");
     buffer.write("transition=" + (_transition != null ? _transition!.toString() : "null") + ", ");
-    buffer.write("customerStatus=" + "$_customerStatus");
+    buffer.write("customerStatus=" + "$_customerStatus" + ", ");
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Account copyWith({String? id, String? userName, String? userFullName, String? executorName, String? executorEmail, String? customerId, String? subscriptionId, bool? transition, String? customerStatus}) {
-    return Account(
+  Account copyWith({String? id, String? userName, String? userFullName, String? executorName, String? executorEmail, String? executorId, String? customerId, String? subscriptionId, bool? transition, String? customerStatus}) {
+    return Account._internal(
       id: id ?? this.id,
       userName: userName ?? this.userName,
       userFullName: userFullName ?? this.userFullName,
       executorName: executorName ?? this.executorName,
       executorEmail: executorEmail ?? this.executorEmail,
+      executorId: executorId ?? this.executorId,
       customerId: customerId ?? this.customerId,
       subscriptionId: subscriptionId ?? this.subscriptionId,
       transition: transition ?? this.transition,
@@ -179,13 +200,16 @@ class Account extends Model {
       _userFullName = json['userFullName'],
       _executorName = json['executorName'],
       _executorEmail = json['executorEmail'],
+      _executorId = json['executorId'],
       _customerId = json['customerId'],
       _subscriptionId = json['subscriptionId'],
       _transition = json['transition'],
-      _customerStatus = json['customerStatus'];
+      _customerStatus = json['customerStatus'],
+      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'userName': _userName, 'userFullName': _userFullName, 'executorName': _executorName, 'executorEmail': _executorEmail, 'customerId': _customerId, 'subscriptionId': _subscriptionId, 'transition': _transition, 'customerStatus': _customerStatus
+    'id': id, 'userName': _userName, 'userFullName': _userFullName, 'executorName': _executorName, 'executorEmail': _executorEmail, 'executorId': _executorId, 'customerId': _customerId, 'subscriptionId': _subscriptionId, 'transition': _transition, 'customerStatus': _customerStatus, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "account.id");
@@ -193,6 +217,7 @@ class Account extends Model {
   static final QueryField USERFULLNAME = QueryField(fieldName: "userFullName");
   static final QueryField EXECUTORNAME = QueryField(fieldName: "executorName");
   static final QueryField EXECUTOREMAIL = QueryField(fieldName: "executorEmail");
+  static final QueryField EXECUTORID = QueryField(fieldName: "executorId");
   static final QueryField CUSTOMERID = QueryField(fieldName: "customerId");
   static final QueryField SUBSCRIPTIONID = QueryField(fieldName: "subscriptionId");
   static final QueryField TRANSITION = QueryField(fieldName: "transition");
@@ -206,6 +231,7 @@ class Account extends Model {
         authStrategy: AuthStrategy.OWNER,
         ownerField: "owner",
         identityClaim: "cognito:username",
+        provider: AuthRuleProvider.USERPOOLS,
         operations: [
           ModelOperation.CREATE,
           ModelOperation.UPDATE,
@@ -241,6 +267,12 @@ class Account extends Model {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Account.EXECUTORID,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Account.CUSTOMERID,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
@@ -262,6 +294,20 @@ class Account extends Model {
       key: Account.CUSTOMERSTATUS,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'createdAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'updatedAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
   });
 }
