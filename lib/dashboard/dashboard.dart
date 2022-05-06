@@ -121,7 +121,7 @@ class _MainPageState extends State<MainPage> {
             ListTile(
               leading: Icon(Icons.settings, color: Colors.blueAccent),
               title: Text(
-                'Settings',
+                'Designee',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.normal,

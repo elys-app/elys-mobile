@@ -4,6 +4,8 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 import '../../models/Content.dart';
 
 class EditContentPage extends StatefulWidget {
@@ -66,8 +68,12 @@ class _EditContentPageState extends State<EditContentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Edit My Media',
-          style: TextStyle(color: Colors.white),
+          'Elys Mobile',
+          style: GoogleFonts.bellefair(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500)),
         ),
         automaticallyImplyLeading: false,
       ),
@@ -76,7 +82,18 @@ class _EditContentPageState extends State<EditContentPage> {
           key: formKey,
           child: Column(
             children: [
-              SizedBox(height: 100),
+              SizedBox(height: 50),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                child: Text(
+                  'Change the Media Item info',
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.only(
                     left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
@@ -133,6 +150,19 @@ class _EditContentPageState extends State<EditContentPage> {
               child: const Icon(Icons.delete_sharp),
               heroTag: null,
               backgroundColor: Colors.pink,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: FloatingActionButton(
+              onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  onEditContentPressed();
+                }
+              },
+              child: const Icon(Icons.upload_sharp),
+              heroTag: null,
+              backgroundColor: Colors.lightBlue,
             ),
           ),
           Padding(

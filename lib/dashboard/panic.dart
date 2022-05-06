@@ -50,7 +50,10 @@ class _PanicPageState extends State<PanicPage> {
           return Text(
             welcome,
             style: GoogleFonts.bellefair(
-              textStyle: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
+              textStyle: TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500),
             ),
           );
         } else {
@@ -133,6 +136,8 @@ class _PanicPageState extends State<PanicPage> {
 
   Future<void> _onLogout() async {
     try {
+      Navigator.pop(context);
+      await Amplify.DataStore.stop();
       Amplify.Auth.signOut().then((_) {
         Navigator.pushNamed(context, '/');
       });
@@ -188,32 +193,6 @@ class _PanicPageState extends State<PanicPage> {
           ],
         ),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Visibility(
-            visible: !_submitted,
-            child: FloatingActionButton(
-              onPressed: () {
-                _getVideo();
-              },
-              child: const Icon(Icons.video_call_sharp),
-              backgroundColor: Colors.lightBlue,
-            ),
-          ),
-          Visibility(
-            visible: _submitted,
-            child: FloatingActionButton(
-              onPressed: () {
-                _cancelCountDown();
-              },
-              child: const Icon(Icons.close_sharp),
-              backgroundColor: Colors.lightBlue,
-            ),
-          ),
-        ],
-      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -234,6 +213,16 @@ class _PanicPageState extends State<PanicPage> {
             child: !_submitted
                 ? Center(child: Text('No Video Recorded'))
                 : Center(child: Text('Video Available')),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ElevatedButton(
+                onPressed: !_submitted
+                  ? () {_getVideo();}
+                  : () {_cancelCountDown();},
+                child: !_submitted
+                    ? Text('Record', style: TextStyle(fontSize: 18))
+                    : Text('Cancel', style: TextStyle(fontSize: 18))),
           )
         ],
       ),

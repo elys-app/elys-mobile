@@ -120,7 +120,8 @@ class _ContentPageState extends State<ContentPage> {
             child: Text('Upload any photo or video for future messages',
               style: GoogleFonts.poppins(
                   textStyle: TextStyle(
-                      fontSize: 18)),
+                      fontSize: 18),
+              ),
             ),
           ),
           Divider(
