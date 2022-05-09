@@ -17,6 +17,7 @@ class _NewContactPageState extends State<NewContactPage> {
   final ButtonStyle style =
       ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
   final formKey = GlobalKey<FormState>();
+
   final nameController = TextEditingController();
   final emailController = TextEditingController();
 

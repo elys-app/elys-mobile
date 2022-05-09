@@ -1,22 +1,22 @@
+import 'package:elys_mobile/models/ModelProvider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import '../models/Contact.dart';
-import '../models/Content.dart';
-import '../models/Event.dart';
+import 'package:elys_mobile/hotbutton/panic.dart';
+import 'package:elys_mobile/hotbutton/pending.dart';
+import 'package:elys_mobile/hotbutton/camera.dart';
 
 import 'package:elys_mobile/dashboard/dashboard.dart';
 import 'package:elys_mobile/dashboard/startup.dart';
-import 'package:elys_mobile/dashboard/panic.dart';
-import 'package:elys_mobile/dashboard/pending.dart';
 import 'package:elys_mobile/dashboard/undefined.dart';
 
 import 'package:elys_mobile/dashboard/create/newcontent.dart';
-import 'package:elys_mobile/dashboard/edit/editcontent.dart';
 import 'package:elys_mobile/dashboard/create/newcontact.dart';
-import 'package:elys_mobile/dashboard/edit/editcontact.dart';
 import 'package:elys_mobile/dashboard/create/newschedule.dart';
+
+import 'package:elys_mobile/dashboard/edit/editcontent.dart';
+import 'package:elys_mobile/dashboard/edit/editcontact.dart';
 import 'package:elys_mobile/dashboard/edit/editschedule.dart';
 
 import 'package:elys_mobile/login/login.dart';
@@ -24,8 +24,6 @@ import 'package:elys_mobile/login/loading.dart';
 
 import 'package:elys_mobile/settings/econtact.dart';
 import 'package:elys_mobile/models/PendingPage.dart';
-
-import 'models/Content.dart';
 
 void main() {
   runApp(ElysApp());
@@ -83,10 +81,12 @@ class ElysApp extends StatelessWidget {
       case '/pending':
         PendingPageArguments info = settings.arguments as PendingPageArguments;
         return MaterialPageRoute(
-          builder: (context) =>
-              PendingPage(content: info.content, name: info.name, number: info.number),
+          builder: (context) => PendingPage(
+              event: info.event, content: info.content),
         );
-
+      case '/camera':
+        SpecialEvent _event = settings.arguments as SpecialEvent;
+        return MaterialPageRoute(builder: (context) => CameraPage(event: _event));
       case '/loading':
         String _destination = settings.arguments as String;
         return MaterialPageRoute(

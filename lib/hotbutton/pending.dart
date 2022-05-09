@@ -1,35 +1,31 @@
-import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:elys_mobile/models/ModelProvider.dart';
-import 'package:elys_mobile/amplifyconfiguration.dart';
 
 class PendingPage extends StatefulWidget {
-  PendingPage({Key? key, required this.content, required this.name, required this.number}) : super(key: key);
+  PendingPage({Key? key, required this.event, required this.content}) : super(key: key);
 
+  final event;
   final content;
-  final name;
-  final number;
 
   @override
   _PendingPageState createState() => _PendingPageState();
 }
 
 class _PendingPageState extends State<PendingPage> {
-  String _bucket = '';
-  String _region = '';
   String _key = '';
 
   @override
   initState() {
     super.initState();
-    _getS3Config();
     _saveContent();
   }
 
@@ -38,32 +34,20 @@ class _PendingPageState extends State<PendingPage> {
     super.dispose();
   }
 
-  void _getS3Config() {
-    final s3config =
-        jsonDecode(amplifyconfig)['storage']['plugins']['awsS3StoragePlugin'];
-    _bucket = s3config['bucket'];
-    _region = s3config['region'];
-  }
-
   Future<void> _saveContent() async {
     _key = widget.content.path
         .split('/')
         .last;
     print(_key);
 
+    final currentEvent = widget.event;
     try {
       await Amplify.Storage.uploadFile(local: File(widget.content.path), key: _key);
-      await Amplify.DataStore.save(new SpecialEvent(
-          region: _region,
-          bucket: _bucket,
+      SpecialEvent updatedEvent = currentEvent.copyWith(
           key: _key,
-          executorEmail: '',
-          emergencyName: '',
-          emergencyNumber: '',
-          timeSubmitted: TemporalDateTime.now(),
-          sent: false,
-          warned: false));
-      Navigator.pop(context);
+          timeSubmitted: TemporalDateTime.now());
+      await Amplify.DataStore.save(updatedEvent);
+      Navigator.pushNamed(context, '/panic');
     } catch (e) {
       print(e);
     }
@@ -74,8 +58,12 @@ class _PendingPageState extends State<PendingPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Uploading Hot Button Content',
-          style: TextStyle(color: Colors.white),
+          'Elys Mobile',
+          style: GoogleFonts.bellefair(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500)),
         ),
         automaticallyImplyLeading: false,
       ),
@@ -84,6 +72,10 @@ class _PendingPageState extends State<PendingPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            Text(
+              'Uploading Hot Button Content...',
+              style: TextStyle(fontSize: 18),
+            ),
             SizedBox(
               child: SpinKitThreeBounce(
                 color: Colors.lightBlue,

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,8 +10,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 import 'package:elys_mobile/models/ModelProvider.dart';
-
-import 'package:elys_mobile/models/PendingPage.dart';
+import 'package:elys_mobile/amplifyconfiguration.dart';
 
 class PanicPage extends StatefulWidget {
   PanicPage({Key? key}) : super(key: key);
@@ -22,13 +23,16 @@ class _PanicPageState extends State<PanicPage> {
   bool _submitted = false;
   final formKey = GlobalKey<FormState>();
 
+  String _bucket = '';
+  String _region = '';
+
+  String fullTime = '00:30:00';
+  String time = '';
+
+  int timeToSend = 30;
+
   final nameController = TextEditingController();
   final numberController = TextEditingController();
-
-  late XFile _video;
-
-  String heroText = 'Tap the Button to Record';
-  String time = '00:10:00';
 
   List<SpecialEvent> events = List<SpecialEvent>.empty(growable: true);
 
@@ -41,6 +45,14 @@ class _PanicPageState extends State<PanicPage> {
   void initState() {
     super.initState();
     _getSpecialEvents();
+    _getS3Config();
+  }
+
+  void _getS3Config() {
+    final s3config =
+        jsonDecode(amplifyconfig)['storage']['plugins']['awsS3StoragePlugin'];
+    _bucket = s3config['bucket'];
+    _region = s3config['region'];
   }
 
   @override
@@ -75,56 +87,73 @@ class _PanicPageState extends State<PanicPage> {
     events = await Amplify.DataStore.query(SpecialEvent.classType,
         sortBy: [SpecialEvent.TIMESUBMITTED.descending()]);
     if (events.length > 0) {
-      goTime = events[0].timeSubmitted;
-      _startCountDown();
+      if (events[0].key != '') {
+        goTime = events[0].timeSubmitted;
+        _startCountDown();
+      }
+      setState(() {
+        numberController.text = events[0].emergencyNumber!;
+        nameController.text = events[0].emergencyName!;
+      });
     }
     return;
   }
 
   Future<void> _getVideo() async {
-    final video = await imagePicker.pickVideo(
-        source: ImageSource.camera, maxDuration: Duration(seconds: 10));
-
-    if (video?.length() != null) {
-      _startCountDown();
-      goTime = TemporalDateTime.now();
-      PendingPageArguments infoToPass = PendingPageArguments(
-          _video, nameController.text, numberController.text);
-      Navigator.pushNamed(context, '/pending', arguments: infoToPass);
+    if (events.length < 1) {
+      SpecialEvent newEvent = new SpecialEvent(
+          region: _region,
+          bucket: _bucket,
+          key: '',
+          executorEmail: '',
+          emergencyName: nameController.text,
+          emergencyNumber: numberController.text,
+          timeSubmitted: TemporalDateTime.now(),
+          sent: false,
+          warned: false);
+      await Amplify.DataStore.save(newEvent);
+      Navigator.pushNamed(context, '/camera', arguments: newEvent);
+    }
+    else {
+      SpecialEvent existingEvent = events[0];
+      SpecialEvent updatedEvent = existingEvent.copyWith(
+        emergencyName: nameController.text,
+        emergencyNumber: numberController.text
+      );
+      await Amplify.DataStore.save(updatedEvent);
+      Navigator.pushNamed(context, '/camera', arguments: updatedEvent);
     }
   }
 
   Future<void> _deleteVideo() async {
-    List<SpecialEvent> specialEvents = await Amplify.DataStore.query(
-        SpecialEvent.classType,
-        sortBy: [SpecialEvent.TIMESUBMITTED.descending()]);
-
-    await Amplify.Storage.remove(key: specialEvents[0].key);
-    await Amplify.DataStore.delete(specialEvents[0]);
+    await Amplify.Storage.remove(key: events[0].key);
+    SpecialEvent existingEvent = events[0];
+    SpecialEvent updatedEvent = existingEvent.copyWith(
+      key: ''
+    );
+    await Amplify.DataStore.save(updatedEvent);
   }
 
   Future<void> _startCountDown() async {
     String timeString = goTime.toString();
     DateTime dateTime = DateTime.parse(timeString);
-    DateTime futureTime = dateTime.add(Duration(minutes: 10));
-    time = futureTime.difference(DateTime.now()).toString().substring(0, 8);
+    DateTime futureTime = dateTime.add(Duration(minutes: timeToSend));
+    time = futureTime.difference(DateTime.now()).toString().substring(0, 7);
 
     _updateTime();
     setState(() {
       _submitted = true;
-      heroText = 'Tap the Button to Cancel';
     });
   }
 
   void _cancelCountDown() {
-    time = '00:10:00';
+    time = fullTime;
 
     _deleteVideo();
 
     timer.cancel();
     setState(() {
       _submitted = false;
-      heroText = 'Tap the Button to Record';
     });
   }
 
@@ -135,9 +164,9 @@ class _PanicPageState extends State<PanicPage> {
         () {
           String timeString = goTime.toString();
           DateTime dateTime = DateTime.parse(timeString);
-          DateTime futureTime = dateTime.add(Duration(minutes: 10));
+          DateTime futureTime = dateTime.add(Duration(minutes: timeToSend));
           time =
-              futureTime.difference(DateTime.now()).toString().substring(0, 8);
+              futureTime.difference(DateTime.now()).toString().substring(0, 7);
         },
       ),
     );
@@ -146,6 +175,7 @@ class _PanicPageState extends State<PanicPage> {
   Future<void> _onLogout() async {
     try {
       Navigator.pop(context);
+      await Amplify.DataStore.clear();
       await Amplify.DataStore.stop();
       Amplify.Auth.signOut().then((_) {
         Navigator.pushNamed(context, '/');
@@ -211,71 +241,19 @@ class _PanicPageState extends State<PanicPage> {
               children: <Widget>[
                 SizedBox(height: 20),
                 Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
                   child: Text(
-                    'On this page, you can send an emergency message to a person you choose',
+                    'Add your Hot Button contact',
                     style:
                         GoogleFonts.poppins(textStyle: TextStyle(fontSize: 18)),
                   ),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 100), // sub for icon
+                SizedBox(height: 20),
                 Padding(
-                  padding: EdgeInsets.only(
-                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-                  child: TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter a Name';
-                      }
-                      return null;
-                    },
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      border: OutlineInputBorder(),
-                      labelText: 'Emergency Contact Name',
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-                  child: TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter an Phone Number';
-                      }
-                      return null;
-                    },
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.phone_sharp),
-                      border: OutlineInputBorder(),
-                      labelText: 'Emergency Contact Phone Number',
-                    ),
-                  ),
-                ),
-                SizedBox(height: 75),
-                Center(
-                  child: Text(
-                    heroText,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    'Time Until Release: ' + time,
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: !_submitted
-                      ? Center(child: Text('No Video Recorded'))
-                      : Center(child: Text('Video Available')),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.only(
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 20.0),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.red),
                       onPressed: !_submitted
@@ -288,7 +266,62 @@ class _PanicPageState extends State<PanicPage> {
                       child: !_submitted
                           ? Text('Record', style: TextStyle(fontSize: 18))
                           : Text('Cancel', style: TextStyle(fontSize: 18))),
-                )
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 20.0, right: 30.0, bottom: 10.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter a Name';
+                      }
+                      return null;
+                    },
+                    controller: nameController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person),
+                      border: OutlineInputBorder(),
+                      labelText: 'Hot Button Contact Name',
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 30.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter Hot Button Contact Phone Number';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.number,
+                    controller: numberController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.phone_sharp),
+                      border: OutlineInputBorder(),
+                      labelText: 'Enter Hot Button Contact Phone Number',
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    'Time Until Release: ' + time,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(5),
+                  child: !_submitted
+                      ? Center(
+                          child: Text('No Video Recorded',
+                              style: TextStyle(fontSize: 14)))
+                      : Center(
+                          child: Text('Video Available',
+                              style: TextStyle(fontSize: 14))),
+                ),
               ],
             ),
           ),
