@@ -30,7 +30,7 @@ class SpecialEvent extends Model {
   final String id;
   final String? _bucket;
   final String? _region;
-  final String? _key;
+  final String? _fileKey;
   final String? _executorEmail;
   final String? _emergencyName;
   final String? _emergencyNumber;
@@ -48,43 +48,16 @@ class SpecialEvent extends Model {
     return id;
   }
   
-  String get bucket {
-    try {
-      return _bucket!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  String? get bucket {
+    return _bucket;
   }
   
-  String get region {
-    try {
-      return _region!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  String? get region {
+    return _region;
   }
   
-  String get key {
-    try {
-      return _key!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  String? get fileKey {
+    return _fileKey;
   }
   
   String? get executorEmail {
@@ -99,17 +72,8 @@ class SpecialEvent extends Model {
     return _emergencyNumber;
   }
   
-  TemporalDateTime get timeSubmitted {
-    try {
-      return _timeSubmitted!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  TemporalDateTime? get timeSubmitted {
+    return _timeSubmitted;
   }
   
   bool? get warned {
@@ -128,14 +92,14 @@ class SpecialEvent extends Model {
     return _updatedAt;
   }
   
-  const SpecialEvent._internal({required this.id, required bucket, required region, required key, executorEmail, emergencyName, emergencyNumber, required timeSubmitted, warned, sent, createdAt, updatedAt}): _bucket = bucket, _region = region, _key = key, _executorEmail = executorEmail, _emergencyName = emergencyName, _emergencyNumber = emergencyNumber, _timeSubmitted = timeSubmitted, _warned = warned, _sent = sent, _createdAt = createdAt, _updatedAt = updatedAt;
+  const SpecialEvent._internal({required this.id, bucket, region, fileKey, executorEmail, emergencyName, emergencyNumber, timeSubmitted, warned, sent, createdAt, updatedAt}): _bucket = bucket, _region = region, _fileKey = fileKey, _executorEmail = executorEmail, _emergencyName = emergencyName, _emergencyNumber = emergencyNumber, _timeSubmitted = timeSubmitted, _warned = warned, _sent = sent, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory SpecialEvent({String? id, required String bucket, required String region, required String key, String? executorEmail, String? emergencyName, String? emergencyNumber, required TemporalDateTime timeSubmitted, bool? warned, bool? sent}) {
+  factory SpecialEvent({String? id, String? bucket, String? region, String? fileKey, String? executorEmail, String? emergencyName, String? emergencyNumber, TemporalDateTime? timeSubmitted, bool? warned, bool? sent}) {
     return SpecialEvent._internal(
       id: id == null ? UUID.getUUID() : id,
       bucket: bucket,
       region: region,
-      key: key,
+      fileKey: fileKey,
       executorEmail: executorEmail,
       emergencyName: emergencyName,
       emergencyNumber: emergencyNumber,
@@ -155,7 +119,7 @@ class SpecialEvent extends Model {
       id == other.id &&
       _bucket == other._bucket &&
       _region == other._region &&
-      _key == other._key &&
+      _fileKey == other._fileKey &&
       _executorEmail == other._executorEmail &&
       _emergencyName == other._emergencyName &&
       _emergencyNumber == other._emergencyNumber &&
@@ -175,7 +139,7 @@ class SpecialEvent extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("bucket=" + "$_bucket" + ", ");
     buffer.write("region=" + "$_region" + ", ");
-    buffer.write("key=" + "$_key" + ", ");
+    buffer.write("fileKey=" + "$_fileKey" + ", ");
     buffer.write("executorEmail=" + "$_executorEmail" + ", ");
     buffer.write("emergencyName=" + "$_emergencyName" + ", ");
     buffer.write("emergencyNumber=" + "$_emergencyNumber" + ", ");
@@ -189,12 +153,12 @@ class SpecialEvent extends Model {
     return buffer.toString();
   }
   
-  SpecialEvent copyWith({String? id, String? bucket, String? region, String? key, String? executorEmail, String? emergencyName, String? emergencyNumber, TemporalDateTime? timeSubmitted, bool? warned, bool? sent}) {
+  SpecialEvent copyWith({String? id, String? bucket, String? region, String? fileKey, String? executorEmail, String? emergencyName, String? emergencyNumber, TemporalDateTime? timeSubmitted, bool? warned, bool? sent}) {
     return SpecialEvent._internal(
       id: id ?? this.id,
       bucket: bucket ?? this.bucket,
       region: region ?? this.region,
-      key: key ?? this.key,
+      fileKey: fileKey ?? this.fileKey,
       executorEmail: executorEmail ?? this.executorEmail,
       emergencyName: emergencyName ?? this.emergencyName,
       emergencyNumber: emergencyNumber ?? this.emergencyNumber,
@@ -207,7 +171,7 @@ class SpecialEvent extends Model {
     : id = json['id'],
       _bucket = json['bucket'],
       _region = json['region'],
-      _key = json['key'],
+      _fileKey = json['fileKey'],
       _executorEmail = json['executorEmail'],
       _emergencyName = json['emergencyName'],
       _emergencyNumber = json['emergencyNumber'],
@@ -218,13 +182,13 @@ class SpecialEvent extends Model {
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'bucket': _bucket, 'region': _region, 'key': _key, 'executorEmail': _executorEmail, 'emergencyName': _emergencyName, 'emergencyNumber': _emergencyNumber, 'timeSubmitted': _timeSubmitted?.format(), 'warned': _warned, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'bucket': _bucket, 'region': _region, 'fileKey': _fileKey, 'executorEmail': _executorEmail, 'emergencyName': _emergencyName, 'emergencyNumber': _emergencyNumber, 'timeSubmitted': _timeSubmitted?.format(), 'warned': _warned, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "specialEvent.id");
   static final QueryField BUCKET = QueryField(fieldName: "bucket");
   static final QueryField REGION = QueryField(fieldName: "region");
-  static final QueryField KEY = QueryField(fieldName: "key");
+  static final QueryField FILEKEY = QueryField(fieldName: "fileKey");
   static final QueryField EXECUTOREMAIL = QueryField(fieldName: "executorEmail");
   static final QueryField EMERGENCYNAME = QueryField(fieldName: "emergencyName");
   static final QueryField EMERGENCYNUMBER = QueryField(fieldName: "emergencyNumber");
@@ -253,19 +217,19 @@ class SpecialEvent extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: SpecialEvent.BUCKET,
-      isRequired: true,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: SpecialEvent.REGION,
-      isRequired: true,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: SpecialEvent.KEY,
-      isRequired: true,
+      key: SpecialEvent.FILEKEY,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
@@ -289,7 +253,7 @@ class SpecialEvent extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: SpecialEvent.TIMESUBMITTED,
-      isRequired: true,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
     
