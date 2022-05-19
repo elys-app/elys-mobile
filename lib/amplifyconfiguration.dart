@@ -19,7 +19,7 @@ const amplifyconfig = ''' {
             "awsAPIPlugin": {
                 "elysonline": {
                     "endpointType": "GraphQL",
-                    "endpoint": "https://lwysedfk6zaq3czqdqiwkejdde.appsync-api.us-east-1.amazonaws.com/graphql",
+                    "endpoint": "https://fifgthwsajbilooltrgokhufjq.appsync-api.us-east-1.amazonaws.com/graphql",
                     "region": "us-east-1",
                     "authorizationType": "AMAZON_COGNITO_USER_POOLS"
                 }
@@ -37,25 +37,23 @@ const amplifyconfig = ''' {
                 "CredentialsProvider": {
                     "CognitoIdentity": {
                         "Default": {
-                            "PoolId": "us-east-1:b35ff7d5-5f4f-430d-9e11-fd25d67f51fa",
+                            "PoolId": "us-east-1:7d9c3952-bca0-4381-b5f7-e960181f14c5",
                             "Region": "us-east-1"
                         }
                     }
                 },
                 "CognitoUserPool": {
                     "Default": {
-                        "PoolId": "us-east-1_4XDwq0UyV",
-                        "AppClientId": "4n0obprqpasiim7kplqan3v6dh",
-                        "AppClientSecret": "du0qeg6bhr4jcvghhgbq8k2dd8sna905i3uh3af9fmla8eg463j",
+                        "PoolId": "us-east-1_U7W4M1Xzf",
+                        "AppClientId": "dlpejr1p5mslef6b47gdunk8h",
                         "Region": "us-east-1"
                     }
                 },
                 "Auth": {
                     "Default": {
                         "authenticationFlowType": "USER_SRP_AUTH",
-                        "loginMechanisms": [
-                            "PREFERRED_USERNAME"
-                        ],
+                        "socialProviders": [],
+                        "usernameAttributes": [],
                         "signupAttributes": [
                             "EMAIL"
                         ],
@@ -69,14 +67,12 @@ const amplifyconfig = ''' {
                         ],
                         "verificationMechanisms": [
                             "EMAIL"
-                        ],
-                        "socialProviders": [],
-                        "usernameAttributes": []
+                        ]
                     }
                 },
                 "AppSync": {
                     "Default": {
-                        "ApiUrl": "https://lwysedfk6zaq3czqdqiwkejdde.appsync-api.us-east-1.amazonaws.com/graphql",
+                        "ApiUrl": "https://fifgthwsajbilooltrgokhufjq.appsync-api.us-east-1.amazonaws.com/graphql",
                         "Region": "us-east-1",
                         "AuthMode": "AMAZON_COGNITO_USER_POOLS",
                         "ClientDatabasePrefix": "elysonline_AMAZON_COGNITO_USER_POOLS"

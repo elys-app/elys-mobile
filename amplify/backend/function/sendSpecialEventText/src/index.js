@@ -33,5 +33,5 @@ exports.handler = async (event) => {
       console.error(err, err.stack);
     });
 
-  return JSON.stringify(event);
+  return event;
 };

@@ -1,22 +1,49 @@
 {
   "auth": {
-    "elysonline01747ffd": {
+    "elysonline36d62aef": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
-      "customAuth": false
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      }
     }
   },
   "api": {
     "elysonline": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "elysonline36d62aef",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ],
       "output": {
         "authConfig": {
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authelysonline01747ffd"
+              "userPoolId": "authelysonline36d62aef"
             }
           },
           "additionalAuthenticationProviders": []
@@ -37,11 +64,6 @@
       "service": "Lambda"
     },
     "createSubscription": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "emailGroup": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -71,34 +93,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "checkEvents": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "elysonline",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
-        },
-        {
-          "category": "storage",
-          "resourceName": "s3elyscontent",
-          "attributes": [
-            "BucketName"
-          ]
-        }
-      ]
-    },
     "sendEventEmail": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
     "sendDesigneeEmail": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "sendSpecialEventWarning": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "checkSpecialEventTime": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"

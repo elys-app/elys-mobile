@@ -28,7 +28,7 @@
         "IdentityPoolName": "elysonline01747ffd_identitypool_01747ffd__test",
         "UserPoolName": "elysonline01747ffd_userpool_01747ffd"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.343Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.248Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/auth/elysonline01747ffd-cloudformation-template.yml",
         "logicalId": "authelysonline01747ffd"
@@ -77,17 +77,8 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apielysonline"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.836Z",
-      "lastPushDirHash": "y9bF0vNcqLpzTlKxGQ6A/jB6uuY=",
-      "dependsOn": [
-        {
-          "category": "auth",
-          "resourceName": "elysonline01747ffd",
-          "attributes": [
-            "UserPoolId"
-          ]
-        }
-      ]
+      "lastPushTimeStamp": "2022-05-11T00:14:17.252Z",
+      "lastPushDirHash": "jCuNT1qNfyqDDSSwiry//tAXF5o="
     }
   },
   "storage": {
@@ -98,7 +89,7 @@
         "BucketName": "elysonline361ff3e65f004dbbaf0eaa5afa9ce9ec103619-test",
         "Region": "us-east-1"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.350Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.254Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
         "logicalId": "storages3elyscontent"
@@ -116,7 +107,7 @@
         "Name": "createCustomer-test",
         "LambdaExecutionRole": "elysonlineLambdaRole83c87881-test"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.353Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.256Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/createCustomer-cloudformation-template.json",
         "logicalId": "functioncreateCustomer"
@@ -141,7 +132,7 @@
         "Name": "createSubscription-test",
         "LambdaExecutionRole": "elysonlineLambdaRole68b0444d-test"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.355Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.258Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/createSubscription-cloudformation-template.json",
         "logicalId": "functioncreateSubscription"
@@ -166,7 +157,7 @@
         "Name": "emailGroup-test",
         "LambdaExecutionRole": "elysonlineLambdaRoled8154b6c-test"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.357Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.260Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/emailGroup-cloudformation-template.json",
         "logicalId": "functionemailGroup"
@@ -191,7 +182,7 @@
         "Name": "getInvoices-test",
         "LambdaExecutionRole": "elysonlineLambdaRolebf3ee404-test"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.361Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.265Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/getInvoices-cloudformation-template.json",
         "logicalId": "functiongetInvoices"
@@ -216,7 +207,7 @@
         "Name": "newCard-test",
         "LambdaExecutionRole": "elysonlineLambdaRole3bc5919a-test"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.363Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.267Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/newCard-cloudformation-template.json",
         "logicalId": "functionnewCard"
@@ -242,7 +233,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/cancelSubscription-cloudformation-template.json",
         "logicalId": "functioncancelSubscription"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.365Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.269Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:cancelSubscription-test",
@@ -267,7 +258,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/getSubscriptionStatus-cloudformation-template.json",
         "logicalId": "functiongetSubscriptionStatus"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.368Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.271Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:getSubscriptionStatus-test",
@@ -292,7 +283,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/deleteCustomer-cloudformation-template.json",
         "logicalId": "functiondeleteCustomer"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.370Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.273Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:deleteCustomer-test",
@@ -322,20 +313,20 @@
           ]
         }
       ],
-      "lastDevBuildTimeStamp": "2022-03-26T22:06:57.139Z",
+      "lastDevBuildTimeStamp": "2022-05-10T17:29:30.202Z",
       "lastBuildType": "PROD",
-      "lastBuildTimeStamp": "2022-03-27T22:48:46.258Z",
-      "lastPackageTimeStamp": "2022-03-27T22:48:53.266Z",
-      "distZipFilename": "checkEvents-424b576b655233326578-build.zip",
+      "lastBuildTimeStamp": "2022-05-10T23:16:37.711Z",
+      "lastPackageTimeStamp": "2022-05-10T23:16:44.292Z",
+      "distZipFilename": "checkEvents-5971644f6b43764c6f42-build.zip",
       "s3Bucket": {
         "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-        "s3Key": "amplify-builds/checkEvents-424b576b655233326578-build.zip"
+        "s3Key": "amplify-builds/checkEvents-5971644f6b43764c6f42-build.zip"
       },
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/checkEvents-cloudformation-template.json",
         "logicalId": "functioncheckEvents"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.372Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.277Z",
       "output": {
         "Region": "us-east-1",
         "CloudWatchEventRule": "amplify-elysonline-test-103619-fun-CloudWatchEvent-1AVTNY98SJL4J",
@@ -343,7 +334,7 @@
         "Name": "checkEvents-test",
         "LambdaExecutionRole": "elysonlineLambdaRolecafa890b-test"
       },
-      "lastPushDirHash": "AFTIL9YnuULkWAV9h4VwAShFwx0="
+      "lastPushDirHash": "AMn8Byaf47OzBgqYXXFR8+0U5Yc="
     },
     "sendEventEmail": {
       "build": true,
@@ -362,7 +353,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/sendEventEmail-cloudformation-template.json",
         "logicalId": "functionsendEventEmail"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.373Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.280Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:sendEventEmail-test",
@@ -388,7 +379,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/sendDesigneeEmail-cloudformation-template.json",
         "logicalId": "functionsendDesigneeEmail"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.376Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.284Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:sendDesigneeEmail-test",
@@ -396,6 +387,33 @@
         "LambdaExecutionRole": "elysonlineLambdaRolec301875a-test"
       },
       "lastPushDirHash": "OG8IO9l018hqzK9blJLuPJ32dhc="
+    },
+    "sendSpecialEventText": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [],
+      "lastBuildTimeStamp": "2022-05-10T23:50:38.698Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-05-10T23:50:38.732Z",
+      "distZipFilename": "sendSpecialEventText-6b646638554b59616b36-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/sendSpecialEventText-6b646638554b59616b36-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/sendSpecialEventText-cloudformation-template.json",
+        "logicalId": "functionsendSpecialEventText"
+      },
+      "lastPushTimeStamp": "2022-05-11T00:14:17.287Z",
+      "output": {
+        "Region": "us-east-1",
+        "CloudWatchEventRule": "amplify-elysonline-test-103619-fun-CloudWatchEvent-PNZKNJPGFMO0",
+        "Arn": "arn:aws:lambda:us-east-1:715853571315:function:sendSpecialEventText-test",
+        "Name": "sendSpecialEventText-test",
+        "LambdaExecutionRole": "elysonlineLambdaRole8cbf54ee-test"
+      },
+      "lastPushDirHash": "hWLPgMIq/4mc/oe/jQz7+DQU5XA="
     }
   },
   "analytics": {
@@ -407,7 +425,7 @@
         "Region": "us-east-1",
         "Id": "20abae0a48df4d0590e5ecfebafa491c"
       },
-      "lastPushTimeStamp": "2022-05-06T01:36:20.377Z",
+      "lastPushTimeStamp": "2022-05-11T00:14:17.288Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/analytics/pinpoint-cloudformation-template.json",
         "logicalId": "analyticselysonline"

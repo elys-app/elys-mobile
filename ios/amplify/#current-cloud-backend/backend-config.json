@@ -21,16 +21,7 @@
           },
           "additionalAuthenticationProviders": []
         }
-      },
-      "dependsOn": [
-        {
-          "category": "auth",
-          "resourceName": "elysonline01747ffd",
-          "attributes": [
-            "UserPoolId"
-          ]
-        }
-      ]
+      }
     }
   },
   "storage": {
@@ -111,6 +102,12 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "sendSpecialEventText": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
     }
   },
   "analytics": {

@@ -18,6 +18,8 @@ dependencies:
   path_provider: "^2.0.5"
   permission_handler: "^8.3.0"
   xfile: "^1.1.0"
+  intl: "^0.17.0"
+  flutter_libphonenumber: "^1.2.4"
 
   amplify_core: "^0.4.5"
   amplify_api: "^0.4.5"

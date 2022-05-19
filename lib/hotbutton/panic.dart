@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter/material.dart';
@@ -20,26 +21,31 @@ class PanicPage extends StatefulWidget {
 }
 
 class _PanicPageState extends State<PanicPage> {
-  bool _submitted = false;
+  final initFuture = FlutterLibphonenumber().init();
+  final countryController = TextEditingController(text: 'United States');
+  final nameController = TextEditingController();
+  final numberController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
 
   String _bucket = '';
   String _region = '';
 
-  String fullTime = '00:30:00';
+  String fullTime = '00:10:00';
+  String endTime = '00:00:00';
   String time = '';
 
-  int timeToSend = 30;
-
-  final nameController = TextEditingController();
-  final numberController = TextEditingController();
+  int timeToSend = 10;
 
   List<SpecialEvent> events = List<SpecialEvent>.empty(growable: true);
 
-  ImagePicker imagePicker = new ImagePicker();
-
-  TemporalDateTime goTime = TemporalDateTime.now();
+  DateTime goTime = DateTime.now();
   Timer timer = new Timer(Duration(days: 1), (() => null));
+
+  var placeholderHint = '';
+
+  bool _submitted = false;
+  bool _sent = false;
 
   @override
   void initState() {
@@ -87,9 +93,17 @@ class _PanicPageState extends State<PanicPage> {
     events = await Amplify.DataStore.query(SpecialEvent.classType,
         sortBy: [SpecialEvent.TIMESUBMITTED.descending()]);
     if (events.length > 0) {
-      if (events[0].key != '') {
-        goTime = events[0].timeSubmitted;
+      if (events[0].sent!) {
+        setState(() {
+          time = endTime;
+          _sent = true;
+        });
+      }
+      else if (events[0].fileKey != '') {
+        goTime = DateTime.parse(events[0].timeSubmitted!);
         _startCountDown();
+      } else {
+        time = fullTime;
       }
       setState(() {
         numberController.text = events[0].emergencyNumber!;
@@ -104,33 +118,30 @@ class _PanicPageState extends State<PanicPage> {
       SpecialEvent newEvent = new SpecialEvent(
           region: _region,
           bucket: _bucket,
-          key: '',
-          executorEmail: '',
+          fileKey: '',
+          executorEmail: 'ianfmc@gmail.com',
           emergencyName: nameController.text,
           emergencyNumber: numberController.text,
-          timeSubmitted: TemporalDateTime.now(),
+          timeSubmitted: DateTime.now().toUtc().toIso8601String(),
           sent: false,
           warned: false);
       await Amplify.DataStore.save(newEvent);
       Navigator.pushNamed(context, '/camera', arguments: newEvent);
-    }
-    else {
+    } else {
+      final attributes = await Amplify.Auth.fetchUserAttributes();
       SpecialEvent existingEvent = events[0];
       SpecialEvent updatedEvent = existingEvent.copyWith(
-        emergencyName: nameController.text,
-        emergencyNumber: numberController.text
-      );
+          emergencyName: nameController.text,
+          emergencyNumber: numberController.text);
       await Amplify.DataStore.save(updatedEvent);
       Navigator.pushNamed(context, '/camera', arguments: updatedEvent);
     }
   }
 
   Future<void> _deleteVideo() async {
-    await Amplify.Storage.remove(key: events[0].key);
+    await Amplify.Storage.remove(key: events[0].fileKey!);
     SpecialEvent existingEvent = events[0];
-    SpecialEvent updatedEvent = existingEvent.copyWith(
-      key: ''
-    );
+    SpecialEvent updatedEvent = existingEvent.copyWith(fileKey: '');
     await Amplify.DataStore.save(updatedEvent);
   }
 
@@ -138,9 +149,18 @@ class _PanicPageState extends State<PanicPage> {
     String timeString = goTime.toString();
     DateTime dateTime = DateTime.parse(timeString);
     DateTime futureTime = dateTime.add(Duration(minutes: timeToSend));
-    time = futureTime.difference(DateTime.now()).toString().substring(0, 7);
 
-    _updateTime();
+    if (futureTime.difference(DateTime.now()).inSeconds < 0) {
+      time = endTime;
+    } else {
+      time = futureTime
+          .difference(DateTime.now())
+          .toString()
+          .substring(0, 7)
+          .padLeft(8, '0');
+      _updateTime();
+    }
+
     setState(() {
       _submitted = true;
     });
@@ -165,11 +185,21 @@ class _PanicPageState extends State<PanicPage> {
           String timeString = goTime.toString();
           DateTime dateTime = DateTime.parse(timeString);
           DateTime futureTime = dateTime.add(Duration(minutes: timeToSend));
-          time =
-              futureTime.difference(DateTime.now()).toString().substring(0, 7);
+          time = futureTime
+              .difference(DateTime.now())
+              .toString()
+              .substring(0, 7)
+              .padLeft(8, '0');
         },
       ),
     );
+  }
+
+  void updatePlaceholderHint() {
+    late String newPlaceholder;
+
+    newPlaceholder = CountryWithPhoneCode.us().exampleNumberMobileInternational;
+    setState(() => placeholderHint = newPlaceholder);
   }
 
   Future<void> _onLogout() async {
@@ -304,12 +334,28 @@ class _PanicPageState extends State<PanicPage> {
                       border: OutlineInputBorder(),
                       labelText: 'Enter Hot Button Contact Phone Number',
                     ),
+                    inputFormatters: [
+                      LibPhonenumberTextFormatter(
+                        phoneNumberType: PhoneNumberType.mobile,
+                        phoneNumberFormat: PhoneNumberFormat.international,
+                        country: CountryWithPhoneCode.us(),
+                        inputContainsCountryCode: true,
+                        additionalDigits: 3,
+                        shouldKeepCursorAtEndOfInput: true,
+                      ),
+                    ],
                   ),
                 ),
                 Center(
                   child: Text(
-                    'Time Until Release: ' + time,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    'Time To Release',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    time,
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
@@ -319,8 +365,12 @@ class _PanicPageState extends State<PanicPage> {
                           child: Text('No Video Recorded',
                               style: TextStyle(fontSize: 14)))
                       : Center(
-                          child: Text('Video Available',
-                              style: TextStyle(fontSize: 14))),
+                          child: !_sent
+                              ? Text('Video Available',
+                                  style: TextStyle(fontSize: 14))
+                              : Text('Video Sent',
+                                  style: TextStyle(fontSize: 14)),
+                        ),
                 ),
               ],
             ),

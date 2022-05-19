@@ -60,7 +60,7 @@
         },
         "checkEvents": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-          "s3Key": "amplify-builds/checkEvents-424b576b655233326578-build.zip"
+          "s3Key": "amplify-builds/checkEvents-5971644f6b43764c6f42-build.zip"
         },
         "sendEventEmail": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
@@ -69,6 +69,10 @@
         "sendDesigneeEmail": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
           "s3Key": "amplify-builds/sendDesigneeEmail-627338694b324d572f76-build.zip"
+        },
+        "sendSpecialEventText": {
+          "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+          "s3Key": "amplify-builds/sendSpecialEventText-6b646638554b59616b36-build.zip"
         }
       },
       "auth": {

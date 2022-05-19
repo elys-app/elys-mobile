@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.23\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"8.2.0\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "sendEventEmail",
+            "checkSpecialEventTime",
             {
               "Fn::Join": [
                 "",
                 [
-                  "sendEventEmail",
+                  "checkSpecialEventTime",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "elysonlineLambdaRoleb586cf75",
+            "elysonlineLambdaRoleafd0f95f",
             {
               "Fn::Join": [
                 "",
                 [
-                  "elysonlineLambdaRoleb586cf75",
+                  "elysonlineLambdaRoleafd0f95f",
                   "-",
                   {
                     "Ref": "env"
@@ -160,13 +160,6 @@
                   }
                 ]
               }
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "ses:*"
-              ],
-              "Resource": "*"
             }
           ]
         }

@@ -35,13 +35,13 @@ type Event @model @auth(rules: [{allow: owner}]) {
 
 type SpecialEvent @model @auth(rules: [{allow: owner}]) {
   id: ID!
-  bucket: String!
-  region: String!
-  key: String! 
+  bucket: String
+  region: String
+  fileKey: String
   executorEmail: String
   emergencyName: String
   emergencyNumber: String
-  timeSubmitted: AWSDateTime!
+  timeSubmitted: AWSDateTime
   warned: Boolean
   sent: Boolean
 }
@@ -82,4 +82,5 @@ type Mutation {
   getSubscriptionStatus(customerId: String!): String @function(name: "getSubscriptionStatus-${env}")
   newCard(customerId: String!, paymentMethodId: String!): String @function(name: "newCard-${env}")
   sendDesigneeEmail(toAddresses: [String]!, designeeName: String!, clientName: String!): String @function(name: "sendDesigneeEmail-${env}")
+  sendSpecialEventText(emergencyName: String!, emergencyNumber: String!): String @function(name: "sendSpecialEventText-${env}")
 }

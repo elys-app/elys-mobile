@@ -38,14 +38,12 @@ class _PendingPageState extends State<PendingPage> {
     _key = widget.content.path
         .split('/')
         .last;
-    print(_key);
 
     final currentEvent = widget.event;
     try {
-      await Amplify.Storage.uploadFile(local: File(widget.content.path), key: _key);
       SpecialEvent updatedEvent = currentEvent.copyWith(
-          key: _key,
-          timeSubmitted: TemporalDateTime.now());
+          fileKey: 'public/' + _key,
+          timeSubmitted: DateTime.now().toUtc().toString());
       await Amplify.DataStore.save(updatedEvent);
       Navigator.pushNamed(context, '/panic');
     } catch (e) {

@@ -34,7 +34,7 @@ class SpecialEvent extends Model {
   final String? _executorEmail;
   final String? _emergencyName;
   final String? _emergencyNumber;
-  final TemporalDateTime? _timeSubmitted;
+  final String? _timeSubmitted;
   final bool? _warned;
   final bool? _sent;
   final TemporalDateTime? _createdAt;
@@ -72,7 +72,7 @@ class SpecialEvent extends Model {
     return _emergencyNumber;
   }
   
-  TemporalDateTime? get timeSubmitted {
+  String? get timeSubmitted {
     return _timeSubmitted;
   }
   
@@ -94,7 +94,7 @@ class SpecialEvent extends Model {
   
   const SpecialEvent._internal({required this.id, bucket, region, fileKey, executorEmail, emergencyName, emergencyNumber, timeSubmitted, warned, sent, createdAt, updatedAt}): _bucket = bucket, _region = region, _fileKey = fileKey, _executorEmail = executorEmail, _emergencyName = emergencyName, _emergencyNumber = emergencyNumber, _timeSubmitted = timeSubmitted, _warned = warned, _sent = sent, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory SpecialEvent({String? id, String? bucket, String? region, String? fileKey, String? executorEmail, String? emergencyName, String? emergencyNumber, TemporalDateTime? timeSubmitted, bool? warned, bool? sent}) {
+  factory SpecialEvent({String? id, String? bucket, String? region, String? fileKey, String? executorEmail, String? emergencyName, String? emergencyNumber, String? timeSubmitted, bool? warned, bool? sent}) {
     return SpecialEvent._internal(
       id: id == null ? UUID.getUUID() : id,
       bucket: bucket,
@@ -143,7 +143,7 @@ class SpecialEvent extends Model {
     buffer.write("executorEmail=" + "$_executorEmail" + ", ");
     buffer.write("emergencyName=" + "$_emergencyName" + ", ");
     buffer.write("emergencyNumber=" + "$_emergencyNumber" + ", ");
-    buffer.write("timeSubmitted=" + (_timeSubmitted != null ? _timeSubmitted!.format() : "null") + ", ");
+    buffer.write("timeSubmitted=" + "$_timeSubmitted" + ", ");
     buffer.write("warned=" + (_warned != null ? _warned!.toString() : "null") + ", ");
     buffer.write("sent=" + (_sent != null ? _sent!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
@@ -153,7 +153,7 @@ class SpecialEvent extends Model {
     return buffer.toString();
   }
   
-  SpecialEvent copyWith({String? id, String? bucket, String? region, String? fileKey, String? executorEmail, String? emergencyName, String? emergencyNumber, TemporalDateTime? timeSubmitted, bool? warned, bool? sent}) {
+  SpecialEvent copyWith({String? id, String? bucket, String? region, String? fileKey, String? executorEmail, String? emergencyName, String? emergencyNumber, String? timeSubmitted, bool? warned, bool? sent}) {
     return SpecialEvent._internal(
       id: id ?? this.id,
       bucket: bucket ?? this.bucket,
@@ -175,14 +175,14 @@ class SpecialEvent extends Model {
       _executorEmail = json['executorEmail'],
       _emergencyName = json['emergencyName'],
       _emergencyNumber = json['emergencyNumber'],
-      _timeSubmitted = json['timeSubmitted'] != null ? TemporalDateTime.fromString(json['timeSubmitted']) : null,
+      _timeSubmitted = json['timeSubmitted'],
       _warned = json['warned'],
       _sent = json['sent'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'bucket': _bucket, 'region': _region, 'fileKey': _fileKey, 'executorEmail': _executorEmail, 'emergencyName': _emergencyName, 'emergencyNumber': _emergencyNumber, 'timeSubmitted': _timeSubmitted?.format(), 'warned': _warned, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'bucket': _bucket, 'region': _region, 'fileKey': _fileKey, 'executorEmail': _executorEmail, 'emergencyName': _emergencyName, 'emergencyNumber': _emergencyNumber, 'timeSubmitted': _timeSubmitted, 'warned': _warned, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "specialEvent.id");
@@ -254,7 +254,7 @@ class SpecialEvent extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: SpecialEvent.TIMESUBMITTED,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
