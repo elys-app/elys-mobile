@@ -7,7 +7,7 @@ PODS:
     - amplify_core
     - AmplifyPlugins/AWSPinpointAnalyticsPlugin (= 1.23.0)
     - Flutter
-  - amplify_api (0.0.1):
+  - amplify_api_ios (0.0.1):
     - Amplify (= 1.23.0)
     - amplify_core
     - AmplifyPlugins/AWSAPIPlugin (= 1.23.0)
@@ -29,7 +29,7 @@ PODS:
     - amplify_core
     - AmplifyPlugins/AWSDataStorePlugin (= 1.23.0)
     - Flutter
-  - amplify_flutter (0.0.1):
+  - amplify_flutter_ios (0.0.1):
     - Amplify (= 1.23.0)
     - amplify_core
     - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.23.0)
@@ -98,7 +98,7 @@ PODS:
   - ObjectMapper (4.2.0)
   - path_provider_ios (0.0.1):
     - Flutter
-  - "permission_handler (5.1.0+2)":
+  - permission_handler_apple (9.0.4):
     - Flutter
   - PhoneNumberKit/PhoneNumberKitCore (3.3.4)
   - SQLite.swift (0.13.2):
@@ -112,18 +112,18 @@ PODS:
 
 DEPENDENCIES:
   - amplify_analytics_pinpoint_ios (from `.symlinks/plugins/amplify_analytics_pinpoint_ios/ios`)
-  - amplify_api (from `.symlinks/plugins/amplify_api/ios`)
+  - amplify_api_ios (from `.symlinks/plugins/amplify_api_ios/ios`)
   - amplify_auth_cognito_ios (from `.symlinks/plugins/amplify_auth_cognito_ios/ios`)
   - amplify_core (from `.symlinks/plugins/amplify_core/ios`)
   - amplify_datastore (from `.symlinks/plugins/amplify_datastore/ios`)
-  - amplify_flutter (from `.symlinks/plugins/amplify_flutter/ios`)
+  - amplify_flutter_ios (from `.symlinks/plugins/amplify_flutter_ios/ios`)
   - amplify_storage_s3_ios (from `.symlinks/plugins/amplify_storage_s3_ios/ios`)
   - camera (from `.symlinks/plugins/camera/ios`)
   - Flutter (from `Flutter`)
   - flutter_libphonenumber (from `.symlinks/plugins/flutter_libphonenumber/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
-  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
 
 SPEC REPOS:
@@ -149,16 +149,16 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   amplify_analytics_pinpoint_ios:
     :path: ".symlinks/plugins/amplify_analytics_pinpoint_ios/ios"
-  amplify_api:
-    :path: ".symlinks/plugins/amplify_api/ios"
+  amplify_api_ios:
+    :path: ".symlinks/plugins/amplify_api_ios/ios"
   amplify_auth_cognito_ios:
     :path: ".symlinks/plugins/amplify_auth_cognito_ios/ios"
   amplify_core:
     :path: ".symlinks/plugins/amplify_core/ios"
   amplify_datastore:
     :path: ".symlinks/plugins/amplify_datastore/ios"
-  amplify_flutter:
-    :path: ".symlinks/plugins/amplify_flutter/ios"
+  amplify_flutter_ios:
+    :path: ".symlinks/plugins/amplify_flutter_ios/ios"
   amplify_storage_s3_ios:
     :path: ".symlinks/plugins/amplify_storage_s3_ios/ios"
   camera:
@@ -171,19 +171,19 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
-  permission_handler:
-    :path: ".symlinks/plugins/permission_handler/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   video_player_avfoundation:
     :path: ".symlinks/plugins/video_player_avfoundation/ios"
 
 SPEC CHECKSUMS:
   Amplify: 010d6a71db20812d9e3062db1fe827393d01e584
   amplify_analytics_pinpoint_ios: 6353367c6b59d271fbea2715c5e257e5a84a89e4
-  amplify_api: e002dc6c1abab0d50bd8e4fca5327eed2cab2eee
+  amplify_api_ios: df3f5e3ddd5ae4e0d2ce48dce18a23e787bac884
   amplify_auth_cognito_ios: c67d4bf0901717cb193f16ed24c389be7f4d7daf
   amplify_core: e67fe0c53845db08aced670bfc7370b1329d2798
   amplify_datastore: 8c35a89e553716222b33cc8cc587ea978a982244
-  amplify_flutter: 0cfb67a9864be1605c6659635c2b98700fe8c34d
+  amplify_flutter_ios: a2cf41c13161ffefedab76055a29b2d4e78c91e8
   amplify_storage_s3_ios: 9f909ed387be893ee4a26b040ad1fb7212b9e14d
   AmplifyPlugins: d939707cf36dfcd53c5fd6533e842e323a2287ab
   AppSyncRealTimeClient: cdee78ab78249cb87a71d975e1436e692813a606
@@ -201,7 +201,7 @@ SPEC CHECKSUMS:
   image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
-  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
+  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   PhoneNumberKit: 441e8b26ec88d598e3591de9061eff18f5dd12e8
   SQLite.swift: 4fc2be46c36392e3b87afe6fe7f1801c1daa07ef
   Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
