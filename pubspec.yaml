@@ -13,22 +13,22 @@ dependencies:
     sdk: flutter
   image_picker: "^0.8.5"
   flutter_spinkit: "^5.1.0"
-  camera: "^0.9.4+9"
+  camera: "^0.9.6"
   video_player: "^2.2.5"
   path_provider: "^2.0.5"
-  permission_handler: "^8.3.0"
+  permission_handler: ^9.2.0
   xfile: "^1.1.0"
   intl: "^0.17.0"
   flutter_libphonenumber: "^1.2.4"
 
-  amplify_core: "^0.4.5"
-  amplify_api: "^0.4.5"
-  amplify_flutter: "^0.4.5"
-  amplify_datastore: "^0.4.5"
-  amplify_storage_s3: "^0.4.5"
+  amplify_core: ^0.5.0
+  amplify_api: ^0.5.0
+  amplify_flutter: ^0.5.0
+  amplify_datastore: ^0.5.0
+  amplify_storage_s3: ^0.5.0
 
-  amplify_analytics_pinpoint: "^0.4.5"
-  amplify_auth_cognito: "^0.4.5"
+  amplify_analytics_pinpoint: ^0.5.0
+  amplify_auth_cognito: ^0.5.0
 
   cupertino_icons: "^1.0.2"
   google_fonts: "^2.3.2"
