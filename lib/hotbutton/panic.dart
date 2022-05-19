@@ -279,7 +279,11 @@ class _PanicPageState extends State<PanicPage> {
                         GoogleFonts.poppins(textStyle: TextStyle(fontSize: 18)),
                   ),
                 ),
-                SizedBox(height: 100), // sub for icon
+                Image.asset(
+                  'assets/the-hot-button.png',
+                  width: 120,
+                  height: 120
+                ),
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(
