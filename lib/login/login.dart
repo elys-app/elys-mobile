@@ -199,7 +199,13 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: const Text('Forgot Password?'),
               ),
-              const SizedBox(height: 30),
+              Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 5.0),
+                  child: Center(
+                    child:
+                        Text('v0.8.1 Build 10', style: TextStyle(fontSize: 14)),
+                  ))
             ],
           ),
         ),

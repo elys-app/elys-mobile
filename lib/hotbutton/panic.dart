@@ -128,7 +128,6 @@ class _PanicPageState extends State<PanicPage> {
       await Amplify.DataStore.save(newEvent);
       Navigator.pushNamed(context, '/camera', arguments: newEvent);
     } else {
-      final attributes = await Amplify.Auth.fetchUserAttributes();
       SpecialEvent existingEvent = events[0];
       SpecialEvent updatedEvent = existingEvent.copyWith(
           emergencyName: nameController.text,
@@ -279,8 +278,8 @@ class _PanicPageState extends State<PanicPage> {
                         GoogleFonts.poppins(textStyle: TextStyle(fontSize: 18)),
                   ),
                 ),
-                Image.asset(
-                  'assets/the-hot-button.png',
+                new Image.asset(
+                  'images/the-hot-button.png',
                   width: 120,
                   height: 120
                 ),
@@ -303,7 +302,7 @@ class _PanicPageState extends State<PanicPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: 30.0, top: 20.0, right: 30.0, bottom: 10.0),
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -322,7 +321,7 @@ class _PanicPageState extends State<PanicPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: 30.0, top: 10.0, right: 30.0, bottom: 30.0),
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 20.0),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -363,7 +362,7 @@ class _PanicPageState extends State<PanicPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(1),
                   child: !_submitted
                       ? Center(
                           child: Text('No Video Recorded',
