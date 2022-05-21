@@ -39,7 +39,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   // Current values
   double _currentZoomLevel = 1.0;
   double _currentExposureOffset = 0.0;
-  FlashMode? _currentFlashMode;
+  FlashMode? _currentFlashMode = FlashMode.off;
 
   List<File> allFileList = [];
 
@@ -53,6 +53,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
     _initCamera();
     super.initState();
   }
+
   Future<void> _initCamera() async {
     cameras = await availableCameras();
   }
@@ -260,7 +261,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(
-                                  8.0, 8.0, 8.0, 8.0),
+                                    8.0, 8.0, 8.0, 8.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
@@ -349,7 +350,10 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 8.0, left: 36.0, right: 36.0, bottom: 8.0),
+                                    top: 16.0,
+                                    left: 24.0,
+                                    right: 24.0,
+                                    bottom: 8.0),
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -369,7 +373,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(
-                                    32.0, 8.0, 32.0, 8.0),
+                                    24.0, 8.0, 24.0, 8.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -415,9 +419,8 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                                         });
                                         print('Changed the camera');
                                       },
-                                      child: Icon(
-                                        Icons.flip_camera_ios_sharp
-                                      ),
+                                      child: Icon(Icons.flip_camera_ios_sharp,
+                                          color: Colors.white),
                                     ),
                                   ],
                                 ),

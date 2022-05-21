@@ -31,11 +31,11 @@ class _PanicPageState extends State<PanicPage> {
   String _bucket = '';
   String _region = '';
 
-  String fullTime = '00:10:00';
+  String fullTime = '00:01:00';
   String endTime = '00:00:00';
   String time = '';
 
-  int timeToSend = 10;
+  int timeToSend = 1;
 
   List<SpecialEvent> events = List<SpecialEvent>.empty(growable: true);
 
@@ -150,6 +150,7 @@ class _PanicPageState extends State<PanicPage> {
 
     if (futureTime.difference(DateTime.now()).inSeconds < 0) {
       time = endTime;
+      _sent = true;
     } else {
       time = futureTime
           .difference(DateTime.now())
@@ -184,11 +185,22 @@ class _PanicPageState extends State<PanicPage> {
           String timeString = goTime.toString();
           DateTime dateTime = DateTime.parse(timeString);
           DateTime futureTime = dateTime.add(Duration(minutes: timeToSend));
-          time = futureTime
-              .difference(DateTime.now())
-              .toString()
-              .substring(0, 7)
-              .padLeft(8, '0');
+          if (futureTime.difference(DateTime.now()) > Duration(seconds: 1)) {
+            ;
+            setState(() {
+              time = futureTime
+                  .difference(DateTime.now())
+                  .toString()
+                  .substring(0, 7)
+                  .padLeft(8, '0');
+            });
+          } else {
+            setState(() {
+              _sent = true;
+              time = endTime;
+            });
+            timer.cancel();
+          }
         },
       ),
     );
@@ -285,7 +297,7 @@ class _PanicPageState extends State<PanicPage> {
                   padding: const EdgeInsets.only(
                       left: 30.0, top: 10.0, right: 30.0, bottom: 20.0),
                   child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                      style: ElevatedButton.styleFrom(primary: Colors.lightBlue),
                       onPressed: !_submitted
                           ? () {
                               _getVideo();
@@ -293,7 +305,7 @@ class _PanicPageState extends State<PanicPage> {
                           : () {
                               _cancelCountDown();
                             },
-                      child: !_submitted
+                      child: (!_submitted || _sent)
                           ? Text('Record', style: TextStyle(fontSize: 18))
                           : Text('Cancel', style: TextStyle(fontSize: 18))),
                 ),

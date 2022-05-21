@@ -36,6 +36,8 @@ class _NewContentPageState extends State<NewContentPage> {
   final ButtonStyle style = ElevatedButton.styleFrom(
       textStyle: const TextStyle(fontSize: 20), primary: Colors.pink);
 
+  List<String> buttonText = ['Select', 'Upload'];
+
   @override
   void initState() {
     super.initState();
@@ -127,7 +129,7 @@ class _NewContentPageState extends State<NewContentPage> {
                         Container(
                           color: Colors.pink,
                           child: TextButton(
-                            child: Text('Go',
+                            child: Text(buttonText[_currentStep],
                                 style: TextStyle(color: Colors.white)),
                             onPressed: () {
                               if (_currentStep < 1) {
