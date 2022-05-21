@@ -1,5 +1,6 @@
 import 'package:elys_mobile/models/ModelProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,7 +27,11 @@ import 'package:elys_mobile/settings/econtact.dart';
 import 'package:elys_mobile/models/PendingPage.dart';
 
 void main() {
-  runApp(ElysApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(ElysApp());
+  });
 }
 
 class ElysApp extends StatelessWidget {
@@ -46,7 +51,7 @@ class ElysApp extends StatelessWidget {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-            builder: (context) => LoginPage(title: 'Welcome to ELYS'));
+            builder: (context) => LoginPage(title: 'Welcome to Elys'));
       case '/main':
         if (settings.arguments != null) {
           String _page = settings.arguments as String;

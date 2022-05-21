@@ -93,13 +93,12 @@ class _PanicPageState extends State<PanicPage> {
     events = await Amplify.DataStore.query(SpecialEvent.classType,
         sortBy: [SpecialEvent.TIMESUBMITTED.descending()]);
     if (events.length > 0) {
-      if (events[0].sent!) {
+      if (events[0].sent ?? false) {
         setState(() {
           time = endTime;
           _sent = true;
         });
-      }
-      else if (events[0].fileKey != '') {
+      } else if (events[0].fileKey != '') {
         goTime = DateTime.parse(events[0].timeSubmitted!);
         _startCountDown();
       } else {
@@ -173,6 +172,7 @@ class _PanicPageState extends State<PanicPage> {
     timer.cancel();
     setState(() {
       _submitted = false;
+      _sent = false;
     });
   }
 
@@ -278,11 +278,8 @@ class _PanicPageState extends State<PanicPage> {
                         GoogleFonts.poppins(textStyle: TextStyle(fontSize: 18)),
                   ),
                 ),
-                new Image.asset(
-                  'images/the-hot-button.png',
-                  width: 120,
-                  height: 120
-                ),
+                new Image.asset('images/the-hot-button.png',
+                    width: 120, height: 120),
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -363,15 +360,15 @@ class _PanicPageState extends State<PanicPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.all(1),
-                  child: !_submitted
+                  child: _sent
                       ? Center(
-                          child: Text('No Video Recorded',
+                          child: Text('Video Sent',
                               style: TextStyle(fontSize: 14)))
                       : Center(
-                          child: !_sent
-                              ? Text('Video Available',
+                          child: _submitted
+                              ? Text('Video Recorded',
                                   style: TextStyle(fontSize: 14))
-                              : Text('Video Sent',
+                              : Text('No Video Recorded',
                                   style: TextStyle(fontSize: 14)),
                         ),
                 ),

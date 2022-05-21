@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+
 import 'package:elys_mobile/models/ModelProvider.dart';
 
 class PendingPage extends StatefulWidget {
@@ -43,11 +45,20 @@ class _PendingPageState extends State<PendingPage> {
     try {
       SpecialEvent updatedEvent = currentEvent.copyWith(
           fileKey: 'public/' + _key,
-          timeSubmitted: DateTime.now().toUtc().toString());
+          timeSubmitted: DateTime.now().toUtc().toString(),
+          sent: false,
+          warned: false);
+      File fileToUpload = File(this.widget.content.path);
       await Amplify.DataStore.save(updatedEvent);
+      await Amplify.Storage.uploadFile(local: fileToUpload, key: _key);
       Navigator.pushNamed(context, '/panic');
     } catch (e) {
-      print(e);
+      SnackBar snackBar = SnackBar(
+        content: Text(e.toString()),
+        duration: Duration(seconds: 5),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 

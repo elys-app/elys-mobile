@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -61,8 +63,12 @@ class _LoadingPageState extends State<LoadingPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Loading ELYS',
-          style: TextStyle(color: Colors.white),
+          'Loading Elys',
+          style: GoogleFonts.bellefair(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500)),
         ),
         automaticallyImplyLeading: false,
       ),

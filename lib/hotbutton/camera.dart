@@ -24,7 +24,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
 
   List<CameraDescription> cameras = [];
 
-  File? _imageFile;
+  // File? _imageFile;
   File? _videoFile;
 
   // Initial values
@@ -46,6 +46,16 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   final resolutionPresets = ResolutionPreset.values;
 
   ResolutionPreset currentResolutionPreset = ResolutionPreset.high;
+
+  @override
+  void initState() {
+    _getPermissionStatus();
+    _initCamera();
+    super.initState();
+  }
+  Future<void> _initCamera() async {
+    cameras = await availableCameras();
+  }
 
   _getPermissionStatus() async {
     await Permission.camera.request();
@@ -199,20 +209,6 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   }
 
   @override
-  void initState() {
-    // Hide the status bar in Android
-    // SystemChrome.setEnabledSystemUIOverlays([]);
-
-    _getCameras();
-    _getPermissionStatus();
-    super.initState();
-  }
-
-  void _getCameras() async {
-    cameras = await availableCameras();
-  }
-
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     final CameraController? cameraController = controller;
 
@@ -244,106 +240,106 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
             ? _isCameraInitialized
                 ? Column(
                     children: [
-                      AspectRatio(
-                        aspectRatio: 1 / controller!.value.aspectRatio,
-                        child: Stack(
-                          children: [
-                            CameraPreview(
-                              controller!,
-                              child: LayoutBuilder(builder:
-                                  (BuildContext context,
-                                      BoxConstraints constraints) {
-                                return GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTapDown: (details) =>
-                                      onViewFinderTap(details, constraints),
-                                );
-                              }),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                16.0,
-                                8.0,
-                                16.0,
-                                8.0,
+                      Expanded(
+                        flex: 4,
+                        child: AspectRatio(
+                          aspectRatio: 1 / controller!.value.aspectRatio,
+                          child: Stack(
+                            children: [
+                              CameraPreview(
+                                controller!,
+                                child: LayoutBuilder(builder:
+                                    (BuildContext context,
+                                        BoxConstraints constraints) {
+                                  return GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTapDown: (details) =>
+                                        onViewFinderTap(details, constraints),
+                                  );
+                                }),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.black87,
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      InkWell(
-                                        onTap: () async {
-                                          if (_isRecordingInProgress) {
-                                            XFile? rawVideo =
-                                                await stopVideoRecording();
-                                            File videoFile =
-                                                File(rawVideo!.path);
-
-                                            int currentUnix = DateTime.now()
-                                                .millisecondsSinceEpoch;
-
-                                            final directory =
-                                                await getApplicationDocumentsDirectory();
-
-                                            String fileFormat =
-                                                videoFile.path.split('.').last;
-
-                                            _videoFile = await videoFile.copy(
-                                              '${directory.path}/$currentUnix.$fileFormat',
-                                            );
-
-                                            Navigator.pushNamed(
-                                                context, '/pending',
-                                                arguments:
-                                                    new PendingPageArguments(
-                                                        widget.event,
-                                                        rawVideo));
-                                            // _startVideoPlayer();
-                                          } else {
-                                            await startVideoRecording();
-                                          }
-                                        },
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.circle,
-                                              color: Colors.white,
-                                              size: 80,
-                                            ),
-                                            Icon(
-                                              Icons.circle,
-                                              color: Colors.red,
-                                              size: 65,
-                                            ),
-                                            _isRecordingInProgress
-                                                ? Icon(
-                                                    Icons.stop_rounded,
-                                                    color: Colors.white,
-                                                    size: 32,
-                                                  )
-                                                : Container(),
-                                          ],
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                  8.0, 8.0, 8.0, 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.black87,
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        InkWell(
+                                          onTap: () async {
+                                            if (_isRecordingInProgress) {
+                                              XFile? rawVideo =
+                                                  await stopVideoRecording();
+                                              File videoFile =
+                                                  File(rawVideo!.path);
+
+                                              int currentUnix = DateTime.now()
+                                                  .millisecondsSinceEpoch;
+
+                                              final directory =
+                                                  await getApplicationDocumentsDirectory();
+
+                                              String fileFormat = videoFile.path
+                                                  .split('.')
+                                                  .last;
+
+                                              _videoFile = await videoFile.copy(
+                                                '${directory.path}/$currentUnix.$fileFormat',
+                                              );
+
+                                              Navigator.pushNamed(
+                                                  context, '/pending',
+                                                  arguments:
+                                                      new PendingPageArguments(
+                                                          widget.event,
+                                                          rawVideo));
+                                            } else {
+                                              await startVideoRecording();
+                                            }
+                                          },
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.circle,
+                                                color: Colors.white,
+                                                size: 80,
+                                              ),
+                                              Icon(
+                                                Icons.circle,
+                                                color: Colors.red,
+                                                size: 65,
+                                              ),
+                                              _isRecordingInProgress
+                                                  ? Icon(
+                                                      Icons.stop_rounded,
+                                                      color: Colors.white,
+                                                      size: 32,
+                                                    )
+                                                  : Container(),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       Expanded(
@@ -352,23 +348,20 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                           child: Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
+                                padding: const EdgeInsets.only(
+                                    top: 8.0, left: 36.0, right: 36.0, bottom: 8.0),
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4.0, right: 8.0),
-                                        child: TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          style: TextButton.styleFrom(
-                                              primary: Colors.white,
-                                              backgroundColor: Colors.red),
-                                          child: Text('Cancel',
-                                              style: TextStyle(fontSize: 20)),
-                                        ),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        style: TextButton.styleFrom(
+                                            primary: Colors.white,
+                                            backgroundColor: Colors.red),
+                                        child: Text('Cancel',
+                                            style: TextStyle(fontSize: 20)),
                                       ),
                                     ),
                                   ],
@@ -376,7 +369,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(
-                                    16.0, 8.0, 16.0, 8.0),
+                                    32.0, 8.0, 32.0, 8.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -401,23 +394,6 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                                     InkWell(
                                       onTap: () async {
                                         setState(() {
-                                          _currentFlashMode = FlashMode.auto;
-                                        });
-                                        await controller!.setFlashMode(
-                                          FlashMode.auto,
-                                        );
-                                      },
-                                      child: Icon(
-                                        Icons.flash_auto,
-                                        color:
-                                            _currentFlashMode == FlashMode.auto
-                                                ? Colors.amber
-                                                : Colors.white,
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () async {
-                                        setState(() {
                                           _currentFlashMode = FlashMode.always;
                                         });
                                         await controller!.setFlashMode(
@@ -430,6 +406,17 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                                                 FlashMode.always
                                             ? Colors.amber
                                             : Colors.white,
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () async {
+                                        setState(() {
+                                          ;
+                                        });
+                                        print('Changed the camera');
+                                      },
+                                      child: Icon(
+                                        Icons.flip_camera_ios_sharp
                                       ),
                                     ),
                                   ],

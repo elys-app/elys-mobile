@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 0.8.1+10
+version: 0.8.4+11
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -16,8 +16,7 @@ dependencies:
   camera: "^0.9.6"
   video_player: "^2.2.5"
   path_provider: "^2.0.5"
-  permission_handler: ^9.2.0
-  xfile: "^1.1.0"
+  permission_handler: "^9.2.0"
   intl: "^0.17.0"
   flutter_libphonenumber: "^1.2.4"
 
