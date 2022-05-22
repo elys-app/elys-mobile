@@ -29,6 +29,8 @@ class Account extends Model {
   static const classType = const _AccountModelType();
   final String id;
   final String? _userName;
+  final String? _userEmail;
+  final String? _userPhone;
   final String? _userFullName;
   final String? _executorName;
   final String? _executorEmail;
@@ -59,6 +61,14 @@ class Account extends Model {
           underlyingException: e.toString()
           );
     }
+  }
+  
+  String? get userEmail {
+    return _userEmail;
+  }
+  
+  String? get userPhone {
+    return _userPhone;
   }
   
   String? get userFullName {
@@ -119,12 +129,14 @@ class Account extends Model {
     return _updatedAt;
   }
   
-  const Account._internal({required this.id, required userName, userFullName, required executorName, executorEmail, executorId, required customerId, subscriptionId, transition, customerStatus, createdAt, updatedAt}): _userName = userName, _userFullName = userFullName, _executorName = executorName, _executorEmail = executorEmail, _executorId = executorId, _customerId = customerId, _subscriptionId = subscriptionId, _transition = transition, _customerStatus = customerStatus, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Account._internal({required this.id, required userName, userEmail, userPhone, userFullName, required executorName, executorEmail, executorId, required customerId, subscriptionId, transition, customerStatus, createdAt, updatedAt}): _userName = userName, _userEmail = userEmail, _userPhone = userPhone, _userFullName = userFullName, _executorName = executorName, _executorEmail = executorEmail, _executorId = executorId, _customerId = customerId, _subscriptionId = subscriptionId, _transition = transition, _customerStatus = customerStatus, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Account({String? id, required String userName, String? userFullName, required String executorName, String? executorEmail, String? executorId, required String customerId, String? subscriptionId, bool? transition, String? customerStatus}) {
+  factory Account({String? id, required String userName, String? userEmail, String? userPhone, String? userFullName, required String executorName, String? executorEmail, String? executorId, required String customerId, String? subscriptionId, bool? transition, String? customerStatus}) {
     return Account._internal(
       id: id == null ? UUID.getUUID() : id,
       userName: userName,
+      userEmail: userEmail,
+      userPhone: userPhone,
       userFullName: userFullName,
       executorName: executorName,
       executorEmail: executorEmail,
@@ -145,6 +157,8 @@ class Account extends Model {
     return other is Account &&
       id == other.id &&
       _userName == other._userName &&
+      _userEmail == other._userEmail &&
+      _userPhone == other._userPhone &&
       _userFullName == other._userFullName &&
       _executorName == other._executorName &&
       _executorEmail == other._executorEmail &&
@@ -165,6 +179,8 @@ class Account extends Model {
     buffer.write("Account {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("userName=" + "$_userName" + ", ");
+    buffer.write("userEmail=" + "$_userEmail" + ", ");
+    buffer.write("userPhone=" + "$_userPhone" + ", ");
     buffer.write("userFullName=" + "$_userFullName" + ", ");
     buffer.write("executorName=" + "$_executorName" + ", ");
     buffer.write("executorEmail=" + "$_executorEmail" + ", ");
@@ -180,10 +196,12 @@ class Account extends Model {
     return buffer.toString();
   }
   
-  Account copyWith({String? id, String? userName, String? userFullName, String? executorName, String? executorEmail, String? executorId, String? customerId, String? subscriptionId, bool? transition, String? customerStatus}) {
+  Account copyWith({String? id, String? userName, String? userEmail, String? userPhone, String? userFullName, String? executorName, String? executorEmail, String? executorId, String? customerId, String? subscriptionId, bool? transition, String? customerStatus}) {
     return Account._internal(
       id: id ?? this.id,
       userName: userName ?? this.userName,
+      userEmail: userEmail ?? this.userEmail,
+      userPhone: userPhone ?? this.userPhone,
       userFullName: userFullName ?? this.userFullName,
       executorName: executorName ?? this.executorName,
       executorEmail: executorEmail ?? this.executorEmail,
@@ -197,6 +215,8 @@ class Account extends Model {
   Account.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _userName = json['userName'],
+      _userEmail = json['userEmail'],
+      _userPhone = json['userPhone'],
       _userFullName = json['userFullName'],
       _executorName = json['executorName'],
       _executorEmail = json['executorEmail'],
@@ -209,11 +229,13 @@ class Account extends Model {
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'userName': _userName, 'userFullName': _userFullName, 'executorName': _executorName, 'executorEmail': _executorEmail, 'executorId': _executorId, 'customerId': _customerId, 'subscriptionId': _subscriptionId, 'transition': _transition, 'customerStatus': _customerStatus, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'userName': _userName, 'userEmail': _userEmail, 'userPhone': _userPhone, 'userFullName': _userFullName, 'executorName': _executorName, 'executorEmail': _executorEmail, 'executorId': _executorId, 'customerId': _customerId, 'subscriptionId': _subscriptionId, 'transition': _transition, 'customerStatus': _customerStatus, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "account.id");
   static final QueryField USERNAME = QueryField(fieldName: "userName");
+  static final QueryField USEREMAIL = QueryField(fieldName: "userEmail");
+  static final QueryField USERPHONE = QueryField(fieldName: "userPhone");
   static final QueryField USERFULLNAME = QueryField(fieldName: "userFullName");
   static final QueryField EXECUTORNAME = QueryField(fieldName: "executorName");
   static final QueryField EXECUTOREMAIL = QueryField(fieldName: "executorEmail");
@@ -245,6 +267,18 @@ class Account extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Account.USERNAME,
       isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Account.USEREMAIL,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Account.USERPHONE,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     

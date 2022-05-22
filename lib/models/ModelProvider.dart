@@ -39,7 +39,7 @@ export 'StripeSubscription.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "7c59809aec2a1ac8a5ea5a58d7b9b1c5";
+  String version = "125c4c151af9664cd20afd284277ccc5";
   @override
   List<ModelSchema> modelSchemas = [Account.schema, Contact.schema, Content.schema, Event.schema, SpecialEvent.schema];
   static final ModelProvider _instance = ModelProvider();

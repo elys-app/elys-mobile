@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
                       left: 30.0, top: 10.0, right: 30.0, bottom: 5.0),
                   child: Center(
                     child:
-                        Text('v0.8.5 Build 12', style: TextStyle(fontSize: 14)),
+                        Text('v0.8.6 Build 16', style: TextStyle(fontSize: 14)),
                   ))
             ],
           ),

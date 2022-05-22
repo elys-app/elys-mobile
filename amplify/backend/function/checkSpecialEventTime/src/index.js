@@ -4,34 +4,30 @@
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
  exports.handler = async (event) => {
-    console.log(`EVENT: ${JSON.stringify(event)}`);
-
-    const timeToWarn = 15; // minutes
-    const timeToSend = 29; // minutes
+  const timeToWarn = 5; // minutes
+  const timeToSend = 9; // minutes
+ 
+  const rightNow = new Date();
   
-    const rightNow = new Date();
-    const submittedString = event.timeSubmitted.toISOString().substring(0,19) + 'Z';
-    const submitted = new Date(submittedString);
-    const difference = (rightNow - submitted)/(60*1000);
+  const trimmedTimeString = event.timeSubmitted.S.substring(0,19) + 'Z'; // remove decimal seconds
+  const submittedTimeString = new Date(trimmedTimeString);
 
-    console.log(submittedString);
-    console.log(submitted);
-    console.log(difference);
-  
-    if ((rightNow - submitted) > timeToSend) {
+  const difference = (rightNow - submittedTimeString)/(60*1000); // convert difference to minutes
+
+  if (difference > timeToSend) {
+    return ({
+      action: 'send-text',
+      event: event
+    });
+  }
+  else if (difference > timeToWarn) {
       return ({
-        action: 'send-text',
-        event: event
-      });
-    }
-    else if ((rightNow - submitted) > timeToWarn) {
-        return ({
-            action: 'send-warning',
-            event: event
-        })
-    }
-    else {
-        return ({action: 'none', event: event});
-    }
-  };
-  
+          action: 'send-warning',
+          event: event
+      })
+  }
+  else {
+      return ({action: 'none', event: event});
+  }
+};
+

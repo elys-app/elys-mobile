@@ -31,7 +31,8 @@ class SpecialEvent extends Model {
   final String? _bucket;
   final String? _region;
   final String? _fileKey;
-  final String? _executorEmail;
+  final String? _ownEmail;
+  final String? _ownPhone;
   final String? _emergencyName;
   final String? _emergencyNumber;
   final String? _timeSubmitted;
@@ -60,8 +61,12 @@ class SpecialEvent extends Model {
     return _fileKey;
   }
   
-  String? get executorEmail {
-    return _executorEmail;
+  String? get ownEmail {
+    return _ownEmail;
+  }
+  
+  String? get ownPhone {
+    return _ownPhone;
   }
   
   String? get emergencyName {
@@ -92,15 +97,16 @@ class SpecialEvent extends Model {
     return _updatedAt;
   }
   
-  const SpecialEvent._internal({required this.id, bucket, region, fileKey, executorEmail, emergencyName, emergencyNumber, timeSubmitted, warned, sent, createdAt, updatedAt}): _bucket = bucket, _region = region, _fileKey = fileKey, _executorEmail = executorEmail, _emergencyName = emergencyName, _emergencyNumber = emergencyNumber, _timeSubmitted = timeSubmitted, _warned = warned, _sent = sent, _createdAt = createdAt, _updatedAt = updatedAt;
+  const SpecialEvent._internal({required this.id, bucket, region, fileKey, ownEmail, ownPhone, emergencyName, emergencyNumber, timeSubmitted, warned, sent, createdAt, updatedAt}): _bucket = bucket, _region = region, _fileKey = fileKey, _ownEmail = ownEmail, _ownPhone = ownPhone, _emergencyName = emergencyName, _emergencyNumber = emergencyNumber, _timeSubmitted = timeSubmitted, _warned = warned, _sent = sent, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory SpecialEvent({String? id, String? bucket, String? region, String? fileKey, String? executorEmail, String? emergencyName, String? emergencyNumber, String? timeSubmitted, bool? warned, bool? sent}) {
+  factory SpecialEvent({String? id, String? bucket, String? region, String? fileKey, String? ownEmail, String? ownPhone, String? emergencyName, String? emergencyNumber, String? timeSubmitted, bool? warned, bool? sent}) {
     return SpecialEvent._internal(
       id: id == null ? UUID.getUUID() : id,
       bucket: bucket,
       region: region,
       fileKey: fileKey,
-      executorEmail: executorEmail,
+      ownEmail: ownEmail,
+      ownPhone: ownPhone,
       emergencyName: emergencyName,
       emergencyNumber: emergencyNumber,
       timeSubmitted: timeSubmitted,
@@ -120,7 +126,8 @@ class SpecialEvent extends Model {
       _bucket == other._bucket &&
       _region == other._region &&
       _fileKey == other._fileKey &&
-      _executorEmail == other._executorEmail &&
+      _ownEmail == other._ownEmail &&
+      _ownPhone == other._ownPhone &&
       _emergencyName == other._emergencyName &&
       _emergencyNumber == other._emergencyNumber &&
       _timeSubmitted == other._timeSubmitted &&
@@ -140,7 +147,8 @@ class SpecialEvent extends Model {
     buffer.write("bucket=" + "$_bucket" + ", ");
     buffer.write("region=" + "$_region" + ", ");
     buffer.write("fileKey=" + "$_fileKey" + ", ");
-    buffer.write("executorEmail=" + "$_executorEmail" + ", ");
+    buffer.write("ownEmail=" + "$_ownEmail" + ", ");
+    buffer.write("ownPhone=" + "$_ownPhone" + ", ");
     buffer.write("emergencyName=" + "$_emergencyName" + ", ");
     buffer.write("emergencyNumber=" + "$_emergencyNumber" + ", ");
     buffer.write("timeSubmitted=" + "$_timeSubmitted" + ", ");
@@ -153,13 +161,14 @@ class SpecialEvent extends Model {
     return buffer.toString();
   }
   
-  SpecialEvent copyWith({String? id, String? bucket, String? region, String? fileKey, String? executorEmail, String? emergencyName, String? emergencyNumber, String? timeSubmitted, bool? warned, bool? sent}) {
+  SpecialEvent copyWith({String? id, String? bucket, String? region, String? fileKey, String? ownEmail, String? ownPhone, String? emergencyName, String? emergencyNumber, String? timeSubmitted, bool? warned, bool? sent}) {
     return SpecialEvent._internal(
       id: id ?? this.id,
       bucket: bucket ?? this.bucket,
       region: region ?? this.region,
       fileKey: fileKey ?? this.fileKey,
-      executorEmail: executorEmail ?? this.executorEmail,
+      ownEmail: ownEmail ?? this.ownEmail,
+      ownPhone: ownPhone ?? this.ownPhone,
       emergencyName: emergencyName ?? this.emergencyName,
       emergencyNumber: emergencyNumber ?? this.emergencyNumber,
       timeSubmitted: timeSubmitted ?? this.timeSubmitted,
@@ -172,7 +181,8 @@ class SpecialEvent extends Model {
       _bucket = json['bucket'],
       _region = json['region'],
       _fileKey = json['fileKey'],
-      _executorEmail = json['executorEmail'],
+      _ownEmail = json['ownEmail'],
+      _ownPhone = json['ownPhone'],
       _emergencyName = json['emergencyName'],
       _emergencyNumber = json['emergencyNumber'],
       _timeSubmitted = json['timeSubmitted'],
@@ -182,14 +192,15 @@ class SpecialEvent extends Model {
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'bucket': _bucket, 'region': _region, 'fileKey': _fileKey, 'executorEmail': _executorEmail, 'emergencyName': _emergencyName, 'emergencyNumber': _emergencyNumber, 'timeSubmitted': _timeSubmitted, 'warned': _warned, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'bucket': _bucket, 'region': _region, 'fileKey': _fileKey, 'ownEmail': _ownEmail, 'ownPhone': _ownPhone, 'emergencyName': _emergencyName, 'emergencyNumber': _emergencyNumber, 'timeSubmitted': _timeSubmitted, 'warned': _warned, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "specialEvent.id");
   static final QueryField BUCKET = QueryField(fieldName: "bucket");
   static final QueryField REGION = QueryField(fieldName: "region");
   static final QueryField FILEKEY = QueryField(fieldName: "fileKey");
-  static final QueryField EXECUTOREMAIL = QueryField(fieldName: "executorEmail");
+  static final QueryField OWNEMAIL = QueryField(fieldName: "ownEmail");
+  static final QueryField OWNPHONE = QueryField(fieldName: "ownPhone");
   static final QueryField EMERGENCYNAME = QueryField(fieldName: "emergencyName");
   static final QueryField EMERGENCYNUMBER = QueryField(fieldName: "emergencyNumber");
   static final QueryField TIMESUBMITTED = QueryField(fieldName: "timeSubmitted");
@@ -234,7 +245,13 @@ class SpecialEvent extends Model {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: SpecialEvent.EXECUTOREMAIL,
+      key: SpecialEvent.OWNEMAIL,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: SpecialEvent.OWNPHONE,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));

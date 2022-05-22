@@ -1,6 +1,8 @@
 type Account @model @auth(rules: [{allow: owner}]) @key(name: "byUserName", fields: ["userName"], queryField: "accountByUserName") {
   id: ID!
   userName: String!
+  userEmail: String
+  userPhone: String
   userFullName: String
   executorName: String! 
   executorEmail: String
@@ -38,7 +40,8 @@ type SpecialEvent @model @auth(rules: [{allow: owner}]) {
   bucket: String
   region: String
   fileKey: String
-  executorEmail: String
+  ownEmail: String
+  ownPhone: String
   emergencyName: String
   emergencyNumber: String
   timeSubmitted: String

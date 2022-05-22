@@ -11,6 +11,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 import 'package:elys_mobile/models/ModelProvider.dart';
+import 'package:elys_mobile/models/SpecialEvent.dart';
 import 'package:elys_mobile/amplifyconfiguration.dart';
 
 class PanicPage extends StatefulWidget {
@@ -31,11 +32,13 @@ class _PanicPageState extends State<PanicPage> {
   String _bucket = '';
   String _region = '';
 
-  String fullTime = '00:01:00';
+  String fullTime = '00:10:00';
   String endTime = '00:00:00';
   String time = '';
 
-  int timeToSend = 1;
+  int timeToSend = 10;
+  int phoneNumberIndex = 3;
+  int emailIndex = 4;
 
   List<SpecialEvent> events = List<SpecialEvent>.empty(growable: true);
 
@@ -113,12 +116,14 @@ class _PanicPageState extends State<PanicPage> {
   }
 
   Future<void> _getVideo() async {
+    final user = await Amplify.Auth.fetchUserAttributes();
     if (events.length < 1) {
       SpecialEvent newEvent = new SpecialEvent(
           region: _region,
           bucket: _bucket,
           fileKey: '',
-          executorEmail: 'ianfmc@gmail.com',
+          ownPhone: user[phoneNumberIndex].value,
+          ownEmail: user[emailIndex].value,
           emergencyName: nameController.text,
           emergencyNumber: numberController.text,
           timeSubmitted: DateTime.now().toUtc().toIso8601String(),
@@ -186,7 +191,6 @@ class _PanicPageState extends State<PanicPage> {
           DateTime dateTime = DateTime.parse(timeString);
           DateTime futureTime = dateTime.add(Duration(minutes: timeToSend));
           if (futureTime.difference(DateTime.now()) > Duration(seconds: 1)) {
-            ;
             setState(() {
               time = futureTime
                   .difference(DateTime.now())
