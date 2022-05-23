@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: EdgeInsets.only(
                     left: 30.0, top: 5.0, right: 30.0, bottom: 20.0),
-                child: Text('Welcome to Elsy Mobile',
+                child: Text('Welcome to Elys Mobile',
                     style: GoogleFonts.bellefair(
                         textStyle: TextStyle(
                             color: Colors.lightBlue,
@@ -212,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                       left: 30.0, top: 10.0, right: 30.0, bottom: 5.0),
                   child: Center(
                     child:
-                        Text('v0.8.7 Build 19', style: TextStyle(fontSize: 14)),
+                        Text('v0.8.7 Build 20', style: TextStyle(fontSize: 14)),
                   ))
             ],
           ),
