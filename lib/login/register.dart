@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -45,6 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'Welcome To Elys',
@@ -63,8 +66,8 @@ class _RegisterPageState extends State<RegisterPage> {
           children: <Widget>[
             Padding(
                 padding: EdgeInsets.only(
-                    left: 30.0, top: 10.0, right: 30.0, bottom: 1.0),
-                child: new Image.asset('images/logo-white.png',
+                    left: 30.0, top: 1.0, right: 30.0, bottom: 1.0),
+                child: new Image.asset('images/logo-black.png',
                     width: 150, height: 150)),
             Padding(
               padding: EdgeInsets.only(
@@ -92,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: EdgeInsets.only(
                   left: 30.0, top: 1.0, right: 30.0, bottom: 10.0),
               child: const Text(
-                'subscribe at',
+                'subscribe at:',
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -102,9 +105,10 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
               padding: EdgeInsets.only(
                   left: 30.0, top: 10.0, right: 30.0, bottom: 30.0),
-              child: TextButton(
+              child: ElevatedButton(
                 child: Text('Elys Online',
-                    style: TextStyle(color: Colors.blue[900], fontSize: 18)),
+                    style: TextStyle(
+                        fontSize: 18)),
                 onPressed: () {
                   launchUrl(_elysURL);
                 },
@@ -112,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             Padding(
               padding: EdgeInsets.all(10),
-              child: ElevatedButton(
+              child: TextButton(
                 onPressed: _onLogout,
                 child: Text(
                   'Back to Login',

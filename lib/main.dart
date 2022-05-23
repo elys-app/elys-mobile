@@ -41,6 +41,7 @@ class ElysApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Colors.lightBlue,
+        scaffoldBackgroundColor: Colors.white,
         textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
       ),
       onGenerateRoute: _generateRoute,

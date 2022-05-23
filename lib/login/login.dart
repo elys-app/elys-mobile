@@ -115,22 +115,30 @@ class _LoginPageState extends State<LoginPage> {
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.title,
-          style: GoogleFonts.bellefair(
-              textStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w500)),
-        ),
         automaticallyImplyLeading: false,
       ),
       body: Form(
         key: formKey,
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 10.0, right: 30.0),
+                  child: new Image.asset('images/logo-black.png',
+                      width: 150, height: 150)),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: 30.0, top: 5.0, right: 30.0, bottom: 20.0),
+                child: Text('Welcome to Elsy Mobile',
+                    style: GoogleFonts.bellefair(
+                        textStyle: TextStyle(
+                            color: Colors.lightBlue,
+                            fontSize: 34,
+                            fontWeight: FontWeight.w500))),
+              ),
               Padding(
                 padding: EdgeInsets.only(
                     left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
@@ -152,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                    left: 30.0, top: 10.0, right: 30.0, bottom: 30.0),
                 child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -204,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                       left: 30.0, top: 10.0, right: 30.0, bottom: 5.0),
                   child: Center(
                     child:
-                        Text('v0.8.7 Build 18', style: TextStyle(fontSize: 14)),
+                        Text('v0.8.7 Build 19', style: TextStyle(fontSize: 14)),
                   ))
             ],
           ),
