@@ -296,12 +296,12 @@ class _PanicPageState extends State<PanicPage> {
                 ),
                 new Image.asset('images/the-hot-button.png',
                     width: 120, height: 120),
-                SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 30.0, top: 10.0, right: 30.0, bottom: 20.0),
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
                   child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.lightBlue),
+                      style:
+                          ElevatedButton.styleFrom(primary: Colors.lightBlue),
                       onPressed: !_submitted
                           ? () {
                               _getVideo();
@@ -362,16 +362,26 @@ class _PanicPageState extends State<PanicPage> {
                     ],
                   ),
                 ),
-                Center(
-                  child: Text(
-                    'Time To Release',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 1.0, top: 1.0, right: 1.0, bottom: 1.0),
+                  child: Center(
+                    child: Text(
+                      'Time To Release',
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
-                Center(
-                  child: Text(
-                    time,
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 1.0, top: 1.0, right: 1.0, bottom: 1.0),
+                  child: Center(
+                    child: Text(
+                      time,
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
                 Padding(

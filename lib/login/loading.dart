@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 
+import 'package:elys_mobile/models/Account.dart';
+
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key, required this.destination}) : super(key: key);
 
@@ -33,17 +35,26 @@ class _LoadingPageState extends State<LoadingPage> {
   Future<void> _startAmplify() async {
     try {
       if (Amplify.isConfigured) {
+        var user = await Amplify.Auth.getCurrentUser();
         await Amplify.DataStore.start();
-        hubSubscription = Amplify.Hub.listen([HubChannel.DataStore], (event) {
+        hubSubscription =
+            Amplify.Hub.listen([HubChannel.DataStore], (event) async {
           print('Event: ${event.eventName}');
           setState(() {
             completed += (0.98 / 12.0);
           });
           if (event.eventName == 'ready') {
-            if (widget.destination == 'main') {
-              Navigator.pushNamed(context, '/main', arguments: 'contact');
+            List<Account> result = await Amplify.DataStore.query(
+                Account.classType,
+                where: Account.USERNAME.eq(user.username));
+            if (result.length > 1) {
+              if (widget.destination == 'main') {
+                Navigator.pushNamed(context, '/main', arguments: 'contact');
+              } else {
+                Navigator.pushNamed(context, '/panic');
+              }
             } else {
-              Navigator.pushNamed(context, '/panic');
+              Navigator.pushNamed(context, '/register');
             }
           }
         });
@@ -100,7 +111,8 @@ class _LoadingPageState extends State<LoadingPage> {
                     'Work Offline',
                     style: TextStyle(fontSize: 20),
                   ),
-                ))
+                ),
+            )
           ],
         ),
       ),

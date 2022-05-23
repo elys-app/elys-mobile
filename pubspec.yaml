@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 0.8.6+16
+version: 0.8.7+17
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -11,14 +11,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  camera: "^0.9.6"
   image_picker: "^0.8.5"
   flutter_spinkit: "^5.1.0"
-  camera: "^0.9.6"
-  video_player: "^2.2.5"
+  flutter_libphonenumber: "^1.2.4"
+  intl: "^0.17.0"
   path_provider: "^2.0.5"
   permission_handler: "^9.2.0"
-  intl: "^0.17.0"
-  flutter_libphonenumber: "^1.2.4"
+  video_player: "^2.2.5"
+  url_launcher: "^6.1.2"
 
   amplify_core: ^0.5.0
   amplify_api: ^0.5.0
@@ -30,7 +31,7 @@ dependencies:
   amplify_auth_cognito: ^0.5.0
 
   cupertino_icons: "^1.0.2"
-  google_fonts: "^2.3.2"
+  google_fonts: "^3.0.1"
 
 dev_dependencies:
   flutter_test:
@@ -40,10 +41,13 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/app_logo.png"
+  image_path_ios: "assets/ios_logo.png"
+  image_path_android: "assets/android_logo.png"
+
 
 flutter:
   uses-material-design: true
   assets:
-  - images/elys.jpeg
   - images/the-hot-button.png
+  - images/logo-white.png
+  - images/hot-button-black.png

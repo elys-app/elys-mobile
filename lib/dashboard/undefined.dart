@@ -9,7 +9,7 @@ class UndefinedView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Route for ' + name + 'is not defined', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        child: Text('Route for ' + name + ' is not defined', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
       ),
     );
   }

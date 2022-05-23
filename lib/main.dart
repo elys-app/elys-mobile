@@ -22,6 +22,7 @@ import 'package:elys_mobile/dashboard/edit/editschedule.dart';
 
 import 'package:elys_mobile/login/login.dart';
 import 'package:elys_mobile/login/loading.dart';
+import 'package:elys_mobile/login/register.dart';
 
 import 'package:elys_mobile/settings/econtact.dart';
 import 'package:elys_mobile/models/PendingPage.dart';
@@ -52,6 +53,9 @@ class ElysApp extends StatelessWidget {
       case '/':
         return MaterialPageRoute(
             builder: (context) => LoginPage(title: 'Welcome to Elys'));
+      case '/register':
+        return MaterialPageRoute(
+          builder: (context) => RegisterPage());
       case '/main':
         if (settings.arguments != null) {
           String _page = settings.arguments as String;

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-class RegisterPage extends StatefulWidget {
-  RegisterPage({Key? key, required this.title}) : super(key: key);
+import 'package:google_fonts/google_fonts.dart';
 
-  final String title;
+import 'package:url_launcher/url_launcher.dart';
+
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key? key}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -11,6 +13,10 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
 // bool _connectedStatus = false;
+
+  final Uri _elysURL =
+      Uri.parse('https://sidenav.d1afp0rnrtf7z0.amplifyapp.com/login/signin');
+
   @override
   void dispose() {
     super.dispose();
@@ -18,84 +24,84 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle style =
-        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.title,
-          style: TextStyle(color: Colors.white),
+          'Welcome To Elys',
+          style: GoogleFonts.bellefair(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500)),
         ),
         automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Back to Login'),
-            ),
+            Padding(
+                padding: EdgeInsets.only(
+                    left: 30.0, top: 10.0, right: 30.0, bottom: 1.0),
+                child: new Image.asset('images/hot-button-black.png',
+                    width: 150, height: 150)),
             Padding(
               padding: EdgeInsets.only(
-                  left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-              child: const TextField(
-                obscureText: false,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.person),
-                  border: OutlineInputBorder(),
-                  labelText: 'User ID',
-                ),
+                  left: 30.0, top: 10.0, right: 30.0, bottom: 1.0),
+              child: const Text(
+                'Looks like you don\'t have a',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(
-                  left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-              child: const TextField(
-                obscureText: false,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.email),
-                  border: OutlineInputBorder(),
-                  labelText: 'Email',
-                ),
+                  left: 30.0, top: 1.0, right: 30.0, bottom: 1.0),
+              child: const Text(
+                'subscription. To use Elys,',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(
-                  left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-              child: const TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.visibility),
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                ),
+                  left: 30.0, top: 1.0, right: 30.0, bottom: 10.0),
+              child: const Text(
+                'subscribe at',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(
-                  left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-              child: const TextField(
-                obscureText: false,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.email),
-                  border: OutlineInputBorder(),
-                  labelText: 'Phone Number',
-                ),
+                  left: 30.0, top: 10.0, right: 30.0, bottom: 30.0),
+              child: TextButton(
+                child: Text('Elys Online',
+                    style: TextStyle(color: Colors.blue[900], fontSize: 18)),
+                onPressed: () {
+                  launchUrl(_elysURL);
+                },
               ),
             ),
-            ElevatedButton(
-              style: style,
-              onPressed: null,
-              child: const Text('Register'),
-            ),
-            const SizedBox(height: 30),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/');
+                },
+                child: Text(
+                  'Back to Login',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            )
           ],
         ),
       ),
