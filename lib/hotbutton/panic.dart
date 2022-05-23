@@ -219,7 +219,6 @@ class _PanicPageState extends State<PanicPage> {
 
   Future<void> _onLogout() async {
     try {
-      Navigator.pop(context);
       await Amplify.DataStore.clear();
       await Amplify.DataStore.stop();
       Amplify.Auth.signOut().then((_) {

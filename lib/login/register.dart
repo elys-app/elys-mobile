@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key? key}) : super(key: key);
 
@@ -20,6 +23,23 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Future<void> _onLogout() async {
+    try {
+      await Amplify.DataStore.clear();
+      await Amplify.DataStore.stop();
+      Amplify.Auth.signOut().then((_) {
+        Navigator.pushNamed(context, '/');
+      });
+    } on AuthException catch (e) {
+      SnackBar snackBar = SnackBar(
+        content: Text('${e.message}'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   @override
@@ -44,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
                 padding: EdgeInsets.only(
                     left: 30.0, top: 10.0, right: 30.0, bottom: 1.0),
-                child: new Image.asset('images/hot-button-black.png',
+                child: new Image.asset('images/logo-white.png',
                     width: 150, height: 150)),
             Padding(
               padding: EdgeInsets.only(
@@ -93,9 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
               padding: EdgeInsets.all(10),
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/');
-                },
+                onPressed: _onLogout,
                 child: Text(
                   'Back to Login',
                   style: TextStyle(fontSize: 20),

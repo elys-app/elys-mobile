@@ -47,7 +47,7 @@ class _LoadingPageState extends State<LoadingPage> {
             List<Account> result = await Amplify.DataStore.query(
                 Account.classType,
                 where: Account.USERNAME.eq(user.username));
-            if (result.length > 1) {
+            if (result.length > 0) {
               if (widget.destination == 'main') {
                 Navigator.pushNamed(context, '/main', arguments: 'contact');
               } else {
@@ -65,8 +65,11 @@ class _LoadingPageState extends State<LoadingPage> {
   }
 
   Future<void> _exit() async {
-    Amplify.Auth.signOut();
-    Navigator.pushNamed(context, '/main');
+    await Amplify.DataStore.clear();
+    await Amplify.DataStore.stop();
+    Amplify.Auth.signOut().then((_) {
+      Navigator.pushNamed(context, '/');
+    });
   }
 
   @override
