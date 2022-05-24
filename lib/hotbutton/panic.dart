@@ -286,7 +286,7 @@ class _PanicPageState extends State<PanicPage> {
                 SizedBox(height: 20),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                      left: 30.0, top: 20.0, right: 30.0, bottom: 10.0),
                   child: Text(
                     'Add your Hot Button contact',
                     style:
@@ -297,7 +297,7 @@ class _PanicPageState extends State<PanicPage> {
                     width: 120, height: 120),
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 30.0),
                   child: ElevatedButton(
                       style:
                           ElevatedButton.styleFrom(primary: Colors.lightBlue),

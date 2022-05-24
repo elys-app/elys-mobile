@@ -115,33 +115,31 @@ class _LoginPageState extends State<LoginPage> {
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          'Welcome to Elys Mobile',
+          style: GoogleFonts.bellefair(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500)),
+        ),
         automaticallyImplyLeading: false,
       ),
+      resizeToAvoidBottomInset: false,
       body: Form(
         key: formKey,
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                  padding: EdgeInsets.only(
-                      left: 30.0, top: 10.0, right: 30.0),
-                  child: new Image.asset('images/logo-black.png',
-                      width: 150, height: 150)),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 30.0, top: 5.0, right: 30.0, bottom: 20.0),
-                child: Text('Welcome to Elys Mobile',
-                    style: GoogleFonts.bellefair(
-                        textStyle: TextStyle(
-                            color: Colors.lightBlue,
-                            fontSize: 34,
-                            fontWeight: FontWeight.w500))),
+                padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                child: new Image.asset('images/logo-white.png',
+                    width: 180, height: 180),
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                    left: 30.0, top: 5.0, right: 30.0, bottom: 5.0),
                 child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -160,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    left: 30.0, top: 10.0, right: 30.0, bottom: 30.0),
+                    left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
                 child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -186,6 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+              SizedBox(height: 10),
               ElevatedButton(
                 style: style,
                 onPressed: _onLoginPressed,
@@ -208,12 +207,13 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text('Forgot Password?'),
               ),
               Padding(
-                  padding: EdgeInsets.only(
-                      left: 30.0, top: 10.0, right: 30.0, bottom: 5.0),
-                  child: Center(
-                    child:
-                        Text('v0.8.7 Build 20', style: TextStyle(fontSize: 14)),
-                  ))
+                padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                child: Center(
+                  child:
+                      Text('v0.8.7 Build 20', style: TextStyle(fontSize: 12)),
+                ),
+              ),
+              SizedBox(height: 150)
             ],
           ),
         ),

@@ -67,8 +67,8 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
                 padding: EdgeInsets.only(
                     left: 30.0, top: 1.0, right: 30.0, bottom: 1.0),
-                child: new Image.asset('images/logo-black.png',
-                    width: 150, height: 150)),
+                child: new Image.asset('images/logo-white.png',
+                    width: 180, height: 180)),
             Padding(
               padding: EdgeInsets.only(
                   left: 30.0, top: 10.0, right: 30.0, bottom: 1.0),
@@ -76,7 +76,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 'Looks like you don\'t have a',
                 style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
                     color: Colors.blue),
               ),
             ),
@@ -87,7 +86,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 'subscription. To use Elys,',
                 style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
                     color: Colors.blue),
               ),
             ),
@@ -98,7 +96,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 'subscribe at:',
                 style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
                     color: Colors.blue),
               ),
             ),
@@ -108,7 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: ElevatedButton(
                 child: Text('Elys Online',
                     style: TextStyle(
-                        fontSize: 18)),
+                        fontSize: 20)),
                 onPressed: () {
                   launchUrl(_elysURL);
                 },
@@ -120,7 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 onPressed: _onLogout,
                 child: Text(
                   'Back to Login',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
                 ),
               ),
             )
