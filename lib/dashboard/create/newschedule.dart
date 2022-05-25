@@ -222,11 +222,12 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
         });
   }
 
-  Future<void> _onAddEventPressed() async {
+  Future<void> onAddEventPressed() async {
     if (formKey.currentState!.validate()) {
       Amplify.DataStore.save(new Event(
           name: descriptionController.text,
           contentId: selectedContent.id,
+          contactId: selectedContact.id,
           contactEmail: selectedContact.email,
           eventMonth: selectedMonth,
           eventDate: selectedDay.toString(),
@@ -350,7 +351,7 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
             child: FloatingActionButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  _onAddEventPressed();
+                  onAddEventPressed();
                   Navigator.pushNamed(context, '/main');
                 }
               },

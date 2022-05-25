@@ -73,7 +73,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Future<void> _onLogout() async {
+  Future<void> onLogout() async {
     try {
       Navigator.pop(context);
       await Amplify.DataStore.clear();
@@ -140,7 +140,7 @@ class _MainPageState extends State<MainPage> {
                     fontWeight: FontWeight.normal,
                     color: Colors.blue[900]),
               ),
-              onTap: _onLogout,
+              onTap: onLogout,
             ),
           ],
         ),

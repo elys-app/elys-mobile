@@ -251,10 +251,11 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
       Event updatedEvent = widget.eventItem.copyWith(
           name: descriptionController.text,
           contentId: selectedContent.id,
+          contactId: selectedContact.id,
           contactEmail: selectedContact.email,
           eventMonth: selectedMonth.toString(),
           eventDate: selectedDay.toString(),
-          groupId: selectedContact.id,
+          groupId: '',
           eventYear: '0');
       await Amplify.DataStore.save(updatedEvent);
       print('Updated: ${updatedEvent.toString()}');

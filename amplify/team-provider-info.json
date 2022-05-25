@@ -67,7 +67,7 @@
         },
         "sendSpecialEventText": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-          "s3Key": "amplify-builds/sendSpecialEventText-4649554d7565716c5664-build.zip"
+          "s3Key": "amplify-builds/sendSpecialEventText-452f6656572b52357436-build.zip"
         },
         "sendSpecialEventWarning": {
           "deploymentBucketName": "amplify-elysonline-test-103619-deployment",

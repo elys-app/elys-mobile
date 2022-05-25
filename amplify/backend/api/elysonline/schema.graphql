@@ -10,6 +10,7 @@ type Account @model @auth(rules: [{allow: owner}]) @key(name: "byUserName", fiel
   customerId: String!
   subscriptionId: String
   transition: Boolean
+  basicAccount: Boolean 
   customerStatus: String
 }
 
@@ -26,6 +27,7 @@ type Content @model @auth(rules: [{allow: owner}]) {
 type Event @model @auth(rules: [{allow: owner}]) {
   id: ID!
   contactEmail: String!
+  contactId: ID
   groupId: ID!
   contentId: ID!
   name: String!

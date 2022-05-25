@@ -217,7 +217,7 @@ class _PanicPageState extends State<PanicPage> {
     setState(() => placeholderHint = newPlaceholder);
   }
 
-  Future<void> _onLogout() async {
+  Future<void> onLogout() async {
     try {
       await Amplify.DataStore.clear();
       await Amplify.DataStore.stop();
@@ -271,7 +271,7 @@ class _PanicPageState extends State<PanicPage> {
                     fontWeight: FontWeight.normal,
                     color: Colors.blue[900]),
               ),
-              onTap: _onLogout,
+              onTap: onLogout,
             ),
           ],
         ),

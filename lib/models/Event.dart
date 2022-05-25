@@ -29,6 +29,7 @@ class Event extends Model {
   static const classType = const _EventModelType();
   final String id;
   final String? _contactEmail;
+  final String? _contactId;
   final String? _groupId;
   final String? _contentId;
   final String? _name;
@@ -58,6 +59,10 @@ class Event extends Model {
           underlyingException: e.toString()
           );
     }
+  }
+  
+  String? get contactId {
+    return _contactId;
   }
   
   String get groupId {
@@ -150,12 +155,13 @@ class Event extends Model {
     return _updatedAt;
   }
   
-  const Event._internal({required this.id, required contactEmail, required groupId, required contentId, required name, required eventDate, required eventMonth, required eventYear, description, createdAt, updatedAt}): _contactEmail = contactEmail, _groupId = groupId, _contentId = contentId, _name = name, _eventDate = eventDate, _eventMonth = eventMonth, _eventYear = eventYear, _description = description, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Event._internal({required this.id, required contactEmail, contactId, required groupId, required contentId, required name, required eventDate, required eventMonth, required eventYear, description, createdAt, updatedAt}): _contactEmail = contactEmail, _contactId = contactId, _groupId = groupId, _contentId = contentId, _name = name, _eventDate = eventDate, _eventMonth = eventMonth, _eventYear = eventYear, _description = description, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Event({String? id, required String contactEmail, required String groupId, required String contentId, required String name, required String eventDate, required String eventMonth, required String eventYear, String? description}) {
+  factory Event({String? id, required String contactEmail, String? contactId, required String groupId, required String contentId, required String name, required String eventDate, required String eventMonth, required String eventYear, String? description}) {
     return Event._internal(
       id: id == null ? UUID.getUUID() : id,
       contactEmail: contactEmail,
+      contactId: contactId,
       groupId: groupId,
       contentId: contentId,
       name: name,
@@ -175,6 +181,7 @@ class Event extends Model {
     return other is Event &&
       id == other.id &&
       _contactEmail == other._contactEmail &&
+      _contactId == other._contactId &&
       _groupId == other._groupId &&
       _contentId == other._contentId &&
       _name == other._name &&
@@ -194,6 +201,7 @@ class Event extends Model {
     buffer.write("Event {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("contactEmail=" + "$_contactEmail" + ", ");
+    buffer.write("contactId=" + "$_contactId" + ", ");
     buffer.write("groupId=" + "$_groupId" + ", ");
     buffer.write("contentId=" + "$_contentId" + ", ");
     buffer.write("name=" + "$_name" + ", ");
@@ -208,10 +216,11 @@ class Event extends Model {
     return buffer.toString();
   }
   
-  Event copyWith({String? id, String? contactEmail, String? groupId, String? contentId, String? name, String? eventDate, String? eventMonth, String? eventYear, String? description}) {
+  Event copyWith({String? id, String? contactEmail, String? contactId, String? groupId, String? contentId, String? name, String? eventDate, String? eventMonth, String? eventYear, String? description}) {
     return Event._internal(
       id: id ?? this.id,
       contactEmail: contactEmail ?? this.contactEmail,
+      contactId: contactId ?? this.contactId,
       groupId: groupId ?? this.groupId,
       contentId: contentId ?? this.contentId,
       name: name ?? this.name,
@@ -224,6 +233,7 @@ class Event extends Model {
   Event.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _contactEmail = json['contactEmail'],
+      _contactId = json['contactId'],
       _groupId = json['groupId'],
       _contentId = json['contentId'],
       _name = json['name'],
@@ -235,11 +245,12 @@ class Event extends Model {
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'contactEmail': _contactEmail, 'groupId': _groupId, 'contentId': _contentId, 'name': _name, 'eventDate': _eventDate, 'eventMonth': _eventMonth, 'eventYear': _eventYear, 'description': _description, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'contactEmail': _contactEmail, 'contactId': _contactId, 'groupId': _groupId, 'contentId': _contentId, 'name': _name, 'eventDate': _eventDate, 'eventMonth': _eventMonth, 'eventYear': _eventYear, 'description': _description, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "event.id");
   static final QueryField CONTACTEMAIL = QueryField(fieldName: "contactEmail");
+  static final QueryField CONTACTID = QueryField(fieldName: "contactId");
   static final QueryField GROUPID = QueryField(fieldName: "groupId");
   static final QueryField CONTENTID = QueryField(fieldName: "contentId");
   static final QueryField NAME = QueryField(fieldName: "name");
@@ -270,6 +281,12 @@ class Event extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Event.CONTACTEMAIL,
       isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Event.CONTACTID,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     

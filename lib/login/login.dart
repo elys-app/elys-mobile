@@ -99,11 +99,11 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _onLoginPressed() async {
+  Future<void> onLoginPressed() async {
     _load('main');
   }
 
-  Future<void> _onGoToPanicPage() async {
+  Future<void> onGoToPanicPage() async {
     _load('panic');
   }
 
@@ -185,8 +185,8 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 10),
               ElevatedButton(
                 style: style,
-                onPressed: _onLoginPressed,
-                onLongPress: _onGoToPanicPage,
+                onPressed: onLoginPressed,
+                onLongPress: onGoToPanicPage,
                 child: const Text('Login'),
               ),
               TextButton(
