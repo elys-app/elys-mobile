@@ -114,10 +114,5 @@
       "service": "Lambda"
     }
   },
-  "analytics": {
-    "elysonline": {
-      "service": "Pinpoint",
-      "providerPlugin": "awscloudformation"
-    }
-  }
+  "analytics": {}
 }

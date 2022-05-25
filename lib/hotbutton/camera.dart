@@ -415,7 +415,10 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                                     InkWell(
                                       onTap: () async {
                                         setState(() {
-                                          var something = true;
+
+                                          //TO DO: switch the camera
+
+                                          onNewCameraSelected(cameras[0]);
                                         });
                                         print('Changed the camera');
                                       },

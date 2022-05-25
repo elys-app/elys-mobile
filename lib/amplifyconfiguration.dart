@@ -83,17 +83,6 @@ const amplifyconfig = ''' {
                         "Bucket": "elysonline361ff3e65f004dbbaf0eaa5afa9ce9ec103619-test",
                         "Region": "us-east-1"
                     }
-                },
-                "PinpointAnalytics": {
-                    "Default": {
-                        "AppId": "20abae0a48df4d0590e5ecfebafa491c",
-                        "Region": "us-east-1"
-                    }
-                },
-                "PinpointTargeting": {
-                    "Default": {
-                        "Region": "us-east-1"
-                    }
                 }
             }
         }

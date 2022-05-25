@@ -7,7 +7,6 @@ import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import '../amplifyconfiguration.dart';
 
 import '../models/ModelProvider.dart';
@@ -49,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
 
   void _initAmplify() async {
     final auth = AmplifyAuthCognito();
-    final analytics = AmplifyAnalyticsPinpoint();
     final api = AmplifyAPI();
     final storage = AmplifyStorageS3();
 
@@ -58,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       if (!Amplify.isConfigured) {
-        Amplify.addPlugins([auth, analytics, api, storage, dataStore]);
+        Amplify.addPlugins([auth, api, storage, dataStore]);
         await Amplify.configure(amplifyconfig);
       }
     } catch (e) {
@@ -210,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.only(left: 30.0, right: 30.0),
                 child: Center(
                   child:
-                      Text('v0.8.7 Build 20', style: TextStyle(fontSize: 12)),
+                      Text('v0.8.7 Build 21', style: TextStyle(fontSize: 12)),
                 ),
               ),
               SizedBox(height: 150)

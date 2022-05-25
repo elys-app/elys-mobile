@@ -54,7 +54,8 @@ class _LoadingPageState extends State<LoadingPage> {
                 Navigator.pushNamed(context, '/panic');
               }
             } else {
-              Navigator.pushNamed(context, '/register');
+              // Navigator.pushNamed(context, '/register');
+              Navigator.pushNamed(context, '/panic');
             }
           }
         });
@@ -97,7 +98,6 @@ class _LoadingPageState extends State<LoadingPage> {
                     'We are loading Content from Elys\nThis might take a couple seconds...',
                     style: TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
                         color: Colors.blue))),
             SizedBox(
               child: CircularProgressIndicator(value: completed),
@@ -105,16 +105,16 @@ class _LoadingPageState extends State<LoadingPage> {
               height: 100,
             ),
             Padding(
-                padding: EdgeInsets.all(10),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _exit();
-                  },
-                  child: Text(
-                    'Work Offline',
-                    style: TextStyle(fontSize: 20),
-                  ),
+              padding: EdgeInsets.all(10),
+              child: ElevatedButton(
+                onPressed: () {
+                  _exit();
+                },
+                child: Text(
+                  'Work Offline',
+                  style: TextStyle(fontSize: 20),
                 ),
+              ),
             )
           ],
         ),

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -67,16 +65,14 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
                 padding: EdgeInsets.only(
                     left: 30.0, top: 1.0, right: 30.0, bottom: 1.0),
-                child: new Image.asset('images/logo-white.png',
+                child: new Image.asset('images/logo-black.png',
                     width: 180, height: 180)),
             Padding(
               padding: EdgeInsets.only(
                   left: 30.0, top: 10.0, right: 30.0, bottom: 1.0),
               child: const Text(
                 'Looks like you don\'t have a',
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.blue),
+                style: TextStyle(fontSize: 18, color: Colors.blue),
               ),
             ),
             Padding(
@@ -84,9 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   left: 30.0, top: 1.0, right: 30.0, bottom: 1.0),
               child: const Text(
                 'subscription. To use Elys,',
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.blue),
+                style: TextStyle(fontSize: 18, color: Colors.blue),
               ),
             ),
             Padding(
@@ -94,18 +88,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   left: 30.0, top: 1.0, right: 30.0, bottom: 10.0),
               child: const Text(
                 'subscribe at:',
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.blue),
+                style: TextStyle(fontSize: 18, color: Colors.blue),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(
-                  left: 30.0, top: 10.0, right: 30.0, bottom: 30.0),
+              padding: EdgeInsets.only(left: 30.0, top: 10.0, right: 30.0),
               child: ElevatedButton(
-                child: Text('Elys Online',
-                    style: TextStyle(
-                        fontSize: 20)),
+                child: Text('Elys Online', style: TextStyle(fontSize: 20)),
                 onPressed: () {
                   launchUrl(_elysURL);
                 },
@@ -114,13 +103,8 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
               padding: EdgeInsets.all(10),
               child: TextButton(
-                onPressed: _onLogout,
-                child: Text(
-                  'Back to Login',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
-                ),
-              ),
-            )
+                  onPressed: _onLogout, child: Text('Back to Login', style: TextStyle(fontSize: 20)) ),
+            ),
           ],
         ),
       ),

@@ -97,12 +97,5 @@ export type AmplifyDependentResourcesAttributes = {
             "Region": "string",
             "LambdaExecutionRole": "string"
         }
-    },
-    "analytics": {
-        "elysonline": {
-            "Region": "string",
-            "Id": "string",
-            "appName": "string"
-        }
     }
 }

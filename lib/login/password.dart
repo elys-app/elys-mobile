@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 class PasswordPage extends StatefulWidget {
   PasswordPage({Key? key, required this.title}) : super(key: key);
 
@@ -26,8 +28,12 @@ class _PasswordPageState extends State<PasswordPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.title,
-          style: TextStyle(color: Colors.white),
+          'Welcome to Elys Mobile',
+          style: GoogleFonts.bellefair(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500)),
         ),
         automaticallyImplyLeading: false,
       ),
@@ -35,14 +41,10 @@ class _PasswordPageState extends State<PasswordPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Back to Login'),
+            Padding(
+              padding: EdgeInsets.only(left: 30.0, right: 30.0),
+              child: new Image.asset('images/logo-white.png',
+                  width: 180, height: 180),
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -87,7 +89,7 @@ class _PasswordPageState extends State<PasswordPage> {
               visible: (_codeSent ? false : true),
               child: Padding(
                 padding: EdgeInsets.only(
-                    left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                    left: 30.0, top: 10.0, right: 30.0),
                 child: ElevatedButton(
                   style: style,
                   onPressed: () {
@@ -103,7 +105,7 @@ class _PasswordPageState extends State<PasswordPage> {
               visible: (_codeSent ? true : false),
               child: Padding(
                 padding: EdgeInsets.only(
-                    left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                    left: 30.0, top: 10.0, right: 30.0),
                 child: ElevatedButton(
                   style: style,
                   onPressed: () {
@@ -113,7 +115,15 @@ class _PasswordPageState extends State<PasswordPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Back to Login'),
+            ),
           ],
         ),
       ),
