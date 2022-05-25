@@ -208,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.only(left: 30.0, right: 30.0),
                 child: Center(
                   child:
-                      Text('v0.8.7 Build 21', style: TextStyle(fontSize: 12)),
+                      Text('v0.8.7 Build 23', style: TextStyle(fontSize: 12)),
                 ),
               ),
               SizedBox(height: 150)
