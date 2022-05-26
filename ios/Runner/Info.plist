@@ -35,8 +35,6 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
-  <key>ITSAppUsesNonExemptEncryption</key>
-  <false/>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
