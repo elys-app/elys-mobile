@@ -47,6 +47,8 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
 
   ResolutionPreset currentResolutionPreset = ResolutionPreset.high;
 
+  bool _isRearCameraSelected = true;
+
   @override
   void initState() {
     _getPermissionStatus();
@@ -415,12 +417,16 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                                     InkWell(
                                       onTap: () async {
                                         setState(() {
-
-                                          //TO DO: switch the camera
-
-                                          onNewCameraSelected(cameras[0]);
+                                          _isCameraInitialized = false;
                                         });
-                                        print('Changed the camera');
+                                        onNewCameraSelected(
+                                          cameras[
+                                              _isRearCameraSelected ? 0 : 1],
+                                        );
+                                        setState(() {
+                                          _isRearCameraSelected =
+                                              !_isRearCameraSelected;
+                                        });
                                       },
                                       child: Icon(Icons.flip_camera_ios_sharp,
                                           color: Colors.white),
