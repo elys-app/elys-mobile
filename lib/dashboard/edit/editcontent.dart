@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../models/Content.dart';
+import 'package:elys_mobile/models/Content.dart';
+import 'package:elys_mobile/models/Event.dart';
+
 
 class EditContentPage extends StatefulWidget {
   EditContentPage({Key? key, required this.contentItem}) : super(key: key);
@@ -49,8 +51,52 @@ class _EditContentPageState extends State<EditContentPage> {
   }
 
   void onDeleteContentPressed() async {
+    final contact = (await Amplify.DataStore.query(Content.classType,
+        where: Content.ID.eq(widget.contentItem.id)))[0];
+    final events = await Amplify.DataStore.query(Event.classType,
+        where: Event.CONTENTID.eq(widget.contentItem.id));
+
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Warning"),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Deleting this Media Item will '),
+                Text('delete the Events attached to'),
+                Text('this Media Item')
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                _deleteAll(contact, events);
+              },
+            ),
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                setState(() {
+                  Navigator.pop(context);
+                });
+              },
+            )
+          ],
+        ),
+        barrierDismissible: false);
+  }
+
+  Future<void> _deleteAll(Content item, List<Event> events) async {
     try {
       await Amplify.Storage.remove(key: widget.contentItem.key);
+      await Amplify.DataStore.delete(item);
+      events.forEach((event) async {
+        await Amplify.DataStore.delete(event);
+      });
+      Navigator.pushNamed(context, '/main', arguments: 'content');
     } on StorageException catch (e) {
       SnackBar snackBar = SnackBar(
         content: Text('${e.message}'),
@@ -59,8 +105,6 @@ class _EditContentPageState extends State<EditContentPage> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-    await Amplify.DataStore.delete(widget.contentItem);
-    Navigator.pushNamed(context, '/main', arguments: 'content');
   }
 
   @override

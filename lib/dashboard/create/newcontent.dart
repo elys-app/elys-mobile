@@ -13,7 +13,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-import '../../models/content.dart';
+import 'package:elys_mobile/models/Content.dart';
+import 'package:elys_mobile/models/PendingContentPage.dart';
 
 class NewContentPage extends StatefulWidget {
   NewContentPage({Key? key}) : super(key: key);
@@ -67,27 +68,22 @@ class _NewContentPageState extends State<NewContentPage> {
   }
 
   Future<void> onAddNewContentPressed() async {
-    String _type;
-
     final username = (await Amplify.Auth.getCurrentUser()).username;
     final filename = _image.path.split('/').last;
     final key = username + '-' + filename;
 
-    _type = (key.split('.').last == 'jpg') ? 'image' : 'video';
+    String _type = (key.split('.').last == 'jpg') ? 'image' : 'video';
 
-    try {
-      await Amplify.Storage.uploadFile(local: File(_image.path), key: key);
-      await Amplify.DataStore.save(new Content(
-          name: key,
-          description: descriptionController.text,
-          region: _region,
-          bucket: _bucket,
-          key: filename,
-          type: _type));
-      Navigator.pushNamed(context, '/main', arguments: 'content');
-    } on StorageException catch (e) {
-      print('Error uploading image: $e');
-    }
+    Navigator.pushNamed(context, '/pendingcontent',
+        arguments: new PendingContentPageArguments(
+            new Content(
+                description: descriptionController.text,
+                name: filename,
+                bucket: _bucket,
+                region: _region,
+                key: key,
+                type: _type),
+            _image));
   }
 
   @override
@@ -111,10 +107,10 @@ class _NewContentPageState extends State<NewContentPage> {
             children: [
               Padding(
                 padding: EdgeInsets.all(10),
-                child: Text('Add a new Media Item',
-                  style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                          fontSize: 18)),
+                child: Text(
+                  'Add a new Media Item',
+                  style:
+                      GoogleFonts.poppins(textStyle: TextStyle(fontSize: 18)),
                 ),
               ),
               Flexible(

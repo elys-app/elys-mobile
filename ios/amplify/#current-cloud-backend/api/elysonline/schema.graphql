@@ -1,6 +1,8 @@
 type Account @model @auth(rules: [{allow: owner}]) @key(name: "byUserName", fields: ["userName"], queryField: "accountByUserName") {
   id: ID!
   userName: String!
+  userEmail: String
+  userPhone: String
   userFullName: String
   executorName: String! 
   executorEmail: String
@@ -8,6 +10,7 @@ type Account @model @auth(rules: [{allow: owner}]) @key(name: "byUserName", fiel
   customerId: String!
   subscriptionId: String
   transition: Boolean
+  basicAccount: Boolean 
   customerStatus: String
 }
 
@@ -24,6 +27,7 @@ type Content @model @auth(rules: [{allow: owner}]) {
 type Event @model @auth(rules: [{allow: owner}]) {
   id: ID!
   contactEmail: String!
+  contactId: ID
   groupId: ID!
   contentId: ID!
   name: String!
@@ -38,10 +42,11 @@ type SpecialEvent @model @auth(rules: [{allow: owner}]) {
   bucket: String
   region: String
   fileKey: String
-  executorEmail: String
+  ownEmail: String
+  ownPhone: String
   emergencyName: String
   emergencyNumber: String
-  timeSubmitted: AWSDateTime
+  timeSubmitted: String
   warned: Boolean
   sent: Boolean
 }
@@ -73,14 +78,13 @@ type StripeInvoices {
 
 type Mutation {
   cancelSubscription(subscriptionId: String!): String @function(name: "cancelSubscription-${env}")
-  checkSpecialEvents(startTime: String!): String @function(name: "checkSpecialEvents-${env}")
   createCustomer(email: String!): String @function(name: "createCustomer-${env}")
   createSubscription(customerId: String!, paymentMethodId: String!, priceId: String!): StripeSubscription @function(name: "createSubscription-${env}")
   deleteCustomer(customerId: String!): String @function(name: "deleteCustomer-${env}")
-  emailGroup(toAddresses: [String]!, eventText: String!): String @function(name: "emailGroup-${env}")
   getInvoices(customerId: String): [StripeInvoices]! @function(name: "getInvoices-${env}")
   getSubscriptionStatus(customerId: String!): String @function(name: "getSubscriptionStatus-${env}")
   newCard(customerId: String!, paymentMethodId: String!): String @function(name: "newCard-${env}")
   sendDesigneeEmail(toAddresses: [String]!, designeeName: String!, clientName: String!): String @function(name: "sendDesigneeEmail-${env}")
   sendSpecialEventText(emergencyName: String!, emergencyNumber: String!): String @function(name: "sendSpecialEventText-${env}")
 }
+

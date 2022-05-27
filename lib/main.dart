@@ -13,6 +13,7 @@ import 'package:elys_mobile/dashboard/startup.dart';
 import 'package:elys_mobile/dashboard/undefined.dart';
 
 import 'package:elys_mobile/dashboard/create/newcontent.dart';
+import 'package:elys_mobile/dashboard/create/pendingcontent.dart';
 import 'package:elys_mobile/dashboard/create/newcontact.dart';
 import 'package:elys_mobile/dashboard/create/newschedule.dart';
 
@@ -26,6 +27,7 @@ import 'package:elys_mobile/login/register.dart';
 
 import 'package:elys_mobile/settings/econtact.dart';
 import 'package:elys_mobile/models/PendingPage.dart';
+import 'package:elys_mobile/models/PendingContentPage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,6 +69,12 @@ class ElysApp extends StatelessWidget {
         }
       case '/newcontent':
         return MaterialPageRoute(builder: (context) => NewContentPage());
+      case '/pendingcontent':
+        PendingContentPageArguments info = settings.arguments as PendingContentPageArguments;
+        return MaterialPageRoute(
+          builder: (context) => PendingContentPage(
+              item: info.item, content: info.content),
+        );
       case '/editcontent':
         Content _content = settings.arguments as Content;
         return MaterialPageRoute(

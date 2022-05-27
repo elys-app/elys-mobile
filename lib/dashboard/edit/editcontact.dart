@@ -4,7 +4,8 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../models/Contact.dart';
+import 'package:elys_mobile/models/Contact.dart';
+import 'package:elys_mobile/models/Event.dart';
 
 class EditContactPage extends StatefulWidget {
   EditContactPage({Key? key, required this.contactItem}) : super(key: key);
@@ -21,6 +22,8 @@ class _EditContactPageState extends State<EditContactPage> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
+
+  bool deleteConnection = false;
 
   @override
   void initState() {
@@ -60,8 +63,47 @@ class _EditContactPageState extends State<EditContactPage> {
   void onDeleteContactPressed() async {
     final contact = (await Amplify.DataStore.query(Contact.classType,
         where: Contact.ID.eq(widget.contactItem.id)))[0];
+    final events = await Amplify.DataStore.query(Event.classType,
+        where: Event.CONTACTID.eq(widget.contactItem.id));
 
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text("Warning"),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const <Widget>[
+                    Text('Deleting this Connection will '),
+                    Text('delete the Events attached to'),
+                    Text('this Connection')
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Delete'),
+                  onPressed: () {
+                    _deleteAll(contact, events);
+                  },
+                ),
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    setState(() {
+                      Navigator.pop(context);
+                    });
+                  },
+                )
+              ],
+            ),
+        barrierDismissible: false);
+  }
+
+  Future<void> _deleteAll(Contact contact, List<Event> events) async {
     await Amplify.DataStore.delete(contact);
+    events.forEach((event) async {
+      await Amplify.DataStore.delete(event);
+    });
     Navigator.pushNamed(context, '/main', arguments: 'contact');
   }
 
