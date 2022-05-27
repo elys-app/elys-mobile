@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
       try {
         await Amplify.Auth.signOut();
         await Amplify.Auth.signIn(username: userName, password: password);
-        Navigator.pushNamed(context, '/loading', arguments: destination);
+        Navigator.pushReplacementNamed(context, '/loading', arguments: destination);
       } on UserNotFoundException catch (e) {
         Amplify.Auth.signOut();
         SnackBar snackBar = SnackBar(
@@ -127,73 +127,74 @@ class _LoginPageState extends State<LoginPage> {
       body: Form(
         key: formKey,
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                child: new Image.asset('images/logo-white.png',
-                    width: 180, height: 180),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 30.0, top: 5.0, right: 30.0, bottom: 5.0),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Your User Name';
-                    }
-                    return null;
-                  },
-                  controller: userNameController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
-                    border: OutlineInputBorder(),
-                    labelText: 'User ID',
-                  ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                  child: new Image.asset('images/logo-white.png',
+                      width: 180, height: 180),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Your Password';
-                    }
-                    return null;
-                  },
-                  controller: passwordController,
-                  obscureText: _showPassword,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    prefixIcon: IconButton(
-                      icon: Icon(
-                        _showPassword ? Icons.visibility_off : Icons.visibility,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _showPassword = !_showPassword;
-                        });
-                      },
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 5.0, right: 30.0, bottom: 5.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter Your User Name';
+                      }
+                      return null;
+                    },
+                    controller: userNameController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person),
+                      border: OutlineInputBorder(),
+                      labelText: 'User ID',
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                style: style,
-                onPressed: onLoginPressed,
-                onLongPress: onGoToPanicPage,
-                child: const Text('Login'),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 20),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter Your Password';
+                      }
+                      return null;
+                    },
+                    controller: passwordController,
+                    obscureText: _showPassword,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                      prefixIcon: IconButton(
+                        icon: Icon(
+                          _showPassword ? Icons.visibility_off : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _showPassword = !_showPassword;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
                 ),
-                onPressed: () {
+                SizedBox(height: 10),
+                ElevatedButton(
+                  style: style,
+                  onPressed: onLoginPressed,
+                  onLongPress: onGoToPanicPage,
+                  child: const Text('Login'),
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -209,10 +210,11 @@ class _LoginPageState extends State<LoginPage> {
                 child: Center(
                   child:
                       Text('v0.8.9 Build 27', style: TextStyle(fontSize: 12)),
+                  ),
                 ),
-              ),
-              SizedBox(height: 150)
-            ],
+                SizedBox(height: 150)
+              ],
+            ),
           ),
         ),
       ),

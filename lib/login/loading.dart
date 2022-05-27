@@ -49,13 +49,13 @@ class _LoadingPageState extends State<LoadingPage> {
                 where: Account.USERNAME.eq(user.username));
             if (result.length > 0) {
               if (widget.destination == 'main') {
-                Navigator.pushNamed(context, '/main', arguments: 'contact');
+                Navigator.pushReplacementNamed(context, '/main', arguments: 'contact');
               } else {
-                Navigator.pushNamed(context, '/panic');
+                Navigator.pushReplacementNamed(context, '/panic');
               }
             } else {
               // Navigator.pushNamed(context, '/register');
-              Navigator.pushNamed(context, '/panic');
+              Navigator.pushReplacementNamed(context, '/panic');
             }
           }
         });
@@ -69,7 +69,7 @@ class _LoadingPageState extends State<LoadingPage> {
     await Amplify.DataStore.clear();
     await Amplify.DataStore.stop();
     Amplify.Auth.signOut().then((_) {
-      Navigator.pushNamed(context, '/');
+      Navigator.pushReplacementNamed(context, '/');
     });
   }
 
