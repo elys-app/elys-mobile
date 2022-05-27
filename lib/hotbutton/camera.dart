@@ -47,7 +47,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
 
   ResolutionPreset currentResolutionPreset = ResolutionPreset.high;
 
-  bool _isRearCameraSelected = true;
+  bool _isRearCameraSelected = false;
 
   @override
   void initState() {
@@ -474,12 +474,15 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                     onPressed: () {
                       Navigator.pop(context);
                     },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'Cancel',
                         style: TextStyle(
-                          color: Colors.redAccent,
+                          color: Colors.white,
                           fontSize: 14,
                         ),
                       ),
