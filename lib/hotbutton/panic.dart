@@ -283,7 +283,6 @@ class _PanicPageState extends State<PanicPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 20),
                 Padding(
                   padding: EdgeInsets.only(
                       left: 30.0, top: 20.0, right: 30.0, bottom: 10.0),

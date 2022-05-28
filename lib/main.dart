@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:elys_mobile/hotbutton/panic.dart';
 import 'package:elys_mobile/hotbutton/pending.dart';
 import 'package:elys_mobile/hotbutton/camera.dart';
+import 'package:elys_mobile/hotbutton/cameraexample.dart';
 
 import 'package:elys_mobile/dashboard/dashboard.dart';
 import 'package:elys_mobile/dashboard/startup.dart';
@@ -106,6 +107,9 @@ class ElysApp extends StatelessWidget {
       case '/camera':
         SpecialEvent _event = settings.arguments as SpecialEvent;
         return MaterialPageRoute(builder: (context) => CameraPage(event: _event));
+      case '/cameraexample':
+        SpecialEvent _event = settings.arguments as SpecialEvent;
+        return MaterialPageRoute(builder: (context) => CameraExampleHome(event: _event));
       case '/loading':
         String _destination = settings.arguments as String;
         return MaterialPageRoute(
