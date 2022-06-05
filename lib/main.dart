@@ -107,9 +107,6 @@ class ElysApp extends StatelessWidget {
       case '/camera':
         SpecialEvent _event = settings.arguments as SpecialEvent;
         return MaterialPageRoute(builder: (context) => CameraPage(event: _event));
-      case '/cameraexample':
-        SpecialEvent _event = settings.arguments as SpecialEvent;
-        return MaterialPageRoute(builder: (context) => CameraExampleHome(event: _event));
       case '/loading':
         String _destination = settings.arguments as String;
         return MaterialPageRoute(
