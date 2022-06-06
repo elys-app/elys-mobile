@@ -7,6 +7,8 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 
 import 'package:elys_mobile/models/Account.dart';
 
+import 'package:sentry/sentry.dart';
+
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key, required this.destination}) : super(key: key);
 
@@ -49,7 +51,8 @@ class _LoadingPageState extends State<LoadingPage> {
                 where: Account.USERNAME.eq(user.username));
             if (result.length > 0) {
               if (widget.destination == 'main') {
-                Navigator.pushReplacementNamed(context, '/main', arguments: 'contact');
+                Navigator.pushReplacementNamed(context, '/main',
+                    arguments: 'contact');
               } else {
                 Navigator.pushReplacementNamed(context, '/panic');
               }
@@ -60,8 +63,11 @@ class _LoadingPageState extends State<LoadingPage> {
           }
         });
       }
-    } catch (e) {
-      print(e);
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -96,9 +102,7 @@ class _LoadingPageState extends State<LoadingPage> {
                 padding: EdgeInsets.fromLTRB(10.0, 40.0, 10.0, 40.0),
                 child: Text(
                     'We are loading Content from Elys\nThis might take a couple seconds...',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.blue))),
+                    style: TextStyle(fontSize: 18, color: Colors.blue))),
             SizedBox(
               child: CircularProgressIndicator(value: completed),
               width: 100,
