@@ -2,7 +2,7 @@ import 'package:elys_mobile/models/ModelProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:sentry_flutter/sentry_flutter.dart';
+// import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 

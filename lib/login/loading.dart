@@ -7,7 +7,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 
 import 'package:elys_mobile/models/Account.dart';
 
-import 'package:sentry/sentry.dart';
+// import 'package:sentry/sentry.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key, required this.destination}) : super(key: key);
@@ -63,11 +63,14 @@ class _LoadingPageState extends State<LoadingPage> {
           }
         });
       }
-    } catch (exception, stackTrace) {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stackTrace,
-      );
+      // } catch (exception, stackTrace) {
+      //   await Sentry.captureException(
+      //     exception,
+      //     stackTrace: stackTrace,
+      //   );
+      // }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
