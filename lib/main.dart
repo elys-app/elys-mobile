@@ -34,16 +34,17 @@ import 'package:elys_mobile/models/PendingContentPage.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  await SentryFlutter.init(
-    (options) {
-      options.dsn =
-          'https://993c8574b1a24a3689c4ea54940fd255@o1277891.ingest.sentry.io/6475702';
-      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-      // We recommend adjusting this value in production.
-      options.tracesSampleRate = 1.0;
-    },
-    appRunner: () => runApp(ElysApp()),
-  );
+  // await SentryFlutter.init(
+  //   (options) {
+  //     options.dsn =
+  //         'https://993c8574b1a24a3689c4ea54940fd255@o1277891.ingest.sentry.io/6475702';
+  //     // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  //     // We recommend adjusting this value in production.
+  //     options.tracesSampleRate = 1.0;
+  //   },
+  //   appRunner: () => runApp(ElysApp()),
+  // );
+  runApp(ElysApp());
 }
 
 class ElysApp extends StatelessWidget {
