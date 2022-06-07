@@ -2,6 +2,8 @@ import 'package:elys_mobile/models/ModelProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:sentry_flutter/sentry_flutter.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:elys_mobile/hotbutton/panic.dart';
@@ -30,12 +32,19 @@ import 'package:elys_mobile/settings/econtact.dart';
 import 'package:elys_mobile/models/PendingPage.dart';
 import 'package:elys_mobile/models/PendingContentPage.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) {
-    runApp(ElysApp());
-  });
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await SentryFlutter.init(
+        (options) {
+      options.dsn =
+      'https://993c8574b1a24a3689c4ea54940fd255@o1277891.ingest.sentry.io/6475702';
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production.
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(ElysApp()),
+  );
 }
 
 class ElysApp extends StatelessWidget {
