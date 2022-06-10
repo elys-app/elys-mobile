@@ -263,11 +263,6 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
     }
   }
 
-  void onDeleteEventPressed() async {
-    await Amplify.DataStore.delete(widget.eventItem);
-    Navigator.pushNamed(context, '/main', arguments: 'schedule');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -382,17 +377,6 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 20),
-            child: FloatingActionButton(
-              onPressed: () {
-                onDeleteEventPressed();
-              },
-              child: const Icon(Icons.delete_sharp),
-              heroTag: null,
-              backgroundColor: Colors.pink,
-            ),
-          ),
           Padding(
             padding: EdgeInsets.only(bottom: 20),
             child: FloatingActionButton(

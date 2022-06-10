@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 
@@ -93,23 +94,60 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
-  Future<List<ListTile>> _getEventList() async {
+  void onDeleteEventPressed(Event item) async {
+    await Amplify.DataStore.delete(item);
+    Navigator.pushNamed(context, '/main', arguments: 'schedule');
+  }
+
+  Future<List<Slidable>> _getEventList() async {
     final result = await Amplify.DataStore.query(Event.classType,
         sortBy: [Event.DESCRIPTION.ascending()]);
 
     return (result
         .map(
-          (item) => new ListTile(
-            title: Text(
-              item.name,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          (item) => Slidable(
+        key: const ValueKey(0),
+        startActionPane: ActionPane(
+          motion: BehindMotion(),
+          children: [
+            SlidableAction(
+              label: 'Delete',
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              icon: Icons.delete_sharp,
+              onPressed: (BuildContext context) {
+                onDeleteEventPressed(item);
+              },
             ),
-            subtitle: Text(
-                'Send Email to: ${item.contactEmail} \nOn: ${item.eventMonth} ${item.eventDate} '),
-            isThreeLine: true,
-            onLongPress: () {
-              _editScheduleItem(item);
-            },
+          ],
+        ),
+        endActionPane: ActionPane(
+          motion: BehindMotion(),
+          children: [
+            SlidableAction(
+              flex: 1,
+              label: 'Edit',
+              backgroundColor: Colors.lightBlue,
+              foregroundColor: Colors.white,
+              icon: Icons.edit_sharp,
+              onPressed: (BuildContext context) {
+                Navigator.pushNamed(context, '/editschedule', arguments: item);
+              },
+            )
+          ],
+        ),
+            child: new ListTile(
+              title: Text(
+                item.name,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                  'Send Email to: ${item.contactEmail} \nOn: ${item.eventMonth} ${item.eventDate} '),
+              isThreeLine: true,
+              onLongPress: () {
+                _editScheduleItem(item);
+              },
+            ),
           ),
         )
         .toList());
@@ -118,7 +156,7 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget _getEventItems() {
     return FutureBuilder(
       future: _getEventList(),
-      builder: (BuildContext context, AsyncSnapshot<List<ListTile>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<Slidable>> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data!.length > 0) {
             return new ListView.separated(
@@ -131,8 +169,8 @@ class _SchedulePageState extends State<SchedulePage> {
           } else {
             return Padding(
               padding: const EdgeInsets.all(10),
-              child: new Text('No Schedule Items found',
-                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18)),
+              child: new Text('\nNo Schedule Items found',
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
             );
           }
         } else {

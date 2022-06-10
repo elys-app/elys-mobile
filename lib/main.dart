@@ -9,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:elys_mobile/hotbutton/panic.dart';
 import 'package:elys_mobile/hotbutton/pending.dart';
 import 'package:elys_mobile/hotbutton/camera.dart';
-import 'package:elys_mobile/hotbutton/cameraexample.dart';
 
 import 'package:elys_mobile/dashboard/dashboard.dart';
 import 'package:elys_mobile/dashboard/startup.dart';
@@ -24,6 +23,9 @@ import 'package:elys_mobile/dashboard/edit/editcontent.dart';
 import 'package:elys_mobile/dashboard/edit/editcontact.dart';
 import 'package:elys_mobile/dashboard/edit/editschedule.dart';
 
+import 'package:elys_mobile/dashboard/related/contentrelated.dart';
+import 'package:elys_mobile/dashboard/related/contactrelated.dart';
+
 import 'package:elys_mobile/login/login.dart';
 import 'package:elys_mobile/login/loading.dart';
 import 'package:elys_mobile/login/register.dart';
@@ -36,11 +38,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await SentryFlutter.init(
-        (options) {
+    (options) {
       options.dsn =
-      'https://993c8574b1a24a3689c4ea54940fd255@o1277891.ingest.sentry.io/6475702';
-      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-      // We recommend adjusting this value in production.
+          'https://993c8574b1a24a3689c4ea54940fd255@o1277891.ingest.sentry.io/6475702';
       options.tracesSampleRate = 1.0;
     },
     appRunner: () => runApp(ElysApp()),
@@ -68,8 +68,7 @@ class ElysApp extends StatelessWidget {
         return MaterialPageRoute(
             builder: (context) => LoginPage(title: 'Welcome to Elys'));
       case '/register':
-        return MaterialPageRoute(
-          builder: (context) => RegisterPage());
+        return MaterialPageRoute(builder: (context) => RegisterPage());
       case '/main':
         if (settings.arguments != null) {
           String _page = settings.arguments as String;
@@ -80,11 +79,16 @@ class ElysApp extends StatelessWidget {
       case '/newcontent':
         return MaterialPageRoute(builder: (context) => NewContentPage());
       case '/pendingcontent':
-        PendingContentPageArguments info = settings.arguments as PendingContentPageArguments;
+        PendingContentPageArguments info =
+            settings.arguments as PendingContentPageArguments;
         return MaterialPageRoute(
-          builder: (context) => PendingContentPage(
-              item: info.item, content: info.content),
+          builder: (context) =>
+              PendingContentPage(item: info.item, content: info.content),
         );
+      case '/relatedcontent':
+        Content _content = settings.arguments as Content;
+        return MaterialPageRoute(
+            builder: (context) => ContentRelatedPage(item: _content));
       case '/editcontent':
         Content _content = settings.arguments as Content;
         return MaterialPageRoute(
@@ -95,6 +99,10 @@ class ElysApp extends StatelessWidget {
         Contact _contact = settings.arguments as Contact;
         return MaterialPageRoute(
             builder: (context) => EditContactPage(contactItem: _contact));
+      case '/relatedcontact':
+        Contact _contact = settings.arguments as Contact;
+        return MaterialPageRoute(
+            builder: (context) => ContactRelatedPage(item: _contact));
       case '/startup':
         String _variation = settings.arguments as String;
         return MaterialPageRoute(
@@ -110,15 +118,13 @@ class ElysApp extends StatelessWidget {
       case '/pending':
         PendingPageArguments info = settings.arguments as PendingPageArguments;
         return MaterialPageRoute(
-          builder: (context) => PendingPage(
-              event: info.event, content: info.content),
+          builder: (context) =>
+              PendingPage(event: info.event, content: info.content),
         );
       case '/camera':
         SpecialEvent _event = settings.arguments as SpecialEvent;
-        return MaterialPageRoute(builder: (context) => CameraPage(event: _event));
-      case '/cameraexample':
-        SpecialEvent _event = settings.arguments as SpecialEvent;
-        return MaterialPageRoute(builder: (context) => CameraExampleHome(event: _event));
+        return MaterialPageRoute(
+            builder: (context) => CameraPage(event: _event));
       case '/loading':
         String _destination = settings.arguments as String;
         return MaterialPageRoute(

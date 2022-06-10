@@ -7,7 +7,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 import 'show/content.dart';
-import 'show/detail.dart';
+import 'show/contact.dart';
 import 'show/schedule.dart';
 
 class MainPage extends StatefulWidget {
