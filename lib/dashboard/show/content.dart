@@ -160,7 +160,7 @@ class _ContentPageState extends State<ContentPage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('Deleting this Connection will '),
+                Text('Deleting this Media Item will '),
                 Text('delete the Events attached '),
                 Text('to this Connection')
               ],
