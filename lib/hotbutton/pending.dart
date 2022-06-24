@@ -81,7 +81,7 @@ class _PendingPageState extends State<PendingPage> {
           children: <Widget>[
             Text(
               'Uploading Hot Button Content...',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, color: Colors.blue),
             ),
             SizedBox(
               child: SpinKitThreeBounce(

@@ -65,7 +65,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
     var status = await Permission.camera.status;
 
     if (status.isGranted) {
-      log('Elys got permission for the camera');
+      print('Elys got permission for the camera');
       setState(() {
         _isCameraPermissionGranted = true;
       });
@@ -73,7 +73,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
       onNewCameraSelected(cameras[0]);
       // refreshAlreadyCapturedImages();
     } else {
-      log('Elys could not get permission for the camera');
+      print('Elys could not get permission for the camera');
     }
   }
 
