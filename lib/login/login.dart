@@ -72,8 +72,8 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _load(String destination) async {
     if (formKey.currentState!.validate()) {
       setState(() {
-        userName = userNameController.text;
-        password = passwordController.text;
+        userName = userNameController.text.trim();
+        password = passwordController.text.trim();
       });
       try {
         await Amplify.Auth.signOut();
@@ -208,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.only(left: 30.0, right: 30.0, bottom: 0.0),
                 child: Center(
                   child:
-                      Text('v0.8.14 Build 53', style: TextStyle(fontSize: 12)),
+                      Text('v0.8.14 Build 54', style: TextStyle(fontSize: 12)),
                 ),
               ),
               SizedBox(height: 50)

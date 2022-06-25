@@ -40,7 +40,7 @@ android {
 
     defaultConfig {
         applicationId "com.desertdigital.elysmobile"
-        minSdkVersion 33
+        minSdkVersion 30
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
