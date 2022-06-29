@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -6,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:video_player/video_player.dart';
+
+import 'package:sentry/sentry.dart';
 
 import 'package:elys_mobile/models/PendingPage.dart';
 
@@ -187,8 +188,11 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
       ]);
 
       _currentFlashMode = controller!.value.flashMode;
-    } on CameraException catch (e) {
-      print('Error initializing camera: $e');
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
     }
 
     if (mounted) {
@@ -449,11 +453,6 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(),
-                  Text(
-                    'Oops...there was a problem with granting permission',
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                  ),
                   SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {

@@ -5,6 +5,8 @@ import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:sentry/sentry.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -129,8 +131,15 @@ class _PanicPageState extends State<PanicPage> {
           timeSubmitted: DateTime.now().toUtc().toIso8601String(),
           sent: false,
           warned: false);
-      await Amplify.DataStore.save(newEvent);
-      Navigator.pushNamed(context, '/camera', arguments: newEvent);
+      try {
+        await Amplify.DataStore.save(newEvent);
+        Navigator.pushNamed(context, '/camera', arguments: newEvent);
+      } catch (exception, stackTrace) {
+        await Sentry.captureException(
+          exception,
+          stackTrace: stackTrace,
+        );
+      }
     } else {
       SpecialEvent existingEvent = events[0];
       SpecialEvent updatedEvent = existingEvent.copyWith(
