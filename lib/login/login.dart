@@ -123,96 +123,99 @@ class _LoginPageState extends State<LoginPage> {
         ),
         automaticallyImplyLeading: false,
       ),
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       body: Form(
         key: formKey,
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                child: new Image.asset('images/logo-white.png',
-                    width: 180, height: 180),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 30.0, top: 5.0, right: 30.0, bottom: 5.0),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Your User Name';
-                    }
-                    return null;
-                  },
-                  controller: userNameController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
-                    border: OutlineInputBorder(),
-                    labelText: 'User ID',
+          child: SingleChildScrollView(
+            reverse: true,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                  child: new Image.asset('images/logo-white.png',
+                      width: 180, height: 180),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 5.0, right: 30.0, bottom: 5.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter Your User Name';
+                      }
+                      return null;
+                    },
+                    controller: userNameController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person),
+                      border: OutlineInputBorder(),
+                      labelText: 'User ID',
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Your Password';
-                    }
-                    return null;
-                  },
-                  controller: passwordController,
-                  obscureText: _showPassword,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    prefixIcon: IconButton(
-                      icon: Icon(
-                        _showPassword ? Icons.visibility_off : Icons.visibility,
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter Your Password';
+                      }
+                      return null;
+                    },
+                    controller: passwordController,
+                    obscureText: _showPassword,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                      prefixIcon: IconButton(
+                        icon: Icon(
+                          _showPassword ? Icons.visibility_off : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _showPassword = !_showPassword;
+                          });
+                        },
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _showPassword = !_showPassword;
-                        });
-                      },
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                style: style,
-                onPressed: onLoginPressed,
-                onLongPress: onGoToPanicPage,
-                child: const Text('Login'),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 20),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  style: style,
+                  onPressed: onLoginPressed,
+                  onLongPress: onGoToPanicPage,
+                  child: const Text('Login'),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          PasswordPage(title: 'Lost Password'),
-                    ),
-                  );
-                },
-                child: const Text('Forgot Password?'),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 30.0, right: 30.0, bottom: 0.0),
-                child: Center(
-                  child:
-                      Text('v0.8.14 Build 55', style: TextStyle(fontSize: 12)),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PasswordPage(title: 'Lost Password'),
+                      ),
+                    );
+                  },
+                  child: const Text('Forgot Password?'),
                 ),
-              ),
-              SizedBox(height: 50)
-            ],
+                Padding(
+                  padding: EdgeInsets.only(left: 30.0, right: 30.0, bottom: 0.0),
+                  child: Center(
+                    child:
+                        Text('v0.8.14 Build 56', style: TextStyle(fontSize: 12)),
+                  ),
+                ),
+                SizedBox(height: 50)
+              ],
+            ),
           ),
         ),
       ),

@@ -311,7 +311,9 @@ class _PanicPageState extends State<PanicPage> {
                           ElevatedButton.styleFrom(primary: Colors.lightBlue),
                       onPressed: !_submitted
                           ? () {
-                              _getVideo();
+                              if (formKey.currentState!.validate()) {
+                                _getVideo();
+                              }
                             }
                           : () {
                               _cancelCountDown();
@@ -335,7 +337,7 @@ class _PanicPageState extends State<PanicPage> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person),
                       border: OutlineInputBorder(),
-                      labelText: 'Hot Button Contact Name',
+                      labelText: 'Enter Hot Button Contact Name',
                     ),
                   ),
                 ),

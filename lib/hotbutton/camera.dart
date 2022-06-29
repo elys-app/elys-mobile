@@ -53,12 +53,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   @override
   void initState() {
     _getPermissionStatus();
-    _initCamera();
     super.initState();
-  }
-
-  Future<void> _initCamera() async {
-    cameras = await availableCameras();
   }
 
   _getPermissionStatus() async {
@@ -67,14 +62,20 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
 
     if (status.isGranted) {
       print('Elys got permission for the camera');
+      cameras = await availableCameras();
       setState(() {
         _isCameraPermissionGranted = true;
       });
-      // Set and initialize the new camera
       onNewCameraSelected(cameras[0]);
-      // refreshAlreadyCapturedImages();
     } else {
-      print('Elys could not get permission for the camera');
+      SnackBar snackBar = SnackBar(
+        content: Text('Could not get Camera Permission'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.pushNamed(
+          context, '/panic');
     }
   }
 
@@ -92,8 +93,17 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
         _isRecordingInProgress = true;
         print(_isRecordingInProgress);
       });
-    } on CameraException catch (e) {
-      print('Error starting to record video: $e');
+    } on CameraException catch (e, stackTrace) {
+      SnackBar snackBar = SnackBar(
+        content: Text('Error starting to record video'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      await Sentry.captureException(
+        e,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -109,8 +119,17 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
         _isRecordingInProgress = false;
       });
       return file;
-    } on CameraException catch (e) {
-      print('Error while stopping the video recording: $e');
+    } on CameraException catch (e, stackTrace) {
+      SnackBar snackBar = SnackBar(
+        content: Text('Error while stopping the video recording'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      await Sentry.captureException(
+        e,
+        stackTrace: stackTrace,
+      );
       return null;
     }
   }
@@ -123,8 +142,17 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
 
     try {
       await controller!.pauseVideoRecording();
-    } on CameraException catch (e) {
-      print('Error pausing video recording: $e');
+    } on CameraException catch (e, stackTrace) {
+      SnackBar snackBar = SnackBar(
+        content: Text('Error pausing video recording'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      await Sentry.captureException(
+        e,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -136,8 +164,17 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
 
     try {
       await controller!.resumeVideoRecording();
-    } on CameraException catch (e) {
-      print('Error resuming video recording: $e');
+    } on CameraException catch (e, stackTrace) {
+      SnackBar snackBar = SnackBar(
+        content: Text('Error resuming video recording'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(label: 'OK', onPressed: () {}),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      await Sentry.captureException(
+        e,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -156,7 +193,6 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
     );
 
     await previousCameraController?.dispose();
-
     resetCameraValues();
 
     if (mounted) {
@@ -186,7 +222,6 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
             .getMinZoomLevel()
             .then((value) => _minAvailableZoom = value),
       ]);
-
       _currentFlashMode = controller!.value.flashMode;
     } catch (exception, stackTrace) {
       await Sentry.captureException(
@@ -461,10 +496,10 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Press to let Elys use the Camera',
+                        'Tap to Permit Camera for Elys',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: 20,
                         ),
                       ),
                     ),
@@ -474,7 +509,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red
+                      primary: Colors.blue
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -482,7 +517,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                         'Cancel',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: 20,
                         ),
                       ),
                     ),
