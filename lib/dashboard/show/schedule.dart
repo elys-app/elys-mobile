@@ -95,8 +95,38 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   void onDeleteEventPressed(Event item) async {
-    await Amplify.DataStore.delete(item);
-    Navigator.pushNamed(context, '/main', arguments: 'schedule');
+    // set up are you sure dialog
+
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Warning"),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Are you sure?')
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () async {
+                await Amplify.DataStore.delete(item);
+                Navigator.pushNamed(context, '/main', arguments: 'schedule');
+              },
+            ),
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                setState(() {
+                  Navigator.pop(context);
+                });
+              },
+            )
+          ],
+        ),
+        barrierDismissible: false);
   }
 
   Future<List<Slidable>> _getEventList() async {

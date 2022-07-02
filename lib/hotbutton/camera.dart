@@ -70,7 +70,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
     } else {
       SnackBar snackBar = SnackBar(
         content: Text('Could not get Camera Permission'),
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 6),
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -96,7 +96,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
     } on CameraException catch (e, stackTrace) {
       SnackBar snackBar = SnackBar(
         content: Text('Error starting to record video'),
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 6),
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -122,7 +122,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
     } on CameraException catch (e, stackTrace) {
       SnackBar snackBar = SnackBar(
         content: Text('Error while stopping the video recording'),
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 6),
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -145,7 +145,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
     } on CameraException catch (e, stackTrace) {
       SnackBar snackBar = SnackBar(
         content: Text('Error pausing video recording'),
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 6),
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -167,7 +167,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
     } on CameraException catch (e, stackTrace) {
       SnackBar snackBar = SnackBar(
         content: Text('Error resuming video recording'),
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 6),
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -496,10 +496,10 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Tap to Permit Camera for Elys',
+                        'Tap to Allow Camera',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 18,
                         ),
                       ),
                     ),
@@ -509,15 +509,15 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue
+                      primary: Colors.red
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Text(
                         'Cancel',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                          color: Colors.red,
+                          fontSize: 18,
                         ),
                       ),
                     ),

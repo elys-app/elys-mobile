@@ -311,15 +311,20 @@ class _PanicPageState extends State<PanicPage> {
                           ElevatedButton.styleFrom(primary: Colors.lightBlue),
                       onPressed: !_submitted
                           ? () {
-                              if (formKey.currentState!.validate()) {
+                              if (_sent) {
+                                setState(() => _sent = false);
+                              }
+                              else if (formKey.currentState!.validate()) {
                                 _getVideo();
                               }
                             }
                           : () {
                               _cancelCountDown();
                             },
-                      child: (!_submitted || _sent)
-                          ? Text('Record', style: TextStyle(fontSize: 18))
+                      child: (!_submitted)
+                          ? (_sent)
+                              ? Text('Reset', style: TextStyle(fontSize: 18))
+                              : Text('Record', style: TextStyle(fontSize: 18))
                           : Text('Cancel', style: TextStyle(fontSize: 18))),
                 ),
                 Padding(
