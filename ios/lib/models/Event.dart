@@ -30,13 +30,14 @@ class Event extends Model {
   final String id;
   final String? _contactEmail;
   final String? _contactId;
-  final String? _groupId;
+  final String? _ownerName;
   final String? _contentId;
   final String? _name;
   final String? _eventDate;
   final String? _eventMonth;
   final String? _eventYear;
   final String? _description;
+  final bool? _sent;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -65,17 +66,8 @@ class Event extends Model {
     return _contactId;
   }
   
-  String get groupId {
-    try {
-      return _groupId!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  String? get ownerName {
+    return _ownerName;
   }
   
   String get contentId {
@@ -147,6 +139,10 @@ class Event extends Model {
     return _description;
   }
   
+  bool? get sent {
+    return _sent;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -155,20 +151,21 @@ class Event extends Model {
     return _updatedAt;
   }
   
-  const Event._internal({required this.id, required contactEmail, contactId, required groupId, required contentId, required name, required eventDate, required eventMonth, required eventYear, description, createdAt, updatedAt}): _contactEmail = contactEmail, _contactId = contactId, _groupId = groupId, _contentId = contentId, _name = name, _eventDate = eventDate, _eventMonth = eventMonth, _eventYear = eventYear, _description = description, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Event._internal({required this.id, required contactEmail, contactId, ownerName, required contentId, required name, required eventDate, required eventMonth, required eventYear, description, sent, createdAt, updatedAt}): _contactEmail = contactEmail, _contactId = contactId, _ownerName = ownerName, _contentId = contentId, _name = name, _eventDate = eventDate, _eventMonth = eventMonth, _eventYear = eventYear, _description = description, _sent = sent, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Event({String? id, required String contactEmail, String? contactId, required String groupId, required String contentId, required String name, required String eventDate, required String eventMonth, required String eventYear, String? description}) {
+  factory Event({String? id, required String contactEmail, String? contactId, String? ownerName, required String contentId, required String name, required String eventDate, required String eventMonth, required String eventYear, String? description, bool? sent}) {
     return Event._internal(
       id: id == null ? UUID.getUUID() : id,
       contactEmail: contactEmail,
       contactId: contactId,
-      groupId: groupId,
+      ownerName: ownerName,
       contentId: contentId,
       name: name,
       eventDate: eventDate,
       eventMonth: eventMonth,
       eventYear: eventYear,
-      description: description);
+      description: description,
+      sent: sent);
   }
   
   bool equals(Object other) {
@@ -182,13 +179,14 @@ class Event extends Model {
       id == other.id &&
       _contactEmail == other._contactEmail &&
       _contactId == other._contactId &&
-      _groupId == other._groupId &&
+      _ownerName == other._ownerName &&
       _contentId == other._contentId &&
       _name == other._name &&
       _eventDate == other._eventDate &&
       _eventMonth == other._eventMonth &&
       _eventYear == other._eventYear &&
-      _description == other._description;
+      _description == other._description &&
+      _sent == other._sent;
   }
   
   @override
@@ -202,13 +200,14 @@ class Event extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("contactEmail=" + "$_contactEmail" + ", ");
     buffer.write("contactId=" + "$_contactId" + ", ");
-    buffer.write("groupId=" + "$_groupId" + ", ");
+    buffer.write("ownerName=" + "$_ownerName" + ", ");
     buffer.write("contentId=" + "$_contentId" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("eventDate=" + "$_eventDate" + ", ");
     buffer.write("eventMonth=" + "$_eventMonth" + ", ");
     buffer.write("eventYear=" + "$_eventYear" + ", ");
     buffer.write("description=" + "$_description" + ", ");
+    buffer.write("sent=" + (_sent != null ? _sent!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -216,48 +215,51 @@ class Event extends Model {
     return buffer.toString();
   }
   
-  Event copyWith({String? id, String? contactEmail, String? contactId, String? groupId, String? contentId, String? name, String? eventDate, String? eventMonth, String? eventYear, String? description}) {
+  Event copyWith({String? id, String? contactEmail, String? contactId, String? ownerName, String? contentId, String? name, String? eventDate, String? eventMonth, String? eventYear, String? description, bool? sent}) {
     return Event._internal(
       id: id ?? this.id,
       contactEmail: contactEmail ?? this.contactEmail,
       contactId: contactId ?? this.contactId,
-      groupId: groupId ?? this.groupId,
+      ownerName: ownerName ?? this.ownerName,
       contentId: contentId ?? this.contentId,
       name: name ?? this.name,
       eventDate: eventDate ?? this.eventDate,
       eventMonth: eventMonth ?? this.eventMonth,
       eventYear: eventYear ?? this.eventYear,
-      description: description ?? this.description);
+      description: description ?? this.description,
+      sent: sent ?? this.sent);
   }
   
   Event.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _contactEmail = json['contactEmail'],
       _contactId = json['contactId'],
-      _groupId = json['groupId'],
+      _ownerName = json['ownerName'],
       _contentId = json['contentId'],
       _name = json['name'],
       _eventDate = json['eventDate'],
       _eventMonth = json['eventMonth'],
       _eventYear = json['eventYear'],
       _description = json['description'],
+      _sent = json['sent'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'contactEmail': _contactEmail, 'contactId': _contactId, 'groupId': _groupId, 'contentId': _contentId, 'name': _name, 'eventDate': _eventDate, 'eventMonth': _eventMonth, 'eventYear': _eventYear, 'description': _description, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'contactEmail': _contactEmail, 'contactId': _contactId, 'ownerName': _ownerName, 'contentId': _contentId, 'name': _name, 'eventDate': _eventDate, 'eventMonth': _eventMonth, 'eventYear': _eventYear, 'description': _description, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "event.id");
   static final QueryField CONTACTEMAIL = QueryField(fieldName: "contactEmail");
   static final QueryField CONTACTID = QueryField(fieldName: "contactId");
-  static final QueryField GROUPID = QueryField(fieldName: "groupId");
+  static final QueryField OWNERNAME = QueryField(fieldName: "ownerName");
   static final QueryField CONTENTID = QueryField(fieldName: "contentId");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField EVENTDATE = QueryField(fieldName: "eventDate");
   static final QueryField EVENTMONTH = QueryField(fieldName: "eventMonth");
   static final QueryField EVENTYEAR = QueryField(fieldName: "eventYear");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
+  static final QueryField SENT = QueryField(fieldName: "sent");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Event";
     modelSchemaDefinition.pluralName = "Events";
@@ -267,6 +269,17 @@ class Event extends Model {
         authStrategy: AuthStrategy.OWNER,
         ownerField: "owner",
         identityClaim: "cognito:username",
+        provider: AuthRuleProvider.USERPOOLS,
+        operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
+          ModelOperation.READ
+        ]),
+      AuthRule(
+        authStrategy: AuthStrategy.GROUPS,
+        groupClaim: "cognito:groups",
+        groups: [ "Admin" ],
         provider: AuthRuleProvider.USERPOOLS,
         operations: [
           ModelOperation.CREATE,
@@ -291,8 +304,8 @@ class Event extends Model {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Event.GROUPID,
-      isRequired: true,
+      key: Event.OWNERNAME,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
@@ -330,6 +343,12 @@ class Event extends Model {
       key: Event.DESCRIPTION,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Event.SENT,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.bool)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(

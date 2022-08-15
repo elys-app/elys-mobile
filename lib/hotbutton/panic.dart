@@ -247,7 +247,7 @@ class _PanicPageState extends State<PanicPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+          title: Text(
           'Elys Mobile',
           style: GoogleFonts.bellefair(
               textStyle: TextStyle(
@@ -313,8 +313,7 @@ class _PanicPageState extends State<PanicPage> {
                           ? () {
                               if (_sent) {
                                 setState(() => _sent = false);
-                              }
-                              else if (formKey.currentState!.validate()) {
+                              } else if (formKey.currentState!.validate()) {
                                 _getVideo();
                               }
                             }
@@ -323,7 +322,7 @@ class _PanicPageState extends State<PanicPage> {
                             },
                       child: (!_submitted)
                           ? (_sent)
-                              ? Text('Reset', style: TextStyle(fontSize: 18))
+                              ? Text('Record', style: TextStyle(fontSize: 18))
                               : Text('Record', style: TextStyle(fontSize: 18))
                           : Text('Cancel', style: TextStyle(fontSize: 18))),
                 ),

@@ -36,11 +36,6 @@
           "EMAIL"
         ]
       },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/auth/elysonline36d62aef-cloudformation-template.json",
-        "logicalId": "authelysonline36d62aef"
-      },
-      "lastPushTimeStamp": "2022-05-27T20:14:03.999Z",
       "output": {
         "CreatedSNSRole": "arn:aws:iam::715853571315:role/sns36d62aef103619-test",
         "UserPoolId": "us-east-1_U7W4M1Xzf",
@@ -51,7 +46,54 @@
         "IdentityPoolName": "elysonline36d62aef_identitypool_36d62aef__test",
         "UserPoolName": "elysonline36d62aef_userpool_36d62aef"
       },
-      "lastPushDirHash": "9CvFZ47ozMJIZxM3v7Cqk9dFXvI="
+      "lastPushTimeStamp": "2022-08-15T17:48:58.072Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/auth/elysonline36d62aef-cloudformation-template.json",
+        "logicalId": "authelysonline36d62aef"
+      },
+      "lastPushDirHash": "KV3Q8a9VNhmmM6XhG5ZyBNKxaCo="
+    },
+    "userPoolGroups": {
+      "service": "Cognito-UserPool-Groups",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "elysonline36d62aef",
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ]
+        }
+      ],
+      "userPoolGroups": {
+        "service": "Cognito-UserPool-Groups",
+        "providerPlugin": "awscloudformation",
+        "dependsOn": [
+          {
+            "category": "auth",
+            "resourceName": "elysonline36d62aef",
+            "attributes": [
+              "UserPoolId",
+              "AppClientIDWeb",
+              "AppClientID",
+              "IdentityPoolId"
+            ]
+          }
+        ]
+      },
+      "lastPushTimeStamp": "2022-08-15T17:48:59.226Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
+        "logicalId": "authuserPoolGroups"
+      },
+      "output": {
+        "UserGroupRole": "arn:aws:iam::715853571315:role/us-east-1_U7W4M1Xzf-UserGroupRole",
+        "AdminGroupRole": "arn:aws:iam::715853571315:role/us-east-1_U7W4M1Xzf-AdminGroupRole"
+      },
+      "lastPushDirHash": "/R8rEXGo5pTYzVqEYC4uGICW4rE="
     }
   },
   "api": {
@@ -80,28 +122,44 @@
         "GraphQLAPIIdOutput": "53gq2hzbwjdkvdshl4so4jpbru",
         "GraphQLAPIEndpointOutput": "https://fifgthwsajbilooltrgokhufjq.appsync-api.us-east-1.amazonaws.com/graphql"
       },
+      "lastPushTimeStamp": "2022-08-15T17:48:58.077Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apielysonline"
       },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.004Z",
-      "lastPushDirHash": "KttdEcvCalvM2oUGYkLLPKZ7cbc="
+      "lastPushDirHash": "69QJv4qFc9UfjycTa8IRHTgD0Fw="
     }
   },
   "storage": {
-    "s3elyscontent": {
+    "elysonline": {
       "service": "S3",
       "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "elysonline36d62aef",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
+            "UserGroupRole"
+          ]
+        }
+      ],
+      "lastPushTimeStamp": "2022-08-15T17:49:01.390Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storageelysonline"
+      },
       "output": {
-        "BucketName": "elysonline361ff3e65f004dbbaf0eaa5afa9ce9ec103619-test",
+        "BucketName": "elysonline1df9a37ce54241f7b04b0d5e96e09717103619-test",
         "Region": "us-east-1"
       },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.006Z",
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
-        "logicalId": "storages3elyscontent"
-      },
-      "lastPushDirHash": "Xw1EGkqXJGqTF91tTKz98HJYIxk="
+      "lastPushDirHash": "rgf5XTVfRTbvtTs01uYdZ+FWR2g="
     }
   },
   "function": {
@@ -115,7 +173,7 @@
         "Name": "createCustomer-test",
         "LambdaExecutionRole": "elysonlineLambdaRole83c87881-test"
       },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.008Z",
+      "lastPushTimeStamp": "2022-08-15T17:48:58.083Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/createCustomer-cloudformation-template.json",
         "logicalId": "functioncreateCustomer"
@@ -123,12 +181,7 @@
       "s3Bucket": {
         "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
         "s3Key": "amplify-builds/createCustomer-3048424b7453764a546d-build.zip"
-      },
-      "lastBuildTimeStamp": "2022-05-12T01:38:03.669Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2022-05-12T01:38:06.397Z",
-      "distZipFilename": "createCustomer-3048424b7453764a546d-build.zip",
-      "lastPushDirHash": "zhYonBwdvlq3OFiNSo4QWqrinOc="
+      }
     },
     "createSubscription": {
       "build": true,
@@ -140,20 +193,20 @@
         "Name": "createSubscription-test",
         "LambdaExecutionRole": "elysonlineLambdaRole68b0444d-test"
       },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.010Z",
+      "lastPushTimeStamp": "2022-08-15T17:48:58.086Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/createSubscription-cloudformation-template.json",
         "logicalId": "functioncreateSubscription"
       },
+      "lastBuildTimeStamp": "2022-08-15T17:14:18.172Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-08-15T17:14:20.968Z",
+      "distZipFilename": "createSubscription-4f4b614369697a5a774b-build.zip",
       "s3Bucket": {
         "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-        "s3Key": "amplify-builds/createSubscription-385356632f4a48376764-build.zip"
+        "s3Key": "amplify-builds/createSubscription-4f4b614369697a5a774b-build.zip"
       },
-      "lastBuildTimeStamp": "2022-05-12T01:38:03.673Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2022-05-12T01:38:06.393Z",
-      "distZipFilename": "createSubscription-385356632f4a48376764-build.zip",
-      "lastPushDirHash": "o9k8OYp3eMXioqp72E5GNv8LtR0="
+      "lastPushDirHash": "I7fMnnjN8LphWf+c+mWLP/5OCjY="
     },
     "getInvoices": {
       "build": true,
@@ -165,7 +218,7 @@
         "Name": "getInvoices-test",
         "LambdaExecutionRole": "elysonlineLambdaRolebf3ee404-test"
       },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.012Z",
+      "lastPushTimeStamp": "2022-08-15T17:48:58.088Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/getInvoices-cloudformation-template.json",
         "logicalId": "functiongetInvoices"
@@ -173,12 +226,7 @@
       "s3Bucket": {
         "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
         "s3Key": "amplify-builds/getInvoices-7234696d463546333065-build.zip"
-      },
-      "lastBuildTimeStamp": "2022-05-12T01:38:03.674Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2022-05-12T01:38:06.387Z",
-      "distZipFilename": "getInvoices-7234696d463546333065-build.zip",
-      "lastPushDirHash": "smkevlV0oeb8nwGZOMN20xH9mmI="
+      }
     },
     "newCard": {
       "build": true,
@@ -190,7 +238,7 @@
         "Name": "newCard-test",
         "LambdaExecutionRole": "elysonlineLambdaRole3bc5919a-test"
       },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.015Z",
+      "lastPushTimeStamp": "2022-08-15T17:48:58.090Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/newCard-cloudformation-template.json",
         "logicalId": "functionnewCard"
@@ -198,217 +246,287 @@
       "s3Bucket": {
         "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
         "s3Key": "amplify-builds/newCard-36686c2b4b6b35333152-build.zip"
-      },
-      "lastBuildTimeStamp": "2022-05-13T15:57:50.886Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2022-05-13T15:57:51.621Z",
-      "distZipFilename": "newCard-36686c2b4b6b35333152-build.zip",
-      "lastPushDirHash": "WCZT5i/E9W5/VoQaN+kUoQbrbhk="
+      }
     },
     "cancelSubscription": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
-      "lastBuildTimeStamp": "2022-05-12T01:38:03.677Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2022-05-12T01:38:06.379Z",
-      "distZipFilename": "cancelSubscription-4d315573686f30595275-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-        "s3Key": "amplify-builds/cancelSubscription-4d315573686f30595275-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/cancelSubscription-cloudformation-template.json",
-        "logicalId": "functioncancelSubscription"
-      },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.018Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:cancelSubscription-test",
         "Name": "cancelSubscription-test",
         "LambdaExecutionRole": "elysonlineLambdaRolecdb8366c-test"
       },
-      "lastPushDirHash": "Mn6ngHbvykJ/h9BYnUkz2Ofv9wU="
+      "lastPushTimeStamp": "2022-08-15T17:48:58.092Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/cancelSubscription-cloudformation-template.json",
+        "logicalId": "functioncancelSubscription"
+      },
+      "lastBuildTimeStamp": "2022-08-15T17:14:18.174Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-08-15T17:14:20.954Z",
+      "distZipFilename": "cancelSubscription-5945375438536574594f-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/cancelSubscription-5945375438536574594f-build.zip"
+      },
+      "lastPushDirHash": "ZP0kcBkxgu74FhyxKBhEBROZKEM="
     },
     "getSubscriptionStatus": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
-      "lastBuildTimeStamp": "2022-05-12T01:38:03.679Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2022-05-12T01:38:06.415Z",
-      "distZipFilename": "getSubscriptionStatus-424333324c69556b4747-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-        "s3Key": "amplify-builds/getSubscriptionStatus-424333324c69556b4747-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/getSubscriptionStatus-cloudformation-template.json",
-        "logicalId": "functiongetSubscriptionStatus"
-      },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.020Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:getSubscriptionStatus-test",
         "Name": "getSubscriptionStatus-test",
         "LambdaExecutionRole": "elysonlineLambdaRole0c810c90-test"
       },
-      "lastPushDirHash": "6NFxXOIIquWkUnl3WlGUNPTjlF8="
+      "lastPushTimeStamp": "2022-08-15T17:48:58.095Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/getSubscriptionStatus-cloudformation-template.json",
+        "logicalId": "functiongetSubscriptionStatus"
+      },
+      "lastBuildTimeStamp": "2022-08-15T17:14:18.175Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-08-15T17:14:21.007Z",
+      "distZipFilename": "getSubscriptionStatus-65424753425579336b72-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/getSubscriptionStatus-65424753425579336b72-build.zip"
+      },
+      "lastPushDirHash": "lW40W5idWU7a2ME3DxIGP/oi0I0="
     },
     "deleteCustomer": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
-      "lastBuildTimeStamp": "2022-05-12T01:38:03.681Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2022-05-12T01:38:03.843Z",
-      "distZipFilename": "deleteCustomer-414c366e523470377178-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-        "s3Key": "amplify-builds/deleteCustomer-414c366e523470377178-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/deleteCustomer-cloudformation-template.json",
-        "logicalId": "functiondeleteCustomer"
-      },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.023Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:deleteCustomer-test",
         "Name": "deleteCustomer-test",
         "LambdaExecutionRole": "elysonlineLambdaRoleb38a3bc5-test"
       },
-      "lastPushDirHash": "tmQg+PCV4udxbyT6gOEnR5w7OHc="
+      "lastPushTimeStamp": "2022-08-15T17:48:58.097Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/deleteCustomer-cloudformation-template.json",
+        "logicalId": "functiondeleteCustomer"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/deleteCustomer-414c366e523470377178-build.zip"
+      }
     },
     "sendEventEmail": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
-      "lastDevBuildTimeStamp": "2022-03-26T22:25:13.469Z",
-      "lastBuildType": "PROD",
-      "lastBuildTimeStamp": "2022-05-12T01:38:03.684Z",
-      "lastPackageTimeStamp": "2022-05-12T01:38:05.428Z",
-      "distZipFilename": "sendEventEmail-4d7a4b795a692b4a3137-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-        "s3Key": "amplify-builds/sendEventEmail-4d7a4b795a692b4a3137-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/sendEventEmail-cloudformation-template.json",
-        "logicalId": "functionsendEventEmail"
-      },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.025Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:sendEventEmail-test",
         "Name": "sendEventEmail-test",
         "LambdaExecutionRole": "elysonlineLambdaRoleb586cf75-test"
       },
-      "lastPushDirHash": "RYTe3ydTvBYTpEjA9sVdsMc1GMI="
+      "lastPushTimeStamp": "2022-08-15T17:48:58.099Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/sendEventEmail-cloudformation-template.json",
+        "logicalId": "functionsendEventEmail"
+      },
+      "lastBuildTimeStamp": "2022-08-15T17:14:18.177Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-08-15T17:14:25.763Z",
+      "distZipFilename": "sendEventEmail-5247384349547130685a-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/sendEventEmail-5247384349547130685a-build.zip"
+      },
+      "lastPushDirHash": "ojwwgi43dfGoyXxv+22ssCab8ec="
     },
     "sendDesigneeEmail": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
-      "lastDevBuildTimeStamp": "2022-04-11T19:35:50.832Z",
-      "lastBuildType": "PROD",
-      "lastBuildTimeStamp": "2022-05-12T01:38:03.686Z",
-      "lastPackageTimeStamp": "2022-05-12T01:38:03.853Z",
-      "distZipFilename": "sendDesigneeEmail-627338694b324d572f76-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-        "s3Key": "amplify-builds/sendDesigneeEmail-627338694b324d572f76-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/sendDesigneeEmail-cloudformation-template.json",
-        "logicalId": "functionsendDesigneeEmail"
-      },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.027Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:sendDesigneeEmail-test",
         "Name": "sendDesigneeEmail-test",
         "LambdaExecutionRole": "elysonlineLambdaRolec301875a-test"
       },
-      "lastPushDirHash": "BA8Cx4u1iGZL44fjbsr1esAWYek="
-    },
-    "sendSpecialEventText": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [],
-      "lastBuildTimeStamp": "2022-05-25T16:01:01.185Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2022-05-25T16:01:04.685Z",
-      "distZipFilename": "sendSpecialEventText-452f6656572b52357436-build.zip",
+      "lastPushTimeStamp": "2022-08-15T17:48:58.101Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/sendDesigneeEmail-cloudformation-template.json",
+        "logicalId": "functionsendDesigneeEmail"
+      },
       "s3Bucket": {
         "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-        "s3Key": "amplify-builds/sendSpecialEventText-452f6656572b52357436-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/sendSpecialEventText-cloudformation-template.json",
-        "logicalId": "functionsendSpecialEventText"
-      },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.029Z",
-      "output": {
-        "Region": "us-east-1",
-        "CloudWatchEventRule": "amplify-elysonline-test-103619-fun-CloudWatchEvent-PNZKNJPGFMO0",
-        "Arn": "arn:aws:lambda:us-east-1:715853571315:function:sendSpecialEventText-test",
-        "Name": "sendSpecialEventText-test",
-        "LambdaExecutionRole": "elysonlineLambdaRole8cbf54ee-test"
-      },
-      "lastPushDirHash": "Y5Lf8OioPgalZiow+9l9wP4ujR8="
+        "s3Key": "amplify-builds/sendDesigneeEmail-627338694b324d572f76-build.zip"
+      }
     },
     "sendSpecialEventWarning": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
-      "lastBuildTimeStamp": "2022-05-17T05:57:11.332Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2022-05-17T05:57:11.386Z",
-      "distZipFilename": "sendSpecialEventWarning-6b5733716a5449465351-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-        "s3Key": "amplify-builds/sendSpecialEventWarning-6b5733716a5449465351-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/sendSpecialEventWarning-cloudformation-template.json",
-        "logicalId": "functionsendSpecialEventWarning"
-      },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.031Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:sendSpecialEventWarning-test",
         "Name": "sendSpecialEventWarning-test",
         "LambdaExecutionRole": "elysonlineLambdaRole3f252c4a-test"
       },
-      "lastPushDirHash": "mFOtvFmqM4XwXvOumo3mhfk2PWs="
+      "lastPushTimeStamp": "2022-08-15T17:48:58.104Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/sendSpecialEventWarning-cloudformation-template.json",
+        "logicalId": "functionsendSpecialEventWarning"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/sendSpecialEventWarning-4743586c566c39384955-build.zip"
+      }
     },
     "checkSpecialEventTime": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
-      "lastDevBuildTimeStamp": "2022-05-13T20:40:18.568Z",
-      "lastBuildType": "PROD",
-      "lastBuildTimeStamp": "2022-05-17T23:28:25.630Z",
-      "lastPackageTimeStamp": "2022-05-17T23:28:25.657Z",
-      "distZipFilename": "checkSpecialEventTime-4e666850506674777475-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
-        "s3Key": "amplify-builds/checkSpecialEventTime-4e666850506674777475-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/checkSpecialEventTime-cloudformation-template.json",
-        "logicalId": "functioncheckSpecialEventTime"
-      },
-      "lastPushTimeStamp": "2022-05-27T20:14:04.034Z",
       "output": {
         "Region": "us-east-1",
         "Arn": "arn:aws:lambda:us-east-1:715853571315:function:checkSpecialEventTime-test",
         "Name": "checkSpecialEventTime-test",
         "LambdaExecutionRole": "elysonlineLambdaRoleafd0f95f-test"
       },
-      "lastPushDirHash": "HOMBaaNmTTwGdNjIzJ9eA8YYv4k="
+      "lastPushTimeStamp": "2022-08-15T17:48:58.106Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/checkSpecialEventTime-cloudformation-template.json",
+        "logicalId": "functioncheckSpecialEventTime"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/checkSpecialEventTime-4e666850506674777475-build.zip"
+      }
+    },
+    "sendSpecialEventText": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:715853571315:function:sendSpecialEventText-test",
+        "Name": "sendSpecialEventText-test",
+        "LambdaExecutionRole": "elysonlineLambdaRoleed75b31c-test"
+      },
+      "lastPushTimeStamp": "2022-08-15T17:48:58.108Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/sendSpecialEventText-cloudformation-template.json",
+        "logicalId": "functionsendSpecialEventText"
+      },
+      "lastBuildTimeStamp": "2022-08-15T17:14:18.178Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-08-15T17:14:25.094Z",
+      "distZipFilename": "sendSpecialEventText-485065657a7a512b5072-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/sendSpecialEventText-485065657a7a512b5072-build.zip"
+      },
+      "lastPushDirHash": "gkc4Fqo/toF8HuZ88cR+oJ7pG6g="
+    },
+    "changeSubscription": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2022-08-15T17:14:18.164Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-08-15T17:14:22.605Z",
+      "distZipFilename": "changeSubscription-5736716c702f424d5850-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/changeSubscription-5736716c702f424d5850-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/changeSubscription-cloudformation-template.json",
+        "logicalId": "functionchangeSubscription"
+      },
+      "lastPushTimeStamp": "2022-08-15T17:48:58.110Z",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:715853571315:function:changeSubscription-test",
+        "Name": "changeSubscription-test",
+        "LambdaExecutionRole": "elysonlineLambdaRolecda6f965-test"
+      },
+      "lastPushDirHash": "gbfMecrAfCuS/SQnW4q3ASPsPVY="
+    },
+    "getNextInvoice": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2022-08-15T17:14:18.168Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-08-15T17:14:20.973Z",
+      "distZipFilename": "getNextInvoice-50624d4a4556764e3241-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/getNextInvoice-50624d4a4556764e3241-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/getNextInvoice-cloudformation-template.json",
+        "logicalId": "functiongetNextInvoice"
+      },
+      "lastPushTimeStamp": "2022-08-15T17:48:58.112Z",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:715853571315:function:getNextInvoice-test",
+        "Name": "getNextInvoice-test",
+        "LambdaExecutionRole": "elysonlineLambdaRole4b3da0ed-test"
+      },
+      "lastPushDirHash": "Ny3YkhMPYWVf0X4glLp1kDmFA3E="
+    },
+    "getCurrentPrice": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2022-08-15T17:14:18.169Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-08-15T17:14:21.051Z",
+      "distZipFilename": "getCurrentPrice-4f7058672b516d454961-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/getCurrentPrice-4f7058672b516d454961-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/getCurrentPrice-cloudformation-template.json",
+        "logicalId": "functiongetCurrentPrice"
+      },
+      "lastPushTimeStamp": "2022-08-15T17:48:58.115Z",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:715853571315:function:getCurrentPrice-test",
+        "Name": "getCurrentPrice-test",
+        "LambdaExecutionRole": "elysonlineLambdaRole10da4191-test"
+      },
+      "lastPushDirHash": "ujp6zwmi8BoZlDoclJq7sSlQFzM="
+    },
+    "checkEventDate": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2022-08-15T17:14:18.171Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-08-15T17:14:18.308Z",
+      "distZipFilename": "checkEventDate-4739313470684c6f6133-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-elysonline-test-103619-deployment",
+        "s3Key": "amplify-builds/checkEventDate-4739313470684c6f6133-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-elysonline-test-103619-deployment/amplify-cfn-templates/function/checkEventDate-cloudformation-template.json",
+        "logicalId": "functioncheckEventDate"
+      },
+      "lastPushTimeStamp": "2022-08-15T17:48:58.117Z",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:715853571315:function:checkEventDate-test",
+        "Name": "checkEventDate-test",
+        "LambdaExecutionRole": "elysonlineLambdaRole5d97c844-test"
+      },
+      "lastPushDirHash": "sPGF4OCG3FiinHgomVUDXKle1yg="
     }
   },
   "analytics": {}

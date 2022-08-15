@@ -31,15 +31,13 @@ class Account extends Model {
   final String? _userName;
   final String? _userEmail;
   final String? _userPhone;
-  final String? _userFullName;
   final String? _executorName;
   final String? _executorEmail;
   final String? _executorId;
   final String? _customerId;
   final String? _subscriptionId;
-  final bool? _transition;
-  final bool? _basicAccount;
   final String? _customerStatus;
+  final String? _subscriptionLeve;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -70,10 +68,6 @@ class Account extends Model {
   
   String? get userPhone {
     return _userPhone;
-  }
-  
-  String? get userFullName {
-    return _userFullName;
   }
   
   String get executorName {
@@ -114,16 +108,12 @@ class Account extends Model {
     return _subscriptionId;
   }
   
-  bool? get transition {
-    return _transition;
-  }
-  
-  bool? get basicAccount {
-    return _basicAccount;
-  }
-  
   String? get customerStatus {
     return _customerStatus;
+  }
+  
+  String? get subscriptionLeve {
+    return _subscriptionLeve;
   }
   
   TemporalDateTime? get createdAt {
@@ -134,23 +124,21 @@ class Account extends Model {
     return _updatedAt;
   }
   
-  const Account._internal({required this.id, required userName, userEmail, userPhone, userFullName, required executorName, executorEmail, executorId, required customerId, subscriptionId, transition, basicAccount, customerStatus, createdAt, updatedAt}): _userName = userName, _userEmail = userEmail, _userPhone = userPhone, _userFullName = userFullName, _executorName = executorName, _executorEmail = executorEmail, _executorId = executorId, _customerId = customerId, _subscriptionId = subscriptionId, _transition = transition, _basicAccount = basicAccount, _customerStatus = customerStatus, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Account._internal({required this.id, required userName, userEmail, userPhone, required executorName, executorEmail, executorId, required customerId, subscriptionId, customerStatus, subscriptionLeve, createdAt, updatedAt}): _userName = userName, _userEmail = userEmail, _userPhone = userPhone, _executorName = executorName, _executorEmail = executorEmail, _executorId = executorId, _customerId = customerId, _subscriptionId = subscriptionId, _customerStatus = customerStatus, _subscriptionLeve = subscriptionLeve, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Account({String? id, required String userName, String? userEmail, String? userPhone, String? userFullName, required String executorName, String? executorEmail, String? executorId, required String customerId, String? subscriptionId, bool? transition, bool? basicAccount, String? customerStatus}) {
+  factory Account({String? id, required String userName, String? userEmail, String? userPhone, required String executorName, String? executorEmail, String? executorId, required String customerId, String? subscriptionId, String? customerStatus, String? subscriptionLeve}) {
     return Account._internal(
       id: id == null ? UUID.getUUID() : id,
       userName: userName,
       userEmail: userEmail,
       userPhone: userPhone,
-      userFullName: userFullName,
       executorName: executorName,
       executorEmail: executorEmail,
       executorId: executorId,
       customerId: customerId,
       subscriptionId: subscriptionId,
-      transition: transition,
-      basicAccount: basicAccount,
-      customerStatus: customerStatus);
+      customerStatus: customerStatus,
+      subscriptionLeve: subscriptionLeve);
   }
   
   bool equals(Object other) {
@@ -165,15 +153,13 @@ class Account extends Model {
       _userName == other._userName &&
       _userEmail == other._userEmail &&
       _userPhone == other._userPhone &&
-      _userFullName == other._userFullName &&
       _executorName == other._executorName &&
       _executorEmail == other._executorEmail &&
       _executorId == other._executorId &&
       _customerId == other._customerId &&
       _subscriptionId == other._subscriptionId &&
-      _transition == other._transition &&
-      _basicAccount == other._basicAccount &&
-      _customerStatus == other._customerStatus;
+      _customerStatus == other._customerStatus &&
+      _subscriptionLeve == other._subscriptionLeve;
   }
   
   @override
@@ -188,15 +174,13 @@ class Account extends Model {
     buffer.write("userName=" + "$_userName" + ", ");
     buffer.write("userEmail=" + "$_userEmail" + ", ");
     buffer.write("userPhone=" + "$_userPhone" + ", ");
-    buffer.write("userFullName=" + "$_userFullName" + ", ");
     buffer.write("executorName=" + "$_executorName" + ", ");
     buffer.write("executorEmail=" + "$_executorEmail" + ", ");
     buffer.write("executorId=" + "$_executorId" + ", ");
     buffer.write("customerId=" + "$_customerId" + ", ");
     buffer.write("subscriptionId=" + "$_subscriptionId" + ", ");
-    buffer.write("transition=" + (_transition != null ? _transition!.toString() : "null") + ", ");
-    buffer.write("basicAccount=" + (_basicAccount != null ? _basicAccount!.toString() : "null") + ", ");
     buffer.write("customerStatus=" + "$_customerStatus" + ", ");
+    buffer.write("subscriptionLeve=" + "$_subscriptionLeve" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -204,21 +188,19 @@ class Account extends Model {
     return buffer.toString();
   }
   
-  Account copyWith({String? id, String? userName, String? userEmail, String? userPhone, String? userFullName, String? executorName, String? executorEmail, String? executorId, String? customerId, String? subscriptionId, bool? transition, bool? basicAccount, String? customerStatus}) {
+  Account copyWith({String? id, String? userName, String? userEmail, String? userPhone, String? executorName, String? executorEmail, String? executorId, String? customerId, String? subscriptionId, String? customerStatus, String? subscriptionLeve}) {
     return Account._internal(
       id: id ?? this.id,
       userName: userName ?? this.userName,
       userEmail: userEmail ?? this.userEmail,
       userPhone: userPhone ?? this.userPhone,
-      userFullName: userFullName ?? this.userFullName,
       executorName: executorName ?? this.executorName,
       executorEmail: executorEmail ?? this.executorEmail,
       executorId: executorId ?? this.executorId,
       customerId: customerId ?? this.customerId,
       subscriptionId: subscriptionId ?? this.subscriptionId,
-      transition: transition ?? this.transition,
-      basicAccount: basicAccount ?? this.basicAccount,
-      customerStatus: customerStatus ?? this.customerStatus);
+      customerStatus: customerStatus ?? this.customerStatus,
+      subscriptionLeve: subscriptionLeve ?? this.subscriptionLeve);
   }
   
   Account.fromJson(Map<String, dynamic> json)  
@@ -226,35 +208,31 @@ class Account extends Model {
       _userName = json['userName'],
       _userEmail = json['userEmail'],
       _userPhone = json['userPhone'],
-      _userFullName = json['userFullName'],
       _executorName = json['executorName'],
       _executorEmail = json['executorEmail'],
       _executorId = json['executorId'],
       _customerId = json['customerId'],
       _subscriptionId = json['subscriptionId'],
-      _transition = json['transition'],
-      _basicAccount = json['basicAccount'],
       _customerStatus = json['customerStatus'],
+      _subscriptionLeve = json['subscriptionLeve'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'userName': _userName, 'userEmail': _userEmail, 'userPhone': _userPhone, 'userFullName': _userFullName, 'executorName': _executorName, 'executorEmail': _executorEmail, 'executorId': _executorId, 'customerId': _customerId, 'subscriptionId': _subscriptionId, 'transition': _transition, 'basicAccount': _basicAccount, 'customerStatus': _customerStatus, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'userName': _userName, 'userEmail': _userEmail, 'userPhone': _userPhone, 'executorName': _executorName, 'executorEmail': _executorEmail, 'executorId': _executorId, 'customerId': _customerId, 'subscriptionId': _subscriptionId, 'customerStatus': _customerStatus, 'subscriptionLeve': _subscriptionLeve, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "account.id");
   static final QueryField USERNAME = QueryField(fieldName: "userName");
   static final QueryField USEREMAIL = QueryField(fieldName: "userEmail");
   static final QueryField USERPHONE = QueryField(fieldName: "userPhone");
-  static final QueryField USERFULLNAME = QueryField(fieldName: "userFullName");
   static final QueryField EXECUTORNAME = QueryField(fieldName: "executorName");
   static final QueryField EXECUTOREMAIL = QueryField(fieldName: "executorEmail");
   static final QueryField EXECUTORID = QueryField(fieldName: "executorId");
   static final QueryField CUSTOMERID = QueryField(fieldName: "customerId");
   static final QueryField SUBSCRIPTIONID = QueryField(fieldName: "subscriptionId");
-  static final QueryField TRANSITION = QueryField(fieldName: "transition");
-  static final QueryField BASICACCOUNT = QueryField(fieldName: "basicAccount");
   static final QueryField CUSTOMERSTATUS = QueryField(fieldName: "customerStatus");
+  static final QueryField SUBSCRIPTIONLEVE = QueryField(fieldName: "subscriptionLeve");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Account";
     modelSchemaDefinition.pluralName = "Accounts";
@@ -264,6 +242,17 @@ class Account extends Model {
         authStrategy: AuthStrategy.OWNER,
         ownerField: "owner",
         identityClaim: "cognito:username",
+        provider: AuthRuleProvider.USERPOOLS,
+        operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
+          ModelOperation.READ
+        ]),
+      AuthRule(
+        authStrategy: AuthStrategy.GROUPS,
+        groupClaim: "cognito:groups",
+        groups: [ "Admin" ],
         provider: AuthRuleProvider.USERPOOLS,
         operations: [
           ModelOperation.CREATE,
@@ -289,12 +278,6 @@ class Account extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Account.USERPHONE,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Account.USERFULLNAME,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
@@ -330,19 +313,13 @@ class Account extends Model {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Account.TRANSITION,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.bool)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Account.BASICACCOUNT,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.bool)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Account.CUSTOMERSTATUS,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Account.SUBSCRIPTIONLEVE,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));

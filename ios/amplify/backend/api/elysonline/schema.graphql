@@ -1,17 +1,15 @@
-type Account @model @auth(rules: [{allow: owner}]) @key(name: "byUserName", fields: ["userName"], queryField: "accountByUserName") {
+type Account @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]}]) @key(name: "byUserName", fields: ["userName"], queryField: "accountByUserName") {
   id: ID!
   userName: String!
   userEmail: String
   userPhone: String
-  userFullName: String
   executorName: String! 
   executorEmail: String
   executorId: String 
   customerId: String!
   subscriptionId: String
-  transition: Boolean
-  basicAccount: Boolean 
   customerStatus: String
+  subscriptionLeve: String
 }
 
 type Content @model @auth(rules: [{allow: owner}]) {
@@ -24,20 +22,21 @@ type Content @model @auth(rules: [{allow: owner}]) {
   key: String!
 }
 
-type Event @model @auth(rules: [{allow: owner}]) {
+type Event @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]}]) {
   id: ID!
   contactEmail: String!
   contactId: ID
-  groupId: ID!
+  ownerName: ID
   contentId: ID!
   name: String!
   eventDate: String!
   eventMonth: String!
   eventYear: String!
   description: String
+  sent: Boolean
 }
 
-type SpecialEvent @model @auth(rules: [{allow: owner}]) {
+type SpecialEvent @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Admin"]}]) {
   id: ID!
   bucket: String
   region: String
@@ -78,10 +77,13 @@ type StripeInvoices {
 
 type Mutation {
   cancelSubscription(subscriptionId: String!): String @function(name: "cancelSubscription-${env}")
+  changeSubscription(subscriptionId: String!, newPriceId: String!): String @function(name: "changeSubscription-${env}")
   createCustomer(email: String!): String @function(name: "createCustomer-${env}")
-  createSubscription(customerId: String!, paymentMethodId: String!, priceId: String!): StripeSubscription @function(name: "createSubscription-${env}")
+  createSubscription(customerId: String!, paymentMethodId: String!, couponId: String, priceId: String!): StripeSubscription @function(name: "createSubscription-${env}")
   deleteCustomer(customerId: String!): String @function(name: "deleteCustomer-${env}")
+  getCurrentPrice(subscriptionId: String): String @function(name: "getCurrentPrice-${env}")
   getInvoices(customerId: String): [StripeInvoices]! @function(name: "getInvoices-${env}")
+  getNextInvoice(customerId: String): StripeInvoices! @function(name: "getNextInvoice-${env}")
   getSubscriptionStatus(customerId: String!): String @function(name: "getSubscriptionStatus-${env}")
   newCard(customerId: String!, paymentMethodId: String!): String @function(name: "newCard-${env}")
   sendDesigneeEmail(toAddresses: [String]!, designeeName: String!, clientName: String!): String @function(name: "sendDesigneeEmail-${env}")
