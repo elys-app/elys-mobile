@@ -1,18 +1,18 @@
 PODS:
-  - Amplify (1.23.0):
-    - Amplify/Default (= 1.23.0)
-  - Amplify/Default (1.23.0)
+  - Amplify (1.25.0):
+    - Amplify/Default (= 1.25.0)
+  - Amplify/Default (1.25.0)
   - amplify_api_ios (0.0.1):
-    - Amplify (= 1.23.0)
+    - Amplify (= 1.25.0)
     - amplify_core
-    - AmplifyPlugins/AWSAPIPlugin (= 1.23.0)
+    - AmplifyPlugins/AWSAPIPlugin (= 1.25.0)
     - Flutter
     - SwiftFormat/CLI
     - SwiftLint
   - amplify_auth_cognito_ios (0.0.1):
-    - Amplify (= 1.23.0)
+    - Amplify (= 1.25.0)
     - amplify_core
-    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.23.0)
+    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.25.0)
     - Flutter
     - ObjectMapper
   - amplify_core (0.0.1):
@@ -20,62 +20,62 @@ PODS:
     - SwiftFormat/CLI
     - SwiftLint
   - amplify_datastore (0.0.1):
-    - Amplify (= 1.23.0)
+    - Amplify (= 1.25.0)
     - amplify_core
-    - AmplifyPlugins/AWSDataStorePlugin (= 1.23.0)
+    - AmplifyPlugins/AWSDataStorePlugin (= 1.25.0)
     - Flutter
   - amplify_flutter_ios (0.0.1):
-    - Amplify (= 1.23.0)
+    - Amplify (= 1.25.0)
     - amplify_core
-    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.23.0)
-    - AWSPluginsCore (= 1.23.0)
+    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.25.0)
+    - AWSPluginsCore (= 1.25.0)
     - Flutter
     - SwiftFormat/CLI
     - SwiftLint
   - amplify_storage_s3_ios (0.0.1):
-    - Amplify (= 1.23.0)
+    - Amplify (= 1.25.0)
     - amplify_core
-    - AmplifyPlugins/AWSS3StoragePlugin (= 1.23.0)
+    - AmplifyPlugins/AWSS3StoragePlugin (= 1.25.0)
     - Flutter
-  - AmplifyPlugins/AWSAPIPlugin (1.23.0):
+  - AmplifyPlugins/AWSAPIPlugin (1.25.0):
     - AppSyncRealTimeClient (~> 1.8)
     - AWSCore (~> 2.27.0)
-    - AWSPluginsCore (= 1.23.0)
-  - AmplifyPlugins/AWSCognitoAuthPlugin (1.23.0):
+    - AWSPluginsCore (= 1.25.0)
+  - AmplifyPlugins/AWSCognitoAuthPlugin (1.25.0):
     - AWSAuthCore (~> 2.27.0)
     - AWSCognitoIdentityProvider (~> 2.27.0)
     - AWSCognitoIdentityProviderASF (~> 2.27.0)
     - AWSCore (~> 2.27.0)
     - AWSMobileClient (~> 2.27.0)
-    - AWSPluginsCore (= 1.23.0)
-  - AmplifyPlugins/AWSDataStorePlugin (1.23.0):
+    - AWSPluginsCore (= 1.25.0)
+  - AmplifyPlugins/AWSDataStorePlugin (1.25.0):
     - AWSCore (~> 2.27.0)
-    - AWSPluginsCore (= 1.23.0)
+    - AWSPluginsCore (= 1.25.0)
     - SQLite.swift (= 0.13.2)
-  - AmplifyPlugins/AWSS3StoragePlugin (1.23.0):
+  - AmplifyPlugins/AWSS3StoragePlugin (1.25.0):
     - AWSCore (~> 2.27.0)
-    - AWSPluginsCore (= 1.23.0)
+    - AWSPluginsCore (= 1.25.0)
     - AWSS3 (~> 2.27.0)
   - AppSyncRealTimeClient (1.10.0):
     - Starscream (~> 4.0.4)
-  - AWSAuthCore (2.27.10):
-    - AWSCore (= 2.27.10)
-  - AWSCognitoIdentityProvider (2.27.10):
-    - AWSCognitoIdentityProviderASF (= 2.27.10)
-    - AWSCore (= 2.27.10)
-  - AWSCognitoIdentityProviderASF (2.27.10):
-    - AWSCore (= 2.27.10)
-  - AWSCore (2.27.10)
-  - AWSMobileClient (2.27.10):
-    - AWSAuthCore (= 2.27.10)
-    - AWSCognitoIdentityProvider (= 2.27.10)
-    - AWSCognitoIdentityProviderASF (= 2.27.10)
-    - AWSCore (= 2.27.10)
-  - AWSPluginsCore (1.23.0):
-    - Amplify (= 1.23.0)
+  - AWSAuthCore (2.27.13):
+    - AWSCore (= 2.27.13)
+  - AWSCognitoIdentityProvider (2.27.13):
+    - AWSCognitoIdentityProviderASF (= 2.27.13)
+    - AWSCore (= 2.27.13)
+  - AWSCognitoIdentityProviderASF (2.27.13):
+    - AWSCore (= 2.27.13)
+  - AWSCore (2.27.13)
+  - AWSMobileClient (2.27.13):
+    - AWSAuthCore (= 2.27.13)
+    - AWSCognitoIdentityProvider (= 2.27.13)
+    - AWSCognitoIdentityProviderASF (= 2.27.13)
+    - AWSCore (= 2.27.13)
+  - AWSPluginsCore (1.25.0):
+    - Amplify (= 1.25.0)
     - AWSCore (~> 2.27.0)
-  - AWSS3 (2.27.10):
-    - AWSCore (= 2.27.10)
+  - AWSS3 (2.27.13):
+    - AWSCore (= 2.27.13)
   - camera_avfoundation (0.0.1):
     - Flutter
   - Flutter (1.0.0)
@@ -92,19 +92,19 @@ PODS:
   - permission_handler_apple (9.0.4):
     - Flutter
   - PhoneNumberKit/PhoneNumberKitCore (3.3.4)
-  - Sentry (7.18.0):
-    - Sentry/Core (= 7.18.0)
-  - Sentry/Core (7.18.0)
+  - Sentry (7.22.0):
+    - Sentry/Core (= 7.22.0)
+  - Sentry/Core (7.22.0)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry (~> 7.18.0)
+    - Sentry (~> 7.22.0)
   - SQLite.swift (0.13.2):
     - SQLite.swift/standard (= 0.13.2)
   - SQLite.swift/standard (0.13.2)
   - Starscream (4.0.4)
-  - SwiftFormat/CLI (0.49.10)
-  - SwiftLint (0.47.1)
+  - SwiftFormat/CLI (0.49.17)
+  - SwiftLint (0.48.0)
   - url_launcher_ios (0.0.1):
     - Flutter
   - video_player_avfoundation (0.0.1):
@@ -183,22 +183,22 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player_avfoundation/ios"
 
 SPEC CHECKSUMS:
-  Amplify: 010d6a71db20812d9e3062db1fe827393d01e584
-  amplify_api_ios: df3f5e3ddd5ae4e0d2ce48dce18a23e787bac884
-  amplify_auth_cognito_ios: c67d4bf0901717cb193f16ed24c389be7f4d7daf
+  Amplify: 4e1839747f51c5f28f95ce36ef6d356f032b42b7
+  amplify_api_ios: 769bc2a5f7f8599bcdf070a1ac55831ed10c741c
+  amplify_auth_cognito_ios: 8a014f5d5e085265e13a270dc03fbe0818bb1f54
   amplify_core: e67fe0c53845db08aced670bfc7370b1329d2798
-  amplify_datastore: 8c35a89e553716222b33cc8cc587ea978a982244
-  amplify_flutter_ios: a2cf41c13161ffefedab76055a29b2d4e78c91e8
-  amplify_storage_s3_ios: 9f909ed387be893ee4a26b040ad1fb7212b9e14d
-  AmplifyPlugins: d939707cf36dfcd53c5fd6533e842e323a2287ab
+  amplify_datastore: 8f103a60f6193127bba035b8ee6090f97a9a3449
+  amplify_flutter_ios: 59c43b6b6ff6ccfc59e18eef279d9d6b8fef8cca
+  amplify_storage_s3_ios: 958f4989117718621340d7405d792b957adcf764
+  AmplifyPlugins: 110388250aeaf45eaf3008991616be84b2c605f7
   AppSyncRealTimeClient: 656ab4215e05f6ca47fe6d8c73f416d9984a8aac
-  AWSAuthCore: ea9baff143a5ff4a98cea3954b006cedc96cd47e
-  AWSCognitoIdentityProvider: 7ef13d7a86298db707165208f01b92997cc3b5af
-  AWSCognitoIdentityProviderASF: d745c40a37815ef1c547f9677145d4e522f582f3
-  AWSCore: dbad318b7ff0fd86fb8387d3ad1f30049c05bc58
-  AWSMobileClient: 523cdb04d21cfd7523eb8db77b2fa2a00b6a95b4
-  AWSPluginsCore: 120cfa265293694921b6595fe00d1cb5ab558847
-  AWSS3: 0cf2cedb263368f624ca721e5c56a8cb59fc44bc
+  AWSAuthCore: 9898614783bd6375742b58a1df38c6a8b8276eda
+  AWSCognitoIdentityProvider: c105df15533a029230c325acd2be60ff45e8f3f9
+  AWSCognitoIdentityProviderASF: e0f40ef2f5c2c357b77553144e8f41a6c0b0b81b
+  AWSCore: 05edadb5f3d0b92a50ea8c66b06f1a10477878da
+  AWSMobileClient: a49361347ff5c0cff946b3f777936c0fdf9c190d
+  AWSPluginsCore: c29c4b91c4ecd7376b85288615bb482f409a0b73
+  AWSS3: 0ce6101e04b1c8a72eec165155e2f1da43d7229b
   camera_avfoundation: 07c77549ea54ad95d8581be86617c094a46280d9
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_libphonenumber: 6a23afdf063b34d1e53e6dbd6c6bc905d18e8e46
@@ -208,12 +208,12 @@ SPEC CHECKSUMS:
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   PhoneNumberKit: 441e8b26ec88d598e3591de9061eff18f5dd12e8
-  Sentry: aff6fb3785973436f0bf25748f6b3bcb3e825e09
-  sentry_flutter: b635e75d735415172e54bf3b72c39ce69882b4ca
+  Sentry: 30b51086ca9aac23337880152e95538f7e177f7f
+  sentry_flutter: eaca55af5c951f4be6c4b1daddce1744c37d8476
   SQLite.swift: 4fc2be46c36392e3b87afe6fe7f1801c1daa07ef
   Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
-  SwiftFormat: 7e7b810d61b0518ea30d3753051ebde546ae4c0b
-  SwiftLint: f80f1be7fa96d30e0aa68e58d45d4ea1ccaac519
+  SwiftFormat: 64ac3f15bbfc3c830103a17340bcc5b60d9a3acd
+  SwiftLint: 284cea64b6187c5d6bd83e9a548a64104d546447
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
 
