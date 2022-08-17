@@ -80,7 +80,7 @@ const amplifyconfig = ''' {
                 },
                 "S3TransferUtility": {
                     "Default": {
-                        "Bucket": "elysonline361ff3e65f004dbbaf0eaa5afa9ce9ec103619-test",
+                        "Bucket": "elysonline9c9883a8ae094e03af37968083331777103619-test",
                         "Region": "us-east-1"
                     }
                 }
@@ -90,7 +90,7 @@ const amplifyconfig = ''' {
     "storage": {
         "plugins": {
             "awsS3StoragePlugin": {
-                "bucket": "elysonline361ff3e65f004dbbaf0eaa5afa9ce9ec103619-test",
+                "bucket": "elysonline9c9883a8ae094e03af37968083331777103619-test",
                 "region": "us-east-1",
                 "defaultAccessLevel": "guest"
             }

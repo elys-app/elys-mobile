@@ -231,7 +231,6 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
           contactEmail: selectedContact.email,
           eventMonth: selectedMonth,
           eventDate: selectedDay.toString(),
-          groupId: '',
           eventYear: '0'));
       Navigator.pushNamed(context, '/main', arguments: 'schedule');
     }

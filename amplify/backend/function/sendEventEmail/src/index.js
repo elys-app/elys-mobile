@@ -18,6 +18,9 @@ const transporter = nodemailer.createTransport({
   SES: ses
 });
 
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+
 const {
   getMaxListeners
 } = require('process');
@@ -26,48 +29,31 @@ const {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 
-async function getS3File(bucket, key) {
-  return new Promise(function (resolve, reject) {
-    s3.getObject({
-        Bucket: bucket,
-        Key: key
-      },
-      function (err, data) {
-        if (err) return reject(err);
-        else return resolve(data);
-      }
-    );
-  })
-}
-
 exports.handler = async (event) => {
+  const duration = 14400;
 
-  // Get the attachement
+  const _region = event[0][0].contentInfo.region.S;
+  const _bucket = event[0][0].contentInfo.bucket.S;
+  const _fileKey = event[0][0].contentInfo.fileKey.S;
 
-  const fileData = await getS3File(
-    event.arguments.bucket, // "elysonline361ff3e65f004dbbaf0eaa5afa9ce9ec103619-test",
-    event.arguments.key // "public/user-32-IMG_0367.png"
-  );
+  const client = new S3Client({ region: _region });
+  const command = new GetObjectCommand({ Key:'public/' + _fileKey, Bucket: _bucket });
+  const _url = await getSignedUrl(client, command, { expiresIn: duration });
 
   var mailOptions = {
     from: "admin@elys-app.net",
-    to: event.arguments.toAddress,
+    to: event[0][1].contactInfo.email.S,
     subject: "This is Content From Elys!",
-    html: `<p>The attachment is content that an Elys client sent to you.</p>`,
-    attachments: [{
-      filename: event.arguments.key,
-      content: fileData.Body
-    }]
+    html: `<p>This link contains content that an Elys Legacy Management subscriber sent to you: \n` + _url + `<p>`
   };
 
   // send email
   return transporter.sendMail(mailOptions)
     .then(results => {
-
       return {
         statusCode: 200,
         body: JSON.stringify({
-          "API Success": results
+          "messageId": results.messageId
         }, null),
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -76,17 +62,6 @@ exports.handler = async (event) => {
 
     })
     .catch(error => {
-      console.log("Error:", error);
-
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          "API Error": error
-        }, null),
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-      };
-
+      throw new Error({id: event[1].id.S});
     })
 };

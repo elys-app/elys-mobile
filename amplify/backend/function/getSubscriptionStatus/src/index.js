@@ -2,13 +2,13 @@ const stripe = require('stripe')('sk_test_51JG9pzFbE7WYTcrpDa1nRBtHDzQ9AkmkOZHTy
 
 exports.handler = async (event) => {
 
-  const subscription = await stripe.subscription.retrieve(
+  const subscription = await stripe.subscriptions.retrieve(
     event.arguments.subscriptionId,
   );
 
   if (subscription) {
     return {
-      'customerStatus': subscription.customerStatus
+      'customerStatus': subscription.status
     };
   } else {
     return {

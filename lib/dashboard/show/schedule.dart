@@ -41,8 +41,7 @@ class _SchedulePageState extends State<SchedulePage> {
       } else {
         Navigator.pushNamed(context, '/startup', arguments: 'contacts');
       }
-    }
-    else if (content.length == 0) {
+    } else if (content.length == 0) {
       Navigator.pushNamed(context, '/startup', arguments: 'content');
     }
   }
@@ -100,32 +99,31 @@ class _SchedulePageState extends State<SchedulePage> {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text("Warning"),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const <Widget>[
-                Text('Are you sure?')
+              title: Text("Warning"),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const <Widget>[Text('Are you sure?')],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Delete'),
+                  onPressed: () async {
+                    await Amplify.DataStore.delete(item);
+                    Navigator.pushNamed(context, '/main',
+                        arguments: 'schedule');
+                  },
+                ),
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    setState(() {
+                      Navigator.pop(context);
+                    });
+                  },
+                )
               ],
             ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Delete'),
-              onPressed: () async {
-                await Amplify.DataStore.delete(item);
-                Navigator.pushNamed(context, '/main', arguments: 'schedule');
-              },
-            ),
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                setState(() {
-                  Navigator.pop(context);
-                });
-              },
-            )
-          ],
-        ),
         barrierDismissible: false);
   }
 
@@ -136,43 +134,46 @@ class _SchedulePageState extends State<SchedulePage> {
     return (result
         .map(
           (item) => Slidable(
-        key: const ValueKey(0),
-        startActionPane: ActionPane(
-          motion: BehindMotion(),
-          children: [
-            SlidableAction(
-              label: 'Delete',
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-              icon: Icons.delete_sharp,
-              onPressed: (BuildContext context) {
-                onDeleteEventPressed(item);
-              },
+            key: const ValueKey(0),
+            startActionPane: ActionPane(
+              motion: BehindMotion(),
+              children: [
+                SlidableAction(
+                  label: 'Delete',
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete_sharp,
+                  onPressed: (BuildContext context) {
+                    onDeleteEventPressed(item);
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
-        endActionPane: ActionPane(
-          motion: BehindMotion(),
-          children: [
-            SlidableAction(
-              flex: 1,
-              label: 'Edit',
-              backgroundColor: Colors.lightBlue,
-              foregroundColor: Colors.white,
-              icon: Icons.edit_sharp,
-              onPressed: (BuildContext context) {
-                Navigator.pushNamed(context, '/editschedule', arguments: item);
-              },
-            )
-          ],
-        ),
+            endActionPane: ActionPane(
+              motion: BehindMotion(),
+              children: [
+                SlidableAction(
+                  flex: 1,
+                  label: 'Edit',
+                  backgroundColor: Colors.lightBlue,
+                  foregroundColor: Colors.white,
+                  icon: Icons.edit_sharp,
+                  onPressed: (BuildContext context) {
+                    Navigator.pushNamed(context, '/editschedule',
+                        arguments: item);
+                  },
+                )
+              ],
+            ),
             child: new ListTile(
               title: Text(
                 item.name,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(
-                  'Send Email to: ${item.contactEmail} \nOn: ${item.eventMonth} ${item.eventDate} '),
+              subtitle: (item.eventMonth == '0')
+                  ? Text('Send Email to: ${item.contactEmail} \nImmediately')
+                  : Text(
+                      'Send Email to: ${item.contactEmail} \nOn: ${item.eventMonth} ${item.eventDate} '),
               isThreeLine: true,
               onLongPress: () {
                 _editScheduleItem(item);

@@ -22,7 +22,7 @@ exports.handler = async (event) => {
 
   const emailDetails = {
     Destination: {
-      ToAddresses: [event.event.executorEmail.S]
+      ToAddresses: [event.event.ownEmail.S]
     },
     Source: "admin@elys-app.net",
     Template: "WarningTemplate",

@@ -189,7 +189,7 @@ class _DetailsPageState extends State<DetailsPage> {
       Navigator.pushNamed(context, '/main', arguments: 'content');
     } catch (e) {
       SnackBar snackBar = SnackBar(
-        content: Text('${e}'),
+        content: Text(e.toString()),
         duration: Duration(seconds: 3),
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );

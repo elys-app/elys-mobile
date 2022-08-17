@@ -1,0 +1,13 @@
+{
+  "resourceName": "elyscontent",
+  "policyUUID": "ec6db5e0",
+  "bucketName": "elysonline9c9883a8ae094e03af37968083331777",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE"
+}

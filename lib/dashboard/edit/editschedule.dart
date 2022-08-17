@@ -255,7 +255,6 @@ class _EditSchedulePageState extends State<EditSchedulePage> {
           contactEmail: selectedContact.email,
           eventMonth: selectedMonth.toString(),
           eventDate: selectedDay.toString(),
-          groupId: '',
           eventYear: '0');
       await Amplify.DataStore.save(updatedEvent);
       print('Updated: ${updatedEvent.toString()}');

@@ -38,6 +38,8 @@ class _LoadingPageState extends State<LoadingPage> {
     try {
       if (Amplify.isConfigured) {
         var user = await Amplify.Auth.getCurrentUser();
+        await Amplify.DataStore.clear();
+        await Amplify.DataStore.stop();
         await Amplify.DataStore.start();
         hubSubscription =
             Amplify.Hub.listen([HubChannel.DataStore], (event) async {
@@ -56,7 +58,6 @@ class _LoadingPageState extends State<LoadingPage> {
                 Navigator.pushReplacementNamed(context, '/panic');
               }
             } else {
-              // Navigator.pushNamed(context, '/register');
               Navigator.pushReplacementNamed(context, '/panic');
             }
           }

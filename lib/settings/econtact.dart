@@ -20,7 +20,6 @@ class _SettingsState extends State<SettingsPage> {
   Account currentAccount = new Account(
       userName: '',
       customerId: '',
-      userFullName: '',
       executorName: '',
       executorEmail: '');
 

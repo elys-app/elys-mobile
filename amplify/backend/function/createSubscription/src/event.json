@@ -1,5 +1,8 @@
 {
-  "key1": "value1",
-  "key2": "value2",
-  "key3": "value3"
+  "arguments": {
+    "customerId": "cus_MA5M4tfAGP3UO9",
+    "paymentMethodId": "pm_1LRlBIFbE7WYTcrpIJSSRknx",
+    "couponId": "Free30",
+    "priceId": "price_1LR2rHFbE7WYTcrpvzKlL4aj"
+  }
 }

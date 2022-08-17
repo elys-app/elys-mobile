@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "elysonline36d62aef_identitypool_36d62aef",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "elyson36d62aef",
     "userPoolName": "elysonline36d62aef_userpool_36d62aef",
     "autoVerifiedAttributes": [
@@ -38,9 +38,30 @@
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
     "triggers": {},
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+      "Admin",
+      "User"
+    ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": false
+    "useEnabledMfas": false,
+    "authRoleArn": {
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
+    },
+    "unauthRoleArn": {
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
+    },
+    "breakCircularDependency": false,
+    "dependsOn": [],
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    },
+    "permissions": []
   }
 }

@@ -1,5 +1,19 @@
 {
-  "key1": "value1",
-  "key2": "value2",
-  "key3": "value3"
+  "event": {
+    "region": {
+      "S": "us-east-1"
+    },
+    "bucket": {
+      "S": "elysonline361ff3e65f004dbbaf0eaa5afa9ce9ec103619-test"
+    },
+    "fileKey": {
+      "S": "public/REC_3BC6BA8C-5446-4C64-89E5-3D859DC9B925.mp4"
+    },
+    "emergencyNumber": {
+      "S": "+1 858-232-7337"
+    },
+    "emergencyName": {
+      "S": "PeteSmith"
+    }
+  }
 }

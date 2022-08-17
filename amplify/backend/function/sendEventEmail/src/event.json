@@ -1,7 +1,25 @@
-{
-  "arguments": {
-    "bucket": "elysonline361ff3e65f004dbbaf0eaa5afa9ce9ec103619-test",
-    "key": "public/user-32-IMG_0367.png",
-    "toAddress": "admin@elys-app.net"
+[
+  {
+    "contentInfo": {
+      "bucket": {
+        "S": "elysonline1df9a37ce54241f7b04b0d5e96e09717121618-admin"
+      },
+      "fileKey": {
+        "S": "user-cc-IMG_0367.png"
+      },
+      "region": {
+        "S": "us-east-1"
+      }
+    }
+  },
+  {
+    "contactInfo": {
+      "id": {
+        "S": "28449958-4cd7-47d8-b164-6ced2d7206c0"
+      },
+      "email": {
+        "S": "ianfmc@gmail.com"
+      }
+    }
   }
-}
+]

@@ -5,7 +5,16 @@ exports.handler = async (event) => {
 
   const subscriptionId = event.arguments.subscriptionId;
 
-  await stripe.subscriptions.del(subscriptionId);
- 
-  return 'OK';
+  try {
+    const subscription = await stripe.subscriptions.update(subscriptionId,
+      {cancel_at_period_end: true}
+    );
+    return subscription.current_period_end
+  }
+  catch (err) {
+    console.log(JSON.stringify(err));
+    return {
+      cancelDate: 'NA'
+    }
+  }
 }

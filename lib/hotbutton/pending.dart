@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'package:sentry/sentry.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,6 +24,8 @@ class PendingPage extends StatefulWidget {
 
 class _PendingPageState extends State<PendingPage> {
   String _key = '';
+  late String currentDefaultSystemLocale;
+  late List<Locale> currentSystemLocales;
 
   @override
   initState() {
@@ -35,28 +39,34 @@ class _PendingPageState extends State<PendingPage> {
   }
 
   Future<void> _saveContent() async {
+    print('Current time zone: ${DateTime.now().timeZoneName} (offset ${DateTime.now().timeZoneOffset}).');
     _key = widget.content.path
         .split('/')
         .last;
-
     final currentEvent = widget.event;
     try {
       SpecialEvent updatedEvent = currentEvent.copyWith(
           fileKey: 'public/' + _key,
           timeSubmitted: DateTime.now().toUtc().toString(),
+          timeZone: DateTime.now().toString(),
           sent: false,
           warned: false);
       File fileToUpload = File(this.widget.content.path);
       await Amplify.DataStore.save(updatedEvent);
       await Amplify.Storage.uploadFile(local: fileToUpload, key: _key);
       Navigator.pushNamed(context, '/panic');
-    } catch (e) {
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       SnackBar snackBar = SnackBar(
-        content: Text(e.toString()),
+        content: Text("An error occured uploading your Hot Button Content"),
         duration: Duration(seconds: 5),
         action: SnackBarAction(label: 'OK', onPressed: () {}),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.pushNamed(context, '/panic');
     }
   }
 

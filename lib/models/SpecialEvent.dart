@@ -36,6 +36,9 @@ class SpecialEvent extends Model {
   final String? _emergencyName;
   final String? _emergencyNumber;
   final String? _timeSubmitted;
+  final String? _timeZone;
+  final bool? _warned48;
+  final bool? _warned24;
   final bool? _warned;
   final bool? _sent;
   final TemporalDateTime? _createdAt;
@@ -81,6 +84,18 @@ class SpecialEvent extends Model {
     return _timeSubmitted;
   }
   
+  String? get timeZone {
+    return _timeZone;
+  }
+  
+  bool? get warned48 {
+    return _warned48;
+  }
+  
+  bool? get warned24 {
+    return _warned24;
+  }
+  
   bool? get warned {
     return _warned;
   }
@@ -97,9 +112,9 @@ class SpecialEvent extends Model {
     return _updatedAt;
   }
   
-  const SpecialEvent._internal({required this.id, bucket, region, fileKey, ownEmail, ownPhone, emergencyName, emergencyNumber, timeSubmitted, warned, sent, createdAt, updatedAt}): _bucket = bucket, _region = region, _fileKey = fileKey, _ownEmail = ownEmail, _ownPhone = ownPhone, _emergencyName = emergencyName, _emergencyNumber = emergencyNumber, _timeSubmitted = timeSubmitted, _warned = warned, _sent = sent, _createdAt = createdAt, _updatedAt = updatedAt;
+  const SpecialEvent._internal({required this.id, bucket, region, fileKey, ownEmail, ownPhone, emergencyName, emergencyNumber, timeSubmitted, timeZone, warned48, warned24, warned, sent, createdAt, updatedAt}): _bucket = bucket, _region = region, _fileKey = fileKey, _ownEmail = ownEmail, _ownPhone = ownPhone, _emergencyName = emergencyName, _emergencyNumber = emergencyNumber, _timeSubmitted = timeSubmitted, _timeZone = timeZone, _warned48 = warned48, _warned24 = warned24, _warned = warned, _sent = sent, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory SpecialEvent({String? id, String? bucket, String? region, String? fileKey, String? ownEmail, String? ownPhone, String? emergencyName, String? emergencyNumber, String? timeSubmitted, bool? warned, bool? sent}) {
+  factory SpecialEvent({String? id, String? bucket, String? region, String? fileKey, String? ownEmail, String? ownPhone, String? emergencyName, String? emergencyNumber, String? timeSubmitted, String? timeZone, bool? warned48, bool? warned24, bool? warned, bool? sent}) {
     return SpecialEvent._internal(
       id: id == null ? UUID.getUUID() : id,
       bucket: bucket,
@@ -110,6 +125,9 @@ class SpecialEvent extends Model {
       emergencyName: emergencyName,
       emergencyNumber: emergencyNumber,
       timeSubmitted: timeSubmitted,
+      timeZone: timeZone,
+      warned48: warned48,
+      warned24: warned24,
       warned: warned,
       sent: sent);
   }
@@ -131,6 +149,9 @@ class SpecialEvent extends Model {
       _emergencyName == other._emergencyName &&
       _emergencyNumber == other._emergencyNumber &&
       _timeSubmitted == other._timeSubmitted &&
+      _timeZone == other._timeZone &&
+      _warned48 == other._warned48 &&
+      _warned24 == other._warned24 &&
       _warned == other._warned &&
       _sent == other._sent;
   }
@@ -152,6 +173,9 @@ class SpecialEvent extends Model {
     buffer.write("emergencyName=" + "$_emergencyName" + ", ");
     buffer.write("emergencyNumber=" + "$_emergencyNumber" + ", ");
     buffer.write("timeSubmitted=" + "$_timeSubmitted" + ", ");
+    buffer.write("timeZone=" + "$_timeZone" + ", ");
+    buffer.write("warned48=" + (_warned48 != null ? _warned48!.toString() : "null") + ", ");
+    buffer.write("warned24=" + (_warned24 != null ? _warned24!.toString() : "null") + ", ");
     buffer.write("warned=" + (_warned != null ? _warned!.toString() : "null") + ", ");
     buffer.write("sent=" + (_sent != null ? _sent!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
@@ -161,7 +185,7 @@ class SpecialEvent extends Model {
     return buffer.toString();
   }
   
-  SpecialEvent copyWith({String? id, String? bucket, String? region, String? fileKey, String? ownEmail, String? ownPhone, String? emergencyName, String? emergencyNumber, String? timeSubmitted, bool? warned, bool? sent}) {
+  SpecialEvent copyWith({String? id, String? bucket, String? region, String? fileKey, String? ownEmail, String? ownPhone, String? emergencyName, String? emergencyNumber, String? timeSubmitted, String? timeZone, bool? warned48, bool? warned24, bool? warned, bool? sent}) {
     return SpecialEvent._internal(
       id: id ?? this.id,
       bucket: bucket ?? this.bucket,
@@ -172,6 +196,9 @@ class SpecialEvent extends Model {
       emergencyName: emergencyName ?? this.emergencyName,
       emergencyNumber: emergencyNumber ?? this.emergencyNumber,
       timeSubmitted: timeSubmitted ?? this.timeSubmitted,
+      timeZone: timeZone ?? this.timeZone,
+      warned48: warned48 ?? this.warned48,
+      warned24: warned24 ?? this.warned24,
       warned: warned ?? this.warned,
       sent: sent ?? this.sent);
   }
@@ -186,13 +213,16 @@ class SpecialEvent extends Model {
       _emergencyName = json['emergencyName'],
       _emergencyNumber = json['emergencyNumber'],
       _timeSubmitted = json['timeSubmitted'],
+      _timeZone = json['timeZone'],
+      _warned48 = json['warned48'],
+      _warned24 = json['warned24'],
       _warned = json['warned'],
       _sent = json['sent'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'bucket': _bucket, 'region': _region, 'fileKey': _fileKey, 'ownEmail': _ownEmail, 'ownPhone': _ownPhone, 'emergencyName': _emergencyName, 'emergencyNumber': _emergencyNumber, 'timeSubmitted': _timeSubmitted, 'warned': _warned, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'bucket': _bucket, 'region': _region, 'fileKey': _fileKey, 'ownEmail': _ownEmail, 'ownPhone': _ownPhone, 'emergencyName': _emergencyName, 'emergencyNumber': _emergencyNumber, 'timeSubmitted': _timeSubmitted, 'timeZone': _timeZone, 'warned48': _warned48, 'warned24': _warned24, 'warned': _warned, 'sent': _sent, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "specialEvent.id");
@@ -204,6 +234,9 @@ class SpecialEvent extends Model {
   static final QueryField EMERGENCYNAME = QueryField(fieldName: "emergencyName");
   static final QueryField EMERGENCYNUMBER = QueryField(fieldName: "emergencyNumber");
   static final QueryField TIMESUBMITTED = QueryField(fieldName: "timeSubmitted");
+  static final QueryField TIMEZONE = QueryField(fieldName: "timeZone");
+  static final QueryField WARNED48 = QueryField(fieldName: "warned48");
+  static final QueryField WARNED24 = QueryField(fieldName: "warned24");
   static final QueryField WARNED = QueryField(fieldName: "warned");
   static final QueryField SENT = QueryField(fieldName: "sent");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
@@ -215,6 +248,17 @@ class SpecialEvent extends Model {
         authStrategy: AuthStrategy.OWNER,
         ownerField: "owner",
         identityClaim: "cognito:username",
+        provider: AuthRuleProvider.USERPOOLS,
+        operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
+          ModelOperation.READ
+        ]),
+      AuthRule(
+        authStrategy: AuthStrategy.GROUPS,
+        groupClaim: "cognito:groups",
+        groups: [ "Admin" ],
         provider: AuthRuleProvider.USERPOOLS,
         operations: [
           ModelOperation.CREATE,
@@ -272,6 +316,24 @@ class SpecialEvent extends Model {
       key: SpecialEvent.TIMESUBMITTED,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: SpecialEvent.TIMEZONE,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: SpecialEvent.WARNED48,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.bool)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: SpecialEvent.WARNED24,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.bool)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
